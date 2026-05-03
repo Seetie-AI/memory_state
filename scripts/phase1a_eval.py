@@ -1,0 +1,152 @@
+"""Run Phase 1a LongMemEval-M/session retrieval baseline evaluation.
+
+MVP_Plan.md sections 5.1 and 8 define Phase 1a as official pipeline
+replication: run BM25 and Contriever on LongMemEval-M/session and compare
+Recall@5 against public anchors. This script intentionally uses user-only
+session text for both BM25 and Contriever to match the official LongMemEval
+retrieval baseline described in MVP_Plan.md section 5.3.
+
+Why: the hidden-state method should not be evaluated until data loading,
+candidate construction, abstention filtering, and metrics reproduce known
+baseline behavior.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from dataclasses import asdict
+from pathlib import Path
+from typing import Protocol
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from baselines.bm25 import BM25Retriever
+from baselines.contriever import ContrieverRetriever
+from eval.longmemeval_metrics import Prediction, evaluate
+from longmemeval.data import (
+    Instance,
+    has_user_side_answer_label,
+    load_instances,
+    session_text_user_only,
+)
+
+
+OFFICIAL_ANCHORS = {
+    "bm25": {"recall_all@5": 0.634, "ndcg_any@5": 0.516},
+    "contriever": {"recall_all@5": 0.723, "ndcg_any@5": 0.634},
+}
+
+
+class Retriever(Protocol):
+    def fit(self, corpus_texts: list[str]) -> "Retriever":
+        ...
+
+    def query(self, query_text: str, top_k: int) -> list[tuple[int, float]]:
+        ...
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--method", choices=["bm25", "contriever"], required=True)
+    parser.add_argument("--subset", type=int, default=100)
+    parser.add_argument("--data", default=str(ROOT / "data" / "longmemeval_m_cleaned.json"))
+    parser.add_argument("--granularity", choices=["session"], default="session")
+    parser.add_argument("--top-k", type=int, default=50)
+    parser.add_argument("--bootstrap-samples", type=int, default=1000)
+    parser.add_argument("--contriever-batch-size", type=int, default=16)
+    return parser.parse_args()
+
+
+def make_retriever(args: argparse.Namespace) -> Retriever:
+    if args.method == "bm25":
+        return BM25Retriever()
+    if args.method == "contriever":
+        return ContrieverRetriever(
+            model_path=ROOT / "models" / "contriever",
+            batch_size=args.contriever_batch_size,
+        )
+    raise ValueError(f"Unsupported method: {args.method}")
+
+
+def run_instance(instance: Instance, retriever: Retriever, top_k: int) -> Prediction:
+    corpus_ids = instance.haystack_session_ids
+    corpus_texts = [session_text_user_only(session) for session in instance.haystack_sessions]
+    ranking = retriever.fit(corpus_texts).query(instance.question, top_k=top_k)
+    retrieved_ids = [corpus_ids[index] for index, _score in ranking]
+    return Prediction(
+        question_id=instance.question_id,
+        retrieved_ids=retrieved_ids,
+        gold_ids=instance.answer_session_ids,
+        is_abstention=instance.is_abstention,
+        has_target=has_user_side_answer_label(instance),
+    )
+
+
+def main() -> int:
+    args = parse_args()
+    instances = load_instances(args.data)
+    if args.subset and args.subset > 0:
+        instances = instances[: args.subset]
+
+    retriever = make_retriever(args)
+    predictions = [
+        run_instance(instance, retriever=retriever, top_k=args.top_k) for instance in instances
+    ]
+    metrics = evaluate(
+        predictions,
+        skip_abstention=True,
+        bootstrap_samples=args.bootstrap_samples,
+    )
+
+    output = {
+        "config": {
+            "method": args.method,
+            "data": args.data,
+            "subset": args.subset,
+            "granularity": args.granularity,
+            "top_k": args.top_k,
+            "bootstrap_samples": args.bootstrap_samples,
+        },
+        "official_anchor": OFFICIAL_ANCHORS[args.method],
+        "metrics": metrics,
+        "predictions": [asdict(prediction) for prediction in predictions],
+    }
+
+    result_dir = ROOT / "results"
+    result_dir.mkdir(parents=True, exist_ok=True)
+    subset_label = args.subset if args.subset and args.subset > 0 else "full"
+    output_path = result_dir / f"phase1a_{args.method}_{subset_label}.json"
+    output_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    metrics_by_name = metrics["metrics"]
+    recall5 = metrics_by_name["recall_all@5"]["mean"]
+    ndcg5 = metrics_by_name["ndcg_any@5"]["mean"]
+    recall5_ci = metrics_by_name["recall_all@5"]["ci95"]
+    ndcg5_ci = metrics_by_name["ndcg_any@5"]["ci95"]
+
+    print(f"method: {args.method}")
+    print(f"scored: {metrics['n_scored']} / total: {metrics['n_total']}")
+    print(
+        "Recall@5: "
+        f"{recall5:.3f} "
+        f"(95% CI {recall5_ci['low']:.3f}-{recall5_ci['high']:.3f}; "
+        f"official anchor {OFFICIAL_ANCHORS[args.method]['recall_all@5']:.3f})"
+    )
+    print(
+        "NDCG@5: "
+        f"{ndcg5:.3f} "
+        f"(95% CI {ndcg5_ci['low']:.3f}-{ndcg5_ci['high']:.3f}; "
+        f"official anchor {OFFICIAL_ANCHORS[args.method]['ndcg_any@5']:.3f})"
+    )
+    print(f"result: {output_path}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
