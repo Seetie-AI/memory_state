@@ -47,7 +47,7 @@ class TransformersHiddenStateExtractor:
     @staticmethod
     def _load_model(model_id: str, dtype: torch.dtype) -> torch.nn.Module:
         load_kwargs = {
-            "torch_dtype": dtype,
+            "dtype": dtype,
             "trust_remote_code": False,
             "low_cpu_mem_usage": True,
         }
@@ -110,4 +110,3 @@ def _l2_normalize(vector: np.ndarray) -> np.ndarray:
     if norm == 0.0 or not np.isfinite(norm):
         raise ValueError("Cannot normalize hidden state with zero/non-finite norm.")
     return vector / norm
-

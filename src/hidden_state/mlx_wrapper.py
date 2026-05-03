@@ -74,14 +74,16 @@ class MLXHiddenStateExtractor:
 
         input_ids = mx.array([token_ids], dtype=mx.int32)
         hidden = self.base_model(input_ids)
-        last_hidden = hidden[:, -1, :]
+        # NumPy cannot read MLX bf16 tensors through the buffer protocol, so cast
+        # inside MLX before converting the vector to a NumPy array.
+        last_hidden = hidden[:, -1, :].astype(mx.float32)
         logits = self._project_logits(hidden)[:, -1, :]
 
         top_indices = mx.argsort(logits, axis=-1)[:, -top_k:][:, ::-1]
         next_token_id = top_indices[:, 0]
         mx.eval(last_hidden, top_indices, next_token_id)
 
-        vector = np.asarray(last_hidden[0], dtype=np.float32)
+        vector = np.array(last_hidden[0])
         vector = _l2_normalize(vector)
         top_ids = [int(x) for x in np.asarray(top_indices[0]).tolist()]
         top_texts = [self.tokenizer.decode([token_id]) for token_id in top_ids]
@@ -115,4 +117,3 @@ def _l2_normalize(vector: np.ndarray) -> np.ndarray:
     if norm == 0.0 or not np.isfinite(norm):
         raise ValueError("Cannot normalize hidden state with zero/non-finite norm.")
     return vector / norm
-
