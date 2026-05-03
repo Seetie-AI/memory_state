@@ -100,10 +100,15 @@ def evaluate(
 
 
 def _dcg(relevances: np.ndarray) -> float:
+    """Standard DCG: sum rel_i / log2(i + 1) for 1-indexed position i.
+
+    `relevances[j]` is at 0-indexed position j, i.e. 1-indexed position j + 1,
+    so its discount is log2((j + 1) + 1) = log2(j + 2).
+    """
     if relevances.size == 0:
         return 0.0
-    discounts = np.log2(np.arange(2, relevances.size + 1))
-    return float(relevances[0] + np.sum(relevances[1:] / discounts))
+    discounts = np.log2(np.arange(2, relevances.size + 2))
+    return float(np.sum(relevances / discounts))
 
 
 def _bootstrap_ci(values: list[float], bootstrap_samples: int, seed: int) -> dict[str, float]:
@@ -119,4 +124,3 @@ def _bootstrap_ci(values: list[float], bootstrap_samples: int, seed: int) -> dic
         sample_means.append(float(np.mean(sample)))
     low, high = np.percentile(sample_means, [2.5, 97.5])
     return {"low": float(low), "high": float(high)}
-
