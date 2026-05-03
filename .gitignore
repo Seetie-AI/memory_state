@@ -1,0 +1,9 @@
+.venv/
+models/
+data/
+results/
+notes/blockers.md.swp
+__pycache__/
+*.pyc
+.DS_Store
+.claude/

@@ -1,0 +1,24 @@
+# Stage B / Phase 0 dependencies.
+#
+# Version choices:
+# - torch 2.11.0: PyPI publishes CPython 3.13 macOS arm64 wheels, so it is the
+#   safest pinned PyTorch choice for this machine's default Python 3.13.
+# - mlx-lm 0.31.2: current stable mlx-lm release with Python 3.13 publishing
+#   metadata and Qwen3.5-family support in the upstream model registry.
+# - transformers 5.5.4: recent stable Transformers release needed for Qwen3.5
+#   architecture support in the independent sanity-check path.
+# - huggingface_hub 1.11.0: recent stable hub client used by both Transformers
+#   and mlx-lm for repo-local model downloads.
+# - sentence-transformers 5.4.1: Python 3.13-compatible release for later
+#   embedding baselines; installed now so the venv is ready for Phase 1.
+# - rank-bm25 0.2.2: small, stable BM25 package used by LongMemEval baselines.
+# - datasets 4.8.4: Python 3.13-compatible HuggingFace datasets release.
+# - numpy 2.4.4: current stable NumPy with CPython 3.13 macOS arm64 wheels.
+mlx-lm==0.31.2
+transformers==5.5.4
+torch==2.11.0
+huggingface_hub==1.11.0
+sentence-transformers==5.4.1
+rank-bm25==0.2.2
+datasets==4.8.4
+numpy==2.4.4

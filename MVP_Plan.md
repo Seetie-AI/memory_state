@@ -206,25 +206,25 @@ Do not use `uv` for v0.
 
 *Why*: The user prefers the simplest dependency setup even if installation is slower.
 
-Keep all downloaded models and datasets inside the repo directory:
+Keep all downloaded models and datasets inside the repo directory.
 
-```bash
-export HF_HOME="$PWD/.hf_cache"
-```
+Models go under `./models/<name>/` via `huggingface_hub.snapshot_download(local_dir=...)`, not the default HuggingFace cache.
+
+*Why*: The user wants model weights to be visible inside the repo tree and easy to delete without hunting through global cache locations.
 
 Recommended ignored paths:
 
 ```gitignore
 .venv/
-.hf_cache/
-data/raw/
+models/
+data/
 results/
 __pycache__/
 *.pyc
 .DS_Store
 ```
 
-*Why*: The machine environment should stay clean. Removing the repo-local virtual environment, model cache, raw data, and results should fully clean up local artifacts.
+*Why*: The machine environment should stay clean. Removing the repo-local virtual environment, model directories, raw data, and results should fully clean up local artifacts.
 
 ## 8. Phased Execution Plan
 
@@ -395,8 +395,8 @@ Decision: use fp16 first.
 Decision: use plain pip in `.venv`.  
 *Why*: The user requested a simple, non-global environment and does not mind slower installation.
 
-Decision: keep model cache and data under the repo, ignored by git.  
-*Why*: The computer environment should remain clean and easy to delete.
+Decision: keep model files in `./models/` and data under the repo, ignored by git.  
+*Why*: The user wants model weights to live visibly in the project folder rather than in HuggingFace's default cache, while still keeping large artifacts out of git.
 
 Decision: treat Contriever as an official anchor, not the fairest final comparator.  
 *Why*: Official Contriever uses user-turn-only text and 512-token truncation; Qwen3-Embedding-0.6B is a fairer modern embedding comparator for longer inputs.
