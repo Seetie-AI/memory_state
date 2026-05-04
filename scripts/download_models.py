@@ -12,6 +12,8 @@ Downloads:
   Expected size: about 4.5 GB.
 - facebook/contriever -> ./models/contriever/
   Expected size: about 440 MB.
+- Qwen/Qwen3-Embedding-0.6B -> ./models/qwen3-embedding-0.6b/
+  Expected size: about 1.2 GB.
 
 The script is reentrant. A completed directory gets a .download_complete marker
 and is skipped on later runs. If a prior download was interrupted, running the
@@ -60,6 +62,11 @@ DOWNLOADS = [
         repo_id="facebook/contriever",
         local_name="contriever",
         expected_size="about 440 MB",
+    ),
+    ModelDownload(
+        repo_id="Qwen/Qwen3-Embedding-0.6B",
+        local_name="qwen3-embedding-0.6b",
+        expected_size="about 1.2 GB",
     ),
 ]
 

@@ -28,6 +28,7 @@ if str(SRC) not in sys.path:
 
 from baselines.bm25 import BM25Retriever
 from baselines.contriever import ContrieverRetriever
+from baselines.qwen_embedding import QwenEmbeddingRetriever
 from eval.longmemeval_metrics import Prediction, evaluate
 from longmemeval.data import (
     Instance,
@@ -40,6 +41,7 @@ from longmemeval.data import (
 OFFICIAL_ANCHORS = {
     "bm25": {"recall_all@5": 0.634, "ndcg_any@5": 0.516},
     "contriever": {"recall_all@5": 0.723, "ndcg_any@5": 0.634},
+    "qwen_embedding": None,
 }
 
 
@@ -53,13 +55,15 @@ class Retriever(Protocol):
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--method", choices=["bm25", "contriever"], required=True)
+    parser.add_argument("--method", choices=["bm25", "contriever", "qwen_embedding"], required=True)
     parser.add_argument("--subset", type=int, default=100)
     parser.add_argument("--data", default=str(ROOT / "data" / "longmemeval_m_cleaned.json"))
     parser.add_argument("--granularity", choices=["session"], default="session")
     parser.add_argument("--top-k", type=int, default=50)
     parser.add_argument("--bootstrap-samples", type=int, default=1000)
     parser.add_argument("--contriever-batch-size", type=int, default=16)
+    parser.add_argument("--qwen-embedding-batch-size", type=int, default=4)
+    parser.add_argument("--qwen-embedding-max-length", type=int, default=8192)
     return parser.parse_args()
 
 
@@ -70,6 +74,12 @@ def make_retriever(args: argparse.Namespace) -> Retriever:
         return ContrieverRetriever(
             model_path=ROOT / "models" / "contriever",
             batch_size=args.contriever_batch_size,
+        )
+    if args.method == "qwen_embedding":
+        return QwenEmbeddingRetriever(
+            model_path=ROOT / "models" / "qwen3-embedding-0.6b",
+            batch_size=args.qwen_embedding_batch_size,
+            max_length=args.qwen_embedding_max_length,
         )
     raise ValueError(f"Unsupported method: {args.method}")
 
@@ -121,7 +131,8 @@ def main() -> int:
     result_dir = ROOT / "results"
     result_dir.mkdir(parents=True, exist_ok=True)
     subset_label = args.subset if args.subset and args.subset > 0 else "full"
-    output_path = result_dir / f"phase1a_{args.method}_{subset_label}.json"
+    data_stem = Path(args.data).stem
+    output_path = result_dir / f"phase1a_{args.method}_{data_stem}_{subset_label}.json"
     output_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
 
     metrics_by_name = metrics["metrics"]
@@ -132,18 +143,23 @@ def main() -> int:
 
     print(f"method: {args.method}")
     print(f"scored: {metrics['n_scored']} / total: {metrics['n_total']}")
-    print(
-        "Recall@5: "
-        f"{recall5:.3f} "
-        f"(95% CI {recall5_ci['low']:.3f}-{recall5_ci['high']:.3f}; "
-        f"official anchor {OFFICIAL_ANCHORS[args.method]['recall_all@5']:.3f})"
-    )
-    print(
-        "NDCG@5: "
-        f"{ndcg5:.3f} "
-        f"(95% CI {ndcg5_ci['low']:.3f}-{ndcg5_ci['high']:.3f}; "
-        f"official anchor {OFFICIAL_ANCHORS[args.method]['ndcg_any@5']:.3f})"
-    )
+    anchor = OFFICIAL_ANCHORS[args.method]
+    if anchor is None:
+        print(f"Recall@5: {recall5:.3f} (95% CI {recall5_ci['low']:.3f}-{recall5_ci['high']:.3f})")
+        print(f"NDCG@5: {ndcg5:.3f} (95% CI {ndcg5_ci['low']:.3f}-{ndcg5_ci['high']:.3f})")
+    else:
+        print(
+            "Recall@5: "
+            f"{recall5:.3f} "
+            f"(95% CI {recall5_ci['low']:.3f}-{recall5_ci['high']:.3f}; "
+            f"official anchor {anchor['recall_all@5']:.3f})"
+        )
+        print(
+            "NDCG@5: "
+            f"{ndcg5:.3f} "
+            f"(95% CI {ndcg5_ci['low']:.3f}-{ndcg5_ci['high']:.3f}; "
+            f"official anchor {anchor['ndcg_any@5']:.3f})"
+        )
     print(f"result: {output_path}")
     return 0
 
