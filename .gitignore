@@ -2,6 +2,7 @@
 models/
 data/
 results/
+tensors/
 notes/blockers.md.swp
 __pycache__/
 *.pyc

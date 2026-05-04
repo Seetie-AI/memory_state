@@ -44,6 +44,17 @@ class HiddenStateResult:
     hidden_state_norm: str
 
 
+@dataclass(frozen=True)
+class LayerDumpResult:
+    """Layer dump tensors for reusable hidden-state analysis."""
+
+    last_by_layer: mx.array
+    final_post_norm: mx.array
+    all_by_layer: mx.array | None
+    token_count: int
+    truncated_to: int | None
+
+
 class MLXHiddenStateExtractor:
     """Extract option-A hidden-state vectors from an mlx-lm model."""
 
@@ -172,6 +183,82 @@ class MLXHiddenStateExtractor:
         final_hidden = self.base_model.norm(hidden_states)
         return final_hidden, selected_hidden
 
+    def dump_prompt_layers(
+        self,
+        prompt: str,
+        max_tokens: int | None = None,
+        capture_all_positions: bool = False,
+        storage_dtype: str = "bf16",
+    ) -> LayerDumpResult:
+        """Dump raw block outputs for layer-selection and position analyses.
+
+        This supports the reusable diagnostics requested after the Phase 2
+        negative result. It is distinct from MVP_Plan.md backburner pooling
+        experiments: the dump preserves raw layer/position tensors so later
+        scripts can compare layer choice, score normalization, position scans,
+        diagonal slices, mean pooling, or sentinel-like alternatives without
+        recomputing LLM forwards.
+        """
+        token_ids = self.tokenizer.encode(prompt)
+        original_token_count = len(token_ids)
+        truncated_to = None
+        if max_tokens is not None and original_token_count > max_tokens:
+            token_ids = token_ids[-max_tokens:]
+            truncated_to = max_tokens
+        if not token_ids:
+            raise ValueError("Tokenizer produced no tokens for prompt.")
+
+        input_ids = mx.array([token_ids], dtype=mx.int32)
+        dtype = _storage_dtype(storage_dtype)
+        layer_outputs, final_hidden = self._collect_layer_outputs(
+            input_ids,
+            dtype=dtype,
+            capture_all_positions=capture_all_positions,
+        )
+
+        return LayerDumpResult(
+            last_by_layer=layer_outputs["last_by_layer"],
+            final_post_norm=final_hidden[:, -1, :].astype(dtype)[0],
+            all_by_layer=layer_outputs["all_by_layer"],
+            token_count=original_token_count,
+            truncated_to=truncated_to,
+        )
+
+    def _collect_layer_outputs(
+        self,
+        input_ids: mx.array,
+        dtype: mx.Dtype,
+        capture_all_positions: bool,
+    ) -> tuple[dict[str, mx.array | None], mx.array]:
+        layers = getattr(self.base_model, "layers", None)
+        if not layers:
+            raise TypeError("Layer dumping requires base_model.layers.")
+
+        hidden_states = self.base_model.embed_tokens(input_ids)
+        cache = [None] * len(layers)
+        fa_mask = create_attention_mask(
+            hidden_states,
+            _cache_subset(cache, self.base_model.fa_idx),
+        )
+        ssm_mask = create_ssm_mask(
+            hidden_states,
+            _cache_subset(cache, self.base_model.ssm_idx),
+        )
+        last_by_layer = []
+        all_by_layer = [] if capture_all_positions else None
+
+        for layer, layer_cache in zip(layers, cache, strict=True):
+            mask = ssm_mask if layer.is_linear else fa_mask
+            hidden_states = layer(hidden_states, mask, layer_cache)
+            last_by_layer.append(hidden_states[:, -1, :].astype(dtype)[0])
+            if all_by_layer is not None:
+                all_by_layer.append(hidden_states.astype(dtype)[0])
+
+        final_hidden = self.base_model.norm(hidden_states)
+        stacked_last = mx.stack(last_by_layer, axis=0)
+        stacked_all = mx.stack(all_by_layer, axis=0) if all_by_layer is not None else None
+        return {"last_by_layer": stacked_last, "all_by_layer": stacked_all}, final_hidden
+
     def _resolve_layer_index(self, layer_index: int | None) -> int | None:
         if layer_index is None:
             return None
@@ -227,3 +314,13 @@ def _cache_subset(cache: list[Any], indices: int | list[int]) -> Any:
     if isinstance(indices, int):
         return cache[indices]
     return [cache[index] for index in indices]
+
+
+def _storage_dtype(name: str) -> mx.Dtype:
+    if name == "bf16":
+        return mx.bfloat16
+    if name == "fp16":
+        return mx.float16
+    if name == "fp32":
+        return mx.float32
+    raise ValueError(f"Unsupported storage dtype: {name}")
