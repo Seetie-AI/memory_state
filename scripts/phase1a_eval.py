@@ -74,6 +74,16 @@ def parse_args() -> argparse.Namespace:
         "--hidden-state-model-path",
         default=str(ROOT / "models" / "Qwen3.5-2B-bf16"),
     )
+    parser.add_argument(
+        "--hidden-state-layer-index",
+        type=int,
+        default=None,
+        help=(
+            "Optional Python-style layer index for hidden_state. Omit to keep "
+            "the original final post-norm behavior; use -9 for the Qwen3.5-2B "
+            "1/e-from-end experiment."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -92,7 +102,10 @@ def make_retriever(args: argparse.Namespace) -> Retriever:
             max_length=args.qwen_embedding_max_length,
         )
     if args.method == "hidden_state":
-        return HiddenStateRetriever(model_path=args.hidden_state_model_path)
+        return HiddenStateRetriever(
+            model_path=args.hidden_state_model_path,
+            target_layer_index=args.hidden_state_layer_index,
+        )
     raise ValueError(f"Unsupported method: {args.method}")
 
 
@@ -144,6 +157,9 @@ def main() -> int:
         instances = instances[: args.subset]
 
     retriever = make_retriever(args)
+    hidden_state_metadata = {}
+    if args.method == "hidden_state":
+        hidden_state_metadata = retriever.layer_metadata()
     predictions = [
         run_instance(
             instance,
@@ -172,6 +188,7 @@ def main() -> int:
             "top_k": args.top_k,
             "bootstrap_samples": args.bootstrap_samples,
             "hidden_state_model_path": args.hidden_state_model_path,
+            **hidden_state_metadata,
         },
         "official_anchor": anchor,
         "metrics": metrics,
@@ -181,7 +198,10 @@ def main() -> int:
     result_dir = ROOT / "results"
     result_dir.mkdir(parents=True, exist_ok=True)
     subset_label = args.subset if args.subset and args.subset > 0 else "full"
-    output_path = result_dir / f"phase1a_{args.method}_{data_stem}_{args.granularity}_{subset_label}.json"
+    method_label = args.method
+    if args.method == "hidden_state" and args.hidden_state_layer_index is not None:
+        method_label = f"{args.method}_layer{args.hidden_state_layer_index}"
+    output_path = result_dir / f"phase1a_{method_label}_{data_stem}_{args.granularity}_{subset_label}.json"
     output_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
 
     metrics_by_name = metrics["metrics"]

@@ -17,6 +17,11 @@ the state after the model has already consumed its own generated token.
 Why no batching: the user asked to keep memory use ideally below 10GB. Single
 prompt forward passes are slower but keep Qwen3.5-2B fp16/bf16 peak memory
 predictable on a 16GB Mac.
+
+Why target_layer_index exists: the current follow-up tests layer selection, not
+MVP_Plan.md backburner pooling ideas such as sentinel-token pooling or mean
+pooling. The prompt position stays fixed; only the layer that supplies the
+prompt-final vector changes.
 """
 
 from __future__ import annotations
@@ -34,9 +39,17 @@ SUMMARY_PROMPT_SUFFIX = "\n请用一个词来summarize上面这段文字，这�
 class HiddenStateRetriever:
     """Retriever backed by Qwen3.5 prompt-final hidden states."""
 
-    def __init__(self, model_path: str | Path = "models/Qwen3.5-2B-bf16") -> None:
+    def __init__(
+        self,
+        model_path: str | Path = "models/Qwen3.5-2B-bf16",
+        target_layer_index: int | None = None,
+    ) -> None:
         self.model_path = str(model_path)
-        self.extractor = MLXHiddenStateExtractor(self.model_path)
+        self.target_layer_index = target_layer_index
+        self.extractor = MLXHiddenStateExtractor(
+            self.model_path,
+            target_layer_index=target_layer_index,
+        )
         self._doc_embeddings: np.ndarray | None = None
 
     def fit(self, corpus_texts: list[str]) -> "HiddenStateRetriever":
@@ -64,6 +77,9 @@ class HiddenStateRetriever:
         top_indices = np.argsort(scores)[::-1][:top_k]
         return [(int(index), float(scores[index])) for index in top_indices]
 
+    def layer_metadata(self) -> dict[str, int | str | None]:
+        return self.extractor.layer_metadata()
+
 
 def memory_prompt(text: str) -> str:
     return f"{text}{SUMMARY_PROMPT_SUFFIX}"
@@ -71,4 +87,3 @@ def memory_prompt(text: str) -> str:
 
 def query_prompt(query_text: str) -> str:
     return f"{query_text}{SUMMARY_PROMPT_SUFFIX}"
-
