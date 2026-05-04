@@ -22,6 +22,7 @@ from typing import Any
 
 Turn = dict[str, Any]
 Session = list[Turn]
+RoundCandidate = tuple[str, str, bool]
 
 
 @dataclass(frozen=True)
@@ -69,6 +70,41 @@ def session_text_full(session: Session) -> str:
     )
 
 
+def iter_round_candidates(instance: Instance) -> list[RoundCandidate]:
+    """Return official turn-level candidates as (round_id, text, is_gold).
+
+    Official LongMemEval `turn` granularity indexes user turns only. Candidate
+    IDs are the session ID plus the original 1-indexed turn position within the
+    full session list. Non-gold user turns inside answer sessions have
+    "answer" replaced with "noans" so `correct_docs` can still be derived by
+    checking whether the candidate ID contains "answer".
+    """
+    candidates: list[RoundCandidate] = []
+    for session_id, session in zip(
+        instance.haystack_session_ids,
+        instance.haystack_sessions,
+        strict=True,
+    ):
+        for turn_index, turn in enumerate(session):
+            if turn.get("role") != "user":
+                continue
+
+            candidate_id = f"{session_id}_{turn_index + 1}"
+            if "answer" in session_id:
+                if "has_answer" not in turn:
+                    raise ValueError(
+                        f"{instance.question_id} answer session {session_id} "
+                        f"user turn {turn_index + 1} lacks has_answer"
+                    )
+                if not bool(turn["has_answer"]):
+                    candidate_id = candidate_id.replace("answer", "noans")
+
+            is_gold = "answer" in candidate_id
+            candidates.append((candidate_id, str(turn.get("content", "")), is_gold))
+
+    return candidates
+
+
 def has_user_side_answer_label(instance: Instance) -> bool:
     """Match official retrieval reporting: require a user turn with has_answer."""
     for session in instance.haystack_sessions:
@@ -76,6 +112,11 @@ def has_user_side_answer_label(instance: Instance) -> bool:
             if turn.get("role") == "user" and bool(turn.get("has_answer", False)):
                 return True
     return False
+
+
+def has_round_side_answer_label(instance: Instance) -> bool:
+    """Official turn-level reporting still requires a user-side answer label."""
+    return has_user_side_answer_label(instance)
 
 
 def _parse_instance(item: dict[str, Any], source: Path, index: int) -> Instance:

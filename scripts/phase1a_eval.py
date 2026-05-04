@@ -32,16 +32,17 @@ from baselines.qwen_embedding import QwenEmbeddingRetriever
 from eval.longmemeval_metrics import Prediction, evaluate
 from longmemeval.data import (
     Instance,
+    has_round_side_answer_label,
     has_user_side_answer_label,
+    iter_round_candidates,
     load_instances,
     session_text_user_only,
 )
 
 
 OFFICIAL_ANCHORS = {
-    "bm25": {"recall_all@5": 0.634, "ndcg_any@5": 0.516},
-    "contriever": {"recall_all@5": 0.723, "ndcg_any@5": 0.634},
-    "qwen_embedding": None,
+    ("bm25", "session"): {"recall_all@5": 0.634, "ndcg_any@5": 0.516},
+    ("contriever", "session"): {"recall_all@5": 0.723, "ndcg_any@5": 0.634},
 }
 
 
@@ -58,7 +59,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--method", choices=["bm25", "contriever", "qwen_embedding"], required=True)
     parser.add_argument("--subset", type=int, default=100)
     parser.add_argument("--data", default=str(ROOT / "data" / "longmemeval_m_cleaned.json"))
-    parser.add_argument("--granularity", choices=["session"], default="session")
+    parser.add_argument("--granularity", choices=["session", "round"], default="session")
     parser.add_argument("--top-k", type=int, default=50)
     parser.add_argument("--bootstrap-samples", type=int, default=1000)
     parser.add_argument("--contriever-batch-size", type=int, default=16)
@@ -84,18 +85,45 @@ def make_retriever(args: argparse.Namespace) -> Retriever:
     raise ValueError(f"Unsupported method: {args.method}")
 
 
-def run_instance(instance: Instance, retriever: Retriever, top_k: int) -> Prediction:
-    corpus_ids = instance.haystack_session_ids
-    corpus_texts = [session_text_user_only(session) for session in instance.haystack_sessions]
+def run_instance(
+    instance: Instance,
+    retriever: Retriever,
+    top_k: int,
+    granularity: str,
+) -> Prediction:
+    if granularity == "session":
+        corpus_ids, corpus_texts, gold_ids, has_target = build_session_corpus(instance)
+    elif granularity == "round":
+        corpus_ids, corpus_texts, gold_ids, has_target = build_round_corpus(instance)
+    else:
+        raise ValueError(f"Unsupported granularity: {granularity}")
+
     ranking = retriever.fit(corpus_texts).query(instance.question, top_k=top_k)
     retrieved_ids = [corpus_ids[index] for index, _score in ranking]
     return Prediction(
         question_id=instance.question_id,
         retrieved_ids=retrieved_ids,
-        gold_ids=instance.answer_session_ids,
+        gold_ids=gold_ids,
         is_abstention=instance.is_abstention,
-        has_target=has_user_side_answer_label(instance),
+        has_target=has_target,
     )
+
+
+def build_session_corpus(instance: Instance) -> tuple[list[str], list[str], list[str], bool]:
+    corpus_ids = instance.haystack_session_ids
+    corpus_texts = [session_text_user_only(session) for session in instance.haystack_sessions]
+    gold_ids = instance.answer_session_ids
+    has_target = has_user_side_answer_label(instance)
+    return corpus_ids, corpus_texts, gold_ids, has_target
+
+
+def build_round_corpus(instance: Instance) -> tuple[list[str], list[str], list[str], bool]:
+    candidates = iter_round_candidates(instance)
+    corpus_ids = [candidate_id for candidate_id, _text, _is_gold in candidates]
+    corpus_texts = [text for _candidate_id, text, _is_gold in candidates]
+    gold_ids = [candidate_id for candidate_id, _text, is_gold in candidates if is_gold]
+    has_target = has_round_side_answer_label(instance)
+    return corpus_ids, corpus_texts, gold_ids, has_target
 
 
 def main() -> int:
@@ -106,13 +134,23 @@ def main() -> int:
 
     retriever = make_retriever(args)
     predictions = [
-        run_instance(instance, retriever=retriever, top_k=args.top_k) for instance in instances
+        run_instance(
+            instance,
+            retriever=retriever,
+            top_k=args.top_k,
+            granularity=args.granularity,
+        )
+        for instance in instances
     ]
     metrics = evaluate(
         predictions,
         skip_abstention=True,
         bootstrap_samples=args.bootstrap_samples,
     )
+    data_stem = Path(args.data).stem
+    anchor = OFFICIAL_ANCHORS.get((args.method, args.granularity))
+    if "longmemeval_m_cleaned" not in data_stem:
+        anchor = None
 
     output = {
         "config": {
@@ -123,7 +161,7 @@ def main() -> int:
             "top_k": args.top_k,
             "bootstrap_samples": args.bootstrap_samples,
         },
-        "official_anchor": OFFICIAL_ANCHORS[args.method],
+        "official_anchor": anchor,
         "metrics": metrics,
         "predictions": [asdict(prediction) for prediction in predictions],
     }
@@ -131,8 +169,7 @@ def main() -> int:
     result_dir = ROOT / "results"
     result_dir.mkdir(parents=True, exist_ok=True)
     subset_label = args.subset if args.subset and args.subset > 0 else "full"
-    data_stem = Path(args.data).stem
-    output_path = result_dir / f"phase1a_{args.method}_{data_stem}_{subset_label}.json"
+    output_path = result_dir / f"phase1a_{args.method}_{data_stem}_{args.granularity}_{subset_label}.json"
     output_path.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
 
     metrics_by_name = metrics["metrics"]
@@ -143,7 +180,6 @@ def main() -> int:
 
     print(f"method: {args.method}")
     print(f"scored: {metrics['n_scored']} / total: {metrics['n_total']}")
-    anchor = OFFICIAL_ANCHORS[args.method]
     if anchor is None:
         print(f"Recall@5: {recall5:.3f} (95% CI {recall5_ci['low']:.3f}-{recall5_ci['high']:.3f})")
         print(f"NDCG@5: {ndcg5:.3f} (95% CI {ndcg5_ci['low']:.3f}-{ndcg5_ci['high']:.3f})")
