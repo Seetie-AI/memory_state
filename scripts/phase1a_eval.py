@@ -38,6 +38,7 @@ from longmemeval.data import (
     load_instances,
     session_text_user_only,
 )
+from method.hidden_state import HiddenStateRetriever
 
 
 OFFICIAL_ANCHORS = {
@@ -56,7 +57,11 @@ class Retriever(Protocol):
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--method", choices=["bm25", "contriever", "qwen_embedding"], required=True)
+    parser.add_argument(
+        "--method",
+        choices=["bm25", "contriever", "qwen_embedding", "hidden_state"],
+        required=True,
+    )
     parser.add_argument("--subset", type=int, default=100)
     parser.add_argument("--data", default=str(ROOT / "data" / "longmemeval_m_cleaned.json"))
     parser.add_argument("--granularity", choices=["session", "round"], default="session")
@@ -65,6 +70,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--contriever-batch-size", type=int, default=16)
     parser.add_argument("--qwen-embedding-batch-size", type=int, default=4)
     parser.add_argument("--qwen-embedding-max-length", type=int, default=8192)
+    parser.add_argument(
+        "--hidden-state-model-path",
+        default=str(ROOT / "models" / "Qwen3.5-2B-bf16"),
+    )
     return parser.parse_args()
 
 
@@ -82,6 +91,8 @@ def make_retriever(args: argparse.Namespace) -> Retriever:
             batch_size=args.qwen_embedding_batch_size,
             max_length=args.qwen_embedding_max_length,
         )
+    if args.method == "hidden_state":
+        return HiddenStateRetriever(model_path=args.hidden_state_model_path)
     raise ValueError(f"Unsupported method: {args.method}")
 
 
@@ -160,6 +171,7 @@ def main() -> int:
             "granularity": args.granularity,
             "top_k": args.top_k,
             "bootstrap_samples": args.bootstrap_samples,
+            "hidden_state_model_path": args.hidden_state_model_path,
         },
         "official_anchor": anchor,
         "metrics": metrics,
