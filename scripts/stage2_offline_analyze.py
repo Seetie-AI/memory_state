@@ -84,6 +84,7 @@ def parse_args() -> argparse.Namespace:
         choices=[
             "anti_pca_sweep",
             "bm25_fusion_alpha_sweep",
+            "anti_pca_bm25_fusion_combo",
             "session_metrics",
             "cross_layer_top_summary",
             "all",
@@ -117,6 +118,16 @@ def main() -> int:
             bootstrap_samples=args.bootstrap_samples,
         ),
         "bm25_fusion_alpha_sweep": lambda: bm25_fusion_alpha_sweep(
+            dump_dir,
+            manifest,
+            records,
+            variant=args.variant,
+            layer=args.layer,
+            position=args.position,
+            top_k=args.top_k,
+            bootstrap_samples=args.bootstrap_samples,
+        ),
+        "anti_pca_bm25_fusion_combo": lambda: anti_pca_bm25_fusion_combo(
             dump_dir,
             manifest,
             records,
@@ -426,6 +437,54 @@ def bm25_fusion_alpha_sweep(
         "analysis": "bm25_fusion_alpha_sweep",
         "base_vector": {"variant": variant, "layer": layer, "position": position},
         "note": "alpha=1.0 is hidden-only order restricted to the hidden top-50; alpha=0.0 is BM25 rerank inside hidden top-50, not global BM25.",
+        "configs": configs,
+        "top_configs": top_metric_rows(configs),
+    }
+
+
+def anti_pca_bm25_fusion_combo(
+    dump_dir: Path,
+    manifest: dict[str, Any],
+    records: list[Stage2Record],
+    *,
+    variant: str,
+    layer: int,
+    position: str,
+    top_k: int,
+    bootstrap_samples: int,
+) -> dict[str, Any]:
+    """Fuse BM25 with the best 9B anti-PCA hidden score.
+
+    This is intentionally a late-stage combination experiment, not a new base
+    direction: Stage 2 already established layer30/last anti-PCA both k=15 as
+    the best hidden-only 9B configuration, and Stage 1/2 showed BM25 fusion can
+    add lexical precision. We report the full alpha curve so the result is not
+    cherry-picked.
+    """
+    vectors = load_vector_matrix(dump_dir, manifest, records, variant=variant, layer=layer, position=position)
+    mean, pcs = global_anti_pca(records, vectors, max_components=15)
+    scored = scored_predictions_from_vectors(
+        records,
+        vectors,
+        top_k=top_k,
+        score_fn=lambda query, candidates: anti_pca_scores(
+            query,
+            candidates,
+            mean=mean,
+            pcs=pcs[:15],
+            mode="both",
+        ),
+    )
+    configs: dict[str, Any] = {}
+    for alpha in [0.0, 0.25, 0.5, 0.75, 1.0]:
+        name = f"{variant}|layer{layer}|{position}|anti_pca_both_k15_bm25_fusion_alpha{alpha:g}"
+        predictions = [fuse_hidden_bm25(item, alpha=alpha) for item in scored]
+        configs[name] = evaluate(predictions, skip_abstention=True, bootstrap_samples=bootstrap_samples)
+    return {
+        "analysis": "anti_pca_bm25_fusion_combo",
+        "base_vector": {"variant": variant, "layer": layer, "position": position},
+        "hidden_config": "anti_pca_both_k15",
+        "note": "alpha=1.0 should match the hidden-only anti-PCA k=15 ranking; alpha=0.0 is BM25 rerank inside the anti-PCA hidden top-50.",
         "configs": configs,
         "top_configs": top_metric_rows(configs),
     }
