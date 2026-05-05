@@ -2,7 +2,7 @@
 
 ## TL;DR
 
-- Stage 2 no longer uses full tensor dumps. It uses **online evaluation**: stream one LongMemEval instance at a time, compute retrieval metrics, write small JSON outputs, then release vectors and KV cache.
+- Stage 2 no longer uses full Tier B-style tensor dumps. It uses **online evaluation plus compact vector storage**: stream one LongMemEval instance at a time, compute retrieval metrics, write JSON outputs, retain suffix/end Tier A-plus vectors, then release KV cache.
 - Main upgrades: 2B 4-bit validation, prompt-template sweep, KV-cache reuse for suffix variants, and conditional Qwen3.5-9B-4bit scale-up.
 - Stage 1 best practices carry forward: suffix-end vectors, late-layer scan, centered cosine / anti-PCA, query-only transform checks, and optional BM25 fusion.
 
@@ -55,13 +55,59 @@ Why it changed:
 - User wants to avoid another large dump.
 - Stage 1 taught us which positions and layer ranges matter.
 - Prompt variants share the same candidate prefix, so KV-cache reuse can avoid recomputing long prefixes.
-- Metrics JSON is sufficient for Stage 2 decisions; intermediate tensors are not required.
+- Full all-position tensors are not required for Stage 2 decisions, but compact suffix/end vectors are worth keeping because they are small enough and save future reruns.
 
 Do not execute dump-based prompt sweeps unless online evaluation fails and human explicitly approves a fallback.
 
 ## Storage Budget
 
-Target practical free-space budget: about 30GB after deleting Tier B.
+Target practical free-space budget: about 30GB after deleting Tier B. Stage 2 should not recreate Tier B-style all-position dumps, but it should keep compact Tier A-plus vectors so future analysis does not require rerunning the model.
+
+### Stored Vector Policy
+
+Store compact suffix/end vectors with this tensor layout:
+
+```text
+states: (n_prompts, n_layers, n_positions, hidden_dim) bf16
+```
+
+Positions to store:
+
+| Position | Reason |
+|---|---|
+| `last` | Stage 1 robust default |
+| `minus2` | Tier B showed possible R@5 edge |
+| `minus3` | Cheap suffix-end continuity check |
+| `suffix_start` | Prompt-template diagnostic |
+| `content_end` | Negative control / no-suffix comparison |
+
+Layer policy:
+
+| Model / step | Layers to store | Reason |
+|---|---|---|
+| 2B Step 2 prompt sweep | all 24 layers | Cheap enough; prompt changes may move sweet spot |
+| 2B Step 3 winning prompt 100-subset | all 24 layers | Long-term comparison artifact |
+| 9B Step 4 30-subset layer scan | all 32 layers | Needed to find 9B-specific sweet spot |
+| 9B Step 5 100-subset confirmation | selected late/useful layers only | Avoid 30GB+ output |
+
+### Long-Term vs Temporary Dumps
+
+Long-term keep:
+
+| Artifact | Estimated size | Note |
+|---|---:|---|
+| Existing Stage 1 Tier A | ~2.4GB | Comparison anchor |
+| 2B Step 3 winning prompt 100-subset | ~3.5GB | All layers × 5 positions |
+| 9B Step 5 100-subset selected-layer dump | ~10GB | Selected late/useful layers |
+
+Temporary / auto-cleanable after approval:
+
+| Artifact | Estimated size | Cleanup rule |
+|---|---:|---|
+| 2B Step 2 prompt sweep, 30-subset, 4 prompts | ~14GB | Ask approval to delete after Step 3 succeeds |
+| 9B Step 4 30-subset full-layer scan | ~10GB | Ask approval to delete after Step 5 succeeds |
+
+Storage table:
 
 | Asset / output | Estimated size | Keep during Stage 2? | Note |
 |---|---:|---|---|
@@ -70,16 +116,49 @@ Target practical free-space budget: about 30GB after deleting Tier B.
 | Qwen3.5-2B bf16 | ~4.5GB | Yes | Anchor model |
 | Qwen3.5-2B 4bit | ~1.6-1.8GB | Yes, if sanity passes | Download into `models/` |
 | Qwen3.5-9B 4bit | ~6GB | Yes | Already in `models/` |
+| Stage 2 compact vector chunks | varies | Yes / temp by rule above | Chunked safetensors |
 | Stage 2 metrics JSON | <100KB/run | Yes | Gitignored results + summarized in log |
-| Stage 2 prediction JSON | Usually <10MB/run | Yes | No tensor dumps |
-| Per-instance working vectors | RAM only | No | Released after each instance |
+| Stage 2 prediction JSON | Usually <10MB/run | Yes | For metric recomputation |
 
 Storage rules:
 
 - Delete only `tensors/dump_v1/tier_b/`; preserve Tier A, `manifest.json`, results, and notes.
-- Do not store full hidden tensors during Stage 2.
-- Do not keep per-candidate vectors after metrics are computed unless debugging requires a short-lived temp file.
-- Every stage writes a small metrics JSON and appends a compact summary to `notes/results_log.md`.
+- Do not store full all-position tensors during Stage 2.
+- Store compact Stage 2 vectors in chunked safetensors under `tensors/stage2/`.
+- Chunk target size: about `512MB`, with dynamic prompt count per chunk.
+- Metrics/predictions JSON are still required for every run.
+- Before each run, estimate output size and current free space. If projected free space after completion is `<20GB`, stop and request approval.
+- Step 3 success should trigger a human approval checkpoint to delete Step 2 temporary dumps.
+- Step 5 success should trigger a human approval checkpoint to delete Step 4 temporary dumps.
+
+Manifest schema for each Stage 2 vector set:
+
+```json
+{
+  "created_utc": "...",
+  "git_commit": "...",
+  "model_path": "...",
+  "tokenizer_path": "...",
+  "prompt_variant": "P0|P1|P4|P5",
+  "positions": ["last", "minus2", "minus3", "suffix_start", "content_end"],
+  "layers": [0, 1, "..."],
+  "score_modes_evaluated": ["cosine", "centered_cosine", "anti_pca_k10", "query_only_anti_pca_k10"],
+  "chunks": [{"file": "chunk_0000.safetensors", "prompt_ids": ["..."]}],
+  "prompts": {
+    "prompt_id": {
+      "instance_index": 0,
+      "question_id": "...",
+      "role": "query|candidate",
+      "candidate_id": "...",
+      "is_gold": false,
+      "token_count": 0,
+      "resolved_positions": {"last": -1},
+      "chunk_file": "chunk_0000.safetensors",
+      "chunk_index": 0
+    }
+  }
+}
+```
 
 ## Execution Order
 
@@ -204,7 +283,9 @@ for instance:
         use prefix-final vector for P1 no-suffix
     encode query variants the same way
     compute rankings and metrics
-    release vectors and cache
+    append compact vectors to chunk buffers
+    flush chunks as needed
+    release KV cache
 ```
 
 For each prompt variant:
@@ -223,6 +304,7 @@ Output:
 - Prompt comparison table on 30 instances.
 - Best prompt candidate(s) for 100-instance confirmation.
 - Small JSON per run.
+- Temporary compact vector chunks for all prompt variants.
 
 Go/No-Go:
 
@@ -249,12 +331,14 @@ Action:
 
 - Run online evaluation for best prompt and P0 on the same 100-instance Stage 1 subset.
 - Evaluate the same late-layer / suffix-position / score-mode grid used in Step 2.
-- Do not save intermediate tensors.
+- Save compact suffix/end vectors for the winning prompt as a long-term reusable artifact.
+- Do not save full all-position tensors.
 
 Output:
 
 - Confirmed 2B prompt result.
 - Decision: update default prompt or keep P0.
+- Long-term compact vector chunks for the winning prompt.
 
 Go/No-Go:
 
@@ -299,6 +383,7 @@ Output:
 - 9B compatibility note.
 - 9B subset sweet-spot layer / position / score mode.
 - Metrics JSON.
+- Temporary compact vector chunks for layer/position analysis.
 
 Go/No-Go:
 
@@ -336,6 +421,7 @@ Action:
 Output:
 
 - Final Stage 2 9B comparison.
+- Long-term compact vector chunks for selected 9B layers.
 
 Go/No-Go:
 
@@ -416,7 +502,7 @@ Do not repeat mean/max pooling, layer concat, RRF, z-score, whitening, or diagon
 
 ## Online Evaluator Design
 
-The Stage 2 implementation should be a new online evaluator, not a tensor dumper.
+The Stage 2 implementation should be a new online evaluator with a compact vector writer. It is **not** a Tier B-style full tensor dumper: it stores only suffix/end vectors for selected layers and positions.
 
 Suggested modules:
 
@@ -428,11 +514,19 @@ Suggested modules:
   - loads data;
   - streams instance by instance;
   - writes predictions/metrics JSON;
-  - never stores full hidden tensors.
+  - appends compact suffix/end vectors to chunked safetensors;
+  - never stores all-position hidden tensors.
+- `src/stage2/vector_store.py`
+  - `Stage2VectorWriter`
+  - buffers `states: (n_prompts, n_layers, n_positions, hidden_dim)` in bf16;
+  - flushes dynamic chunks near the `512MB` target;
+  - writes manifest rows with tokenizer path, score modes, timestamp, and git commit.
 
 Correctness invariant:
 
 - Cached suffix vectors must match full-forward vectors before any metrics are trusted.
+- The vector writer manifest row count must match the number of rows in written `states` chunks.
+- Compact vector storage is a reusable artifact; retrieval metrics must be reproducible from the prediction JSON even if temporary vector chunks are later deleted.
 
 ## Memory Budget
 
@@ -443,6 +537,7 @@ Expected contributors:
 - 9B-4bit weights: about `6GB`.
 - One prefix cache: candidate-length dependent, expected tens to a few hundred MB.
 - One instance vectors: a few MB to tens of MB.
+- One vector chunk buffer: target `<=512MB`; lower to `256MB` if 9B memory pressure appears.
 - Python/MLX overhead: leave 2GB margin.
 
 Runtime rules:
@@ -450,6 +545,7 @@ Runtime rules:
 - One MLX model-forward process at a time.
 - No background diagnostic jobs while model inference is running.
 - Clear MLX cache between large runs.
+- Check projected disk free space before each run; stop before starting if completion would leave `<20GB` free.
 - If memory exceeds 10GB or swap pressure appears, stop and reduce subset size.
 
 ## Go/No-Go Criteria Summary
@@ -477,7 +573,7 @@ Runtime rules:
 | 100-instance prompt tuning overfits | Explore on 30, confirm on 100 |
 | 9B slower or memory-heavy | Start with 30 subset; require approval before 100 |
 | 4-bit weights change hidden geometry | Require 2B bf16-vs-4bit sanity |
-| Disk fills again | No full dumps; write metrics/predictions only |
+| Disk fills again | No full dumps; compact vector chunks only; require projected free space >=20GB |
 
 ## Backburner / Not in Stage 2
 
