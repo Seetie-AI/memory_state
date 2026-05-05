@@ -76,6 +76,7 @@ TIER_B_EXTRA_ANALYSES = [
     "content_end_position_scan",
     "position_debiased_retrieval",
     "layer_scan_at_content_end",
+    "layer_to_layer_drift_anchor_scan",
 ]
 
 
@@ -199,6 +200,8 @@ def main() -> int:
         result = position_debiased_retrieval(dump_dir, manifest)
     elif args.analysis == "layer_scan_at_content_end":
         result = layer_scan_at_content_end(dump_dir, manifest)
+    elif args.analysis == "layer_to_layer_drift_anchor_scan":
+        result = layer_to_layer_drift_anchor_scan(dump_dir, manifest)
     else:
         raise ValueError(f"Unsupported analysis: {args.analysis}")
 
@@ -1007,6 +1010,113 @@ def layer_scan_at_content_end(dump_dir: Path, manifest: dict[str, Any]) -> dict[
     return output
 
 
+def layer_to_layer_drift_anchor_scan(dump_dir: Path, manifest: dict[str, Any]) -> dict[str, Any]:
+    """Tier B extra: use layer-to-layer drift as a hidden-state anchor signal.
+
+    Why: after TB Round 1, the remaining question is whether the useful
+    last/minus2 positions have a distinctive "surprise" trajectory across
+    transformer layers. This is the hidden-state proxy for attention/rank
+    surprise methods such as adaptive layer selection: compute
+    1 - cosine(h_l, h_{l+1}) per position, then compare drift curves.
+    """
+    suffix_len = suffix_token_count()
+    positions = ["content_end", "suffix_start", "-5", "-3", "minus2", "last"]
+    layers = list(range(24))
+    layer_pairs = [f"{layer}->{layer + 1}" for layer in range(23)]
+    valid_prompt_ids = valid_tier_b_prompt_ids(manifest, positions, suffix_len)
+    eligible_records = [
+        record
+        for record in tier_b_records(manifest)
+        if str(record["prompt_id"]) in valid_prompt_ids
+    ]
+
+    roles = ["all", "query", "candidate"]
+    sums = {
+        role: {position: np.zeros(23, dtype=np.float64) for position in positions}
+        for role in roles
+    }
+    counts = {role: {position: 0 for position in positions} for role in roles}
+
+    loaded = 0
+    for record in eligible_records:
+        resolved = {
+            position: resolve_tier_b_position(record_sequence_length(record), position, suffix_len)
+            for position in positions
+        }
+        if any(value is None for value in resolved.values()):
+            continue
+        pairs = [
+            (layer, int(position_index))
+            for position_index in resolved.values()
+            if position_index is not None
+            for layer in layers
+        ]
+        try:
+            slices = load_tier_b_multi_slice(dump_dir, record, pairs)
+        except IndexError:
+            continue
+
+        record_role = "query" if record["role"] == "query" else "candidate"
+        for position, position_index in resolved.items():
+            if position_index is None:
+                continue
+            stacked = np.stack(
+                [slices[(layer, int(position_index))] for layer in layers],
+                axis=0,
+            )
+            drift = layer_drift_curve(stacked)
+            for role in ["all", record_role]:
+                sums[role][position] += drift
+                counts[role][position] += 1
+        loaded += 1
+        if loaded % 50 == 0:
+            del slices
+            clear_mlx_memory()
+
+    if loaded == 0:
+        raise ValueError("No Tier B prompts were valid for layer_to_layer_drift_anchor_scan.")
+
+    per_position_drift = {
+        position: average_drift_curve(sums["all"][position], counts["all"][position])
+        for position in positions
+    }
+    per_role_drift = {
+        role: {
+            position: average_drift_curve(sums[role][position], counts[role][position])
+            for position in positions
+        }
+        for role in ["query", "candidate"]
+    }
+    interpretation_helper = {
+        "role_pooled": {
+            position: summarize_drift_curve(np.asarray(curve, dtype=np.float64))
+            for position, curve in per_position_drift.items()
+        },
+        "by_role": {
+            role: {
+                position: summarize_drift_curve(np.asarray(curve, dtype=np.float64))
+                for position, curve in curves.items()
+            }
+            for role, curves in per_role_drift.items()
+        },
+    }
+    clear_mlx_memory()
+    return {
+        "disclaimer": tier_b_disclaimer(),
+        "memory_plan": tier_b_memory_plan(),
+        "valid_prompt_count": len(valid_prompt_ids),
+        "loaded_prompt_count": loaded,
+        "skipped_prompt_count": len(eligible_records) - loaded,
+        "positions": positions,
+        "layer_pairs": layer_pairs,
+        "drift_definition": "1 - cosine(h_layer_i, h_layer_i+1)",
+        "role_counts": counts,
+        "per_position_drift": per_position_drift,
+        "per_role_drift": per_role_drift,
+        "interpretation_helper": interpretation_helper,
+    }
+
+
 def position_scan_within_layer(
     dump_dir: Path,
     manifest: dict[str, Any],
@@ -1538,6 +1648,9 @@ def resolve_tier_b_position(seq_len: int, position: str, suffix_len: int) -> int
         return seq_len - 1
     if position == "minus2":
         return seq_len - 2 if seq_len >= 2 else None
+    if position.startswith("-") and position[1:].isdigit():
+        resolved = seq_len + int(position)
+        return resolved if 0 <= resolved < seq_len else None
     suffix_start = seq_len - suffix_len
     if position == "suffix_start":
         return suffix_start if 0 <= suffix_start < seq_len else None
@@ -2649,6 +2762,38 @@ def pairwise_cosines(vectors: np.ndarray) -> np.ndarray:
     matrix = normalized @ normalized.T
     upper = np.triu_indices(matrix.shape[0], k=1)
     return matrix[upper]
+
+
+def layer_drift_curve(layer_vectors: np.ndarray) -> np.ndarray:
+    """Return 1 - cosine between consecutive layer vectors."""
+    normalized = normalize(layer_vectors.astype(np.float32))
+    adjacent_cosines = np.sum(normalized[:-1] * normalized[1:], axis=-1)
+    return (1.0 - adjacent_cosines).astype(np.float64, copy=False)
+
+
+def average_drift_curve(total: np.ndarray, count: int) -> list[float]:
+    if count <= 0:
+        return [float("nan")] * int(total.shape[0])
+    return (total / float(count)).astype(np.float64, copy=False).tolist()
+
+
+def summarize_drift_curve(curve: np.ndarray) -> dict[str, Any]:
+    if curve.size == 0 or np.all(np.isnan(curve)):
+        return {
+            "early_layer_avg_drift": float("nan"),
+            "mid_layer_avg_drift": float("nan"),
+            "late_layer_avg_drift": float("nan"),
+            "max_drift_layer_pair": None,
+            "max_drift": float("nan"),
+        }
+    max_index = int(np.nanargmax(curve))
+    return {
+        "early_layer_avg_drift": float(np.nanmean(curve[0:8])),
+        "mid_layer_avg_drift": float(np.nanmean(curve[8:16])),
+        "late_layer_avg_drift": float(np.nanmean(curve[16:23])),
+        "max_drift_layer_pair": [max_index, max_index + 1],
+        "max_drift": float(curve[max_index]),
+    }
 
 
 def summarize_array(values: np.ndarray) -> dict[str, float]:

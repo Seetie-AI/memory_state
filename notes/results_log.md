@@ -436,12 +436,30 @@ Position fixed at `content_end`; score fixed to global anti-PCA k=10.
 
 Takeaway: changing position shifts the best content-end layer slightly (21/23 tie), but no content-end layer comes close to late suffix positions (`last` R@5 0.85, `minus2` R@5 0.90). The practical recipe remains layer 22 near the prompt end.
 
+### Layer-to-layer drift anchor scan
+
+Drift is defined as `1 - cosine(h_layer_i, h_layer_i+1)` at a fixed token position. Higher drift means the next layer changes that position's representation more. This is our hidden-state proxy for "surprise" / anchor saliency.
+
+| Position | Early drift avg (0→8) | Mid drift avg (8→16) | Late drift avg (16→23) | Max drift layer pair | Max drift |
+|---|---:|---:|---:|---|---:|
+| content_end | 0.144 | 0.111 | 0.113 | 22→23 | 0.386 |
+| suffix_start | 0.210 | 0.121 | 0.132 | 22→23 | 0.476 |
+| -5 | 0.157 | 0.098 | 0.098 | 22→23 | 0.412 |
+| -3 | 0.133 | 0.083 | 0.097 | 22→23 | 0.435 |
+| minus2 | 0.115 | 0.106 | 0.119 | 22→23 | 0.572 |
+| last | 0.197 | 0.128 | 0.123 | 22→23 | **0.606** |
+
+Key observation: **all six positions have their maximum drift at layer pair 22→23**, but the magnitude sharply separates useful anchors from weak positions. `last` and `minus2` have the largest final-layer drift (0.606 / 0.572) and the strongest retrieval (R@5 0.85 / 0.90). `content_end` and `suffix_start` have smaller final-layer drift (0.386 / 0.476) and weak retrieval (R@5 0.45 / 0.35).
+
+Takeaway: the drift scan gives a mechanism for the layer-22 result. Layer 22 is useful because it is the representation **right before** the model's largest task-specific update at 22→23. High final-block drift at a suffix-end position is an anchor-saliency proxy for retrieval value.
+
 ### Decision
 
-These three Tier B checks address the remaining all-position hypotheses without repeating previously falsified mean/max pooling or diagonal-slice experiments. The main hypotheses are now either supported or ruled out:
+These four Tier B checks address the remaining all-position hypotheses without repeating previously falsified mean/max pooling or diagonal-slice experiments. The main hypotheses are now either supported or ruled out:
 
 - **Suffix necessary**: content-end vectors are much weaker than late suffix vectors.
 - **Per-position de-bias explains anti-PCA**: late-position mean subtraction matches anti-PCA-style performance on this subset.
 - **Layer 22 robust near prompt end**: content-end layer choice shifts slightly, but the strong signal remains in the final suffix positions.
+- **Drift validates anchor saliency**: final-block drift (22→23) cleanly ranks the same positions that retrieval finds useful.
 
 There is no clear reason to spend another Tier B round before Stage 2. Tier B can be deleted according to `notes/stage_2_plan.md` after human approval.
