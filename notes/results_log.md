@@ -463,3 +463,148 @@ These four Tier B checks address the remaining all-position hypotheses without r
 - **Drift validates anchor saliency**: final-block drift (22→23) cleanly ranks the same positions that retrieval finds useful.
 
 There is no clear reason to spend another Tier B round before Stage 2. Tier B can be deleted according to `notes/stage_2_plan.md` after human approval.
+
+## Stage 2 (post-Tier-B-cleanup)
+
+### Setup
+
+Stage 2 changed from large tensor dumps to online evaluation plus compact vector
+storage. Tier B was deleted; compact suffix-end vectors were saved under
+`tensors/stage2/` for later offline analysis.
+
+Core recipe carried forward from Stage 1:
+
+- Use the original P0 suffix: `\n请用一个词来summarize上面这段文字，这个词是：“`
+- Focus on suffix-end vectors, especially `last`
+- Evaluate late layers, not final post-norm only
+- Use centered cosine / anti-PCA-style geometry correction
+- Run models serially to avoid Mac memory/GPU contention
+
+### Step-by-step findings
+
+| Step | Run | Key result | Decision |
+|---|---|---:|---|
+| 1 | 2B bf16 vs 2B 4-bit sanity | hidden cosine mean 0.981, min 0.979 | 4-bit acceptable, but geometry shifts |
+| 1.5 | KV-cache correctness smoke | bf16 mean 0.999957 / 4-bit mean 0.999843 | cached suffix reuse is valid |
+| 2 | 2B-4bit prompt sweep, 30 instances | P0 layer22 last centered R@5 0.833 | keep original P0 suffix |
+| 3 | 2B-4bit P0 confirm, 100 instances | layer21/22 last centered R@5 0.596, NDCG@5 0.547 | 4-bit costs ~4pp vs Stage 1 bf16 |
+| 4 | 9B-4bit layer scan, 30 instances | layer30 last centered R@5 0.833, NDCG@5 0.672 | 9B sweet spot is layer30/32 |
+| 5 | 9B-4bit P0 confirm, 100 instances | layer30 last centered R@5 0.691, NDCG@5 0.689 | 9B gives real scale gain over 2B-4bit |
+
+### 9B online top configs
+
+On the same 100-instance / 94-scored LongMemEval-S/round subset:
+
+| Config | R@5 | NDCG@5 | Note |
+|---|---:|---:|---|
+| P0 layer30 last centered cosine | **0.691** | **0.689** | Best online 9B config |
+| P0 layer29 last centered cosine | 0.681 | 0.683 | Nearly tied |
+| P0 layer28 last centered cosine | 0.638 | 0.665 | Earlier late layer |
+| P0 layer30 last cosine | 0.606 | 0.630 | Centering adds ~8.5pp |
+| P0 layer30 minus2 centered cosine | 0.553 | 0.547 | `minus2` weaker at 9B scale |
+
+Takeaway: Stage 2 resolves the Tier B ambiguity about `last` vs `minus2`.
+`minus2` looked slightly better on the 20-instance Tier B subset, but 9B on
+94 scored questions clearly prefers `last`.
+
+### Offline analysis over saved 9B vectors
+
+These analyses did not rerun the model. They read compact vectors from
+`tensors/stage2/9b_4bit_100_p0/`.
+
+#### Anti-PCA sweep
+
+| Config | R@5 | NDCG@5 | Note |
+|---|---:|---:|---|
+| P0 layer30 last anti-PCA both k=15 | **0.755** | **0.779** | Best 9B hidden-only |
+| P0 layer30 last query-only anti-PCA k=2 | **0.755** | 0.754 | Deployment-friendly; same R@5 |
+| P0 layer30 last anti-PCA both k=5 | 0.745 | 0.768 | Strong |
+| P0 layer30 last anti-PCA both k=20 | 0.734 | **0.779** | Highest NDCG, lower R@5 |
+| P0 layer30 last anti-PCA both k=10 | 0.723 | 0.760 | Stage 1-style k=10 not optimal for 9B |
+
+Takeaway: 9B needs a different anti-PCA strength than 2B. Both-sided k=15 is
+best by R@5/NDCG, while query-only k=2 matches R@5 with cheaper deployment.
+
+#### BM25 fusion alpha sweep
+
+Fusion is applied inside the hidden-state top-50 shortlist.
+
+| Config | R@5 | NDCG@5 |
+|---|---:|---:|
+| centered cosine + BM25 fusion α=0.5 | **0.745** | **0.753** |
+| centered cosine + BM25 fusion α=0.75 | 0.734 | 0.731 |
+| centered cosine only (α=1.0) | 0.691 | 0.689 |
+| BM25 rerank inside hidden top-50 (α=0.0) | 0.606 | 0.551 |
+
+Takeaway: BM25 remains complementary, but anti-PCA alone is now slightly
+stronger than centered-cosine+BM25 fusion. The 9B hidden vector already carries
+more lexical/semantic precision than the 2B setup.
+
+#### Session metrics for 9B centered cosine
+
+| Metric | Value |
+|---|---:|
+| turn recall_all@5 | 0.691 |
+| turn ndcg_any@5 | 0.689 |
+| session_hit@5 | **0.968** |
+| session_recall_all@5 | 0.787 |
+| MRR | 0.719 |
+
+First gold hit distribution: 55/94 questions have a gold at rank 1; 84/94 have
+a gold in top 5; only 1/94 has no gold in top 50.
+
+Takeaway: the "strong session router" framing survives the 9B upgrade.
+
+### Cross-stage comparison
+
+| Method | R@5 | NDCG@5 | session_hit@5 | Notes |
+|---|---:|---:|---:|---|
+| BM25 baseline | 0.585 | 0.547 | 0.862 | Lexical baseline |
+| Stage 1 2B-bf16 final post-norm cosine | 0.479 | 0.450 | — | Original negative result |
+| Stage 1 2B-bf16 layer22 anti-PCA k=10 | 0.681 | ~0.55 | 0.947 | Best hidden-only before Stage 2 |
+| Stage 1 2B-bf16 + BM25 fusion | 0.713 | — | — | Best Stage 1 overall |
+| Stage 2 2B-4bit layer21/22 centered | 0.596 | 0.547 | — | Quantization hurts |
+| Stage 2 9B-4bit layer30 centered | 0.691 | 0.689 | **0.968** | Scale recovers and improves ranking |
+| Stage 2 9B-4bit + BM25 fusion α=0.5 | 0.745 | 0.753 | — | Strong, but below anti-PCA |
+| **Stage 2 9B-4bit anti-PCA both k=15** | **0.755** | **0.779** | — | Best hidden-only result |
+| Qwen3-Embedding-0.6B baseline | 0.766 | 0.809 | 0.989 | Dedicated embedding model |
+
+### Headline takeaway
+
+Stage 2 changes the headline result:
+
+> Qwen3.5-9B-4bit layer30 prompt-final hidden state + anti-PCA reaches
+> **R@5 = 0.755**, only **1.1pp below Qwen3-Embedding-0.6B** on the same
+> 94-scored LongMemEval-S/round subset.
+
+This is no longer merely "better than BM25." It is close to a dedicated modern
+embedding model while reusing the LLM's own inference-time hidden states.
+
+### Mechanism recap
+
+The structural pattern stayed stable across model scale:
+
+- 2B best layer: layer22/24 = 91.7% depth
+- 9B best layer: layer30/32 = 93.75% depth
+- Best position: `last`, the suffix-end prompt position
+- Best geometry family: centered cosine / anti-PCA, i.e. removing shared
+  prompt/corpus directions
+
+This supports the Stage 1 mechanism: the useful vector is the late-layer
+suffix-end state right before the model's final task-specific update.
+
+### Remaining obvious micro-experiment
+
+It is worth running one small additional offline analysis:
+
+**anti-PCA + BM25 fusion** on the saved 9B vectors.
+
+Reason:
+
+- anti-PCA both k=15: R@5 0.755
+- BM25 fusion α=0.5 over centered cosine: R@5 0.745
+- Stage 1 showed BM25 fusion can be complementary to hidden-state geometry
+
+This is trivial offline compute and may push 9B hidden-state retrieval to parity
+or near-parity with Qwen3-Embedding (0.766). It should be reported as a
+post-hoc combination sweep with the full alpha curve, not cherry-picked.
