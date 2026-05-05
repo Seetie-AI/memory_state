@@ -2,45 +2,84 @@
 
 ## TL;DR
 
-- Stage 2 tests three research-facing upgrades: 4-bit model viability, prompt-template sensitivity, and a conditional 9B-4bit scale-up.
-- Model-forward work must run serially on the 16GB Mac; do not run two MLX jobs at once.
-- Prompt sweeps must dump all-layer last-token Tier A tensors, because changing the suffix may move the best layer away from layer 22.
+- Stage 2 no longer uses full tensor dumps. It uses **online evaluation**: stream one LongMemEval instance at a time, compute retrieval metrics, write small JSON outputs, then release vectors and KV cache.
+- Main upgrades: 2B 4-bit validation, prompt-template sweep, KV-cache reuse for suffix variants, and conditional Qwen3.5-9B-4bit scale-up.
+- Stage 1 best practices carry forward: suffix-end vectors, late-layer scan, centered cosine / anti-PCA, query-only transform checks, and optional BM25 fusion.
 
 ## Current Assets
 
-- `MVP_Plan.md`: original v0 plan.
-- `notes/results_log.md`: compact record of Stage 1 / Phase 2-deep findings.
-- `tensors/dump_v1/tier_a/`: 2B bf16 Tier A dump, 100 LongMemEval-S/round instances, all-layer last-token vectors.
-- `tensors/dump_v1/tier_b/`: Tier B all-position dump, about 29GB. It is useful historically but mostly redundant after the position/pooling analyses.
+- `notes/results_log.md`: compact record of Stage 1 / Phase 2-deep / Tier B findings.
+- `notes/stage_2_plan.md`: this online-eval Stage 2 plan.
+- `scripts/analyze_hidden_states.py`: archived Stage 1 analysis code, including Tier B lean/multi-slice helpers.
+- `tensors/dump_v1/tier_a/`: Stage 1 2B bf16 Tier A dump, retained as comparison anchor.
+- `tensors/dump_v1/tier_b/`: Stage 1 all-position dump, approved for deletion after this plan review.
 - `results/`: full generated JSON/markdown analysis outputs, gitignored.
-- `models/Qwen3.5-2B-bf16/`: current main MLX model.
+- `models/Qwen3.5-2B-bf16/`: Stage 1 anchor model.
+- `models/Qwen3.5-9B-MLX-4bit/`: user-provided 9B 4-bit MLX model.
 
-Stage 1 conclusion to preserve:
+Stage 1 conclusions to preserve:
 
 - Best hidden-only turn R@5: about `0.681`.
 - Best fusion turn R@5: about `0.713`.
 - Best hidden-only session_hit@5: about `0.947`.
-- The method is best framed as a strong session-level memory router with weaker turn-level disambiguation.
+- Method is best framed as a strong session-level memory router with weaker turn-level turn disambiguation.
+- Useful hidden states are suffix-end / prompt-final vectors; content positions are weak.
+- Layer 22 for 2B is useful because it sits before the largest final-block drift at 22->23.
+
+## Verified 9B Model Facts
+
+Verified from local `models/Qwen3.5-9B-MLX-4bit/config.json` and the public Qwen config:
+
+- `num_hidden_layers`: `32`
+- `hidden_size`: `4096`
+- `full_attention_interval`: `4`
+- layer pattern: hybrid Qwen3.5 text model, with three `linear_attention` layers followed by one `full_attention` layer repeatedly.
+- `model_type`: `qwen3_5_text` inside `text_config`.
+
+Implication:
+
+- Do **not** assume 2B layer 22 transfers directly.
+- Use 2B priors only as scan anchors:
+  - 75% layer prior: around layer `24` of 32.
+  - 92% layer prior: around layer `29` of 32.
+  - last-8 scan: layers `24-31`.
+
+Reference: Qwen/Qwen3.5-9B config on HuggingFace: https://huggingface.co/Qwen/Qwen3.5-9B/blob/main/config.json
+
+## Deprecated Dump-Based Plan
+
+The first Stage 2 plan proposed dumping all-layer Tier A tensors for every prompt variant and for 9B subsets. That is now deprecated.
+
+Why it changed:
+
+- User wants to avoid another large dump.
+- Stage 1 taught us which positions and layer ranges matter.
+- Prompt variants share the same candidate prefix, so KV-cache reuse can avoid recomputing long prefixes.
+- Metrics JSON is sufficient for Stage 2 decisions; intermediate tensors are not required.
+
+Do not execute dump-based prompt sweeps unless online evaluation fails and human explicitly approves a fallback.
 
 ## Storage Budget
 
 Target practical free-space budget: about 30GB after deleting Tier B.
 
-| Asset | Estimated size | Keep during Stage 2? | Note |
+| Asset / output | Estimated size | Keep during Stage 2? | Note |
 |---|---:|---|---|
-| Current Tier A dump | ~2.4GB | Yes | Needed for Stage 1 comparisons |
-| Current Tier B dump | ~29GB | No, after approval | Position result already summarized |
-| Qwen3.5-2B bf16 | ~4.5GB | Yes | Current anchor model |
-| Qwen3.5-2B 4bit | ~1.6-1.8GB | Yes, if validation proceeds | 4-bit sanity |
-| Qwen3.5-9B 4bit | ~6GB | Conditional | Only after 2B 4-bit validation |
-| 2B prompt Tier A dump | ~2.4GB each at 100 instances | Keep only top 1-2 long term | Use 50 subset first |
-| 9B Tier A dump | ~5-7GB each at 100 instances | Conditional | Depends on hidden size / layer count |
+| Current Tier A dump | ~2.4GB | Yes | Stage 1 comparison anchor |
+| Current Tier B dump | ~29GB | No, after approval | Findings archived in `notes/results_log.md` |
+| Qwen3.5-2B bf16 | ~4.5GB | Yes | Anchor model |
+| Qwen3.5-2B 4bit | ~1.6-1.8GB | Yes, if sanity passes | Download into `models/` |
+| Qwen3.5-9B 4bit | ~6GB | Yes | Already in `models/` |
+| Stage 2 metrics JSON | <100KB/run | Yes | Gitignored results + summarized in log |
+| Stage 2 prediction JSON | Usually <10MB/run | Yes | No tensor dumps |
+| Per-instance working vectors | RAM only | No | Released after each instance |
 
-Storage rule:
+Storage rules:
 
-- Do not keep every prompt variant dump indefinitely.
-- Keep metrics JSON/markdown for every run.
-- Keep only the current anchor dump plus the best prompt/model dump unless the user explicitly asks otherwise.
+- Delete only `tensors/dump_v1/tier_b/`; preserve Tier A, `manifest.json`, results, and notes.
+- Do not store full hidden tensors during Stage 2.
+- Do not keep per-candidate vectors after metrics are computed unless debugging requires a short-lived temp file.
+- Every stage writes a small metrics JSON and appends a compact summary to `notes/results_log.md`.
 
 ## Execution Order
 
@@ -48,13 +87,13 @@ Storage rule:
 
 Input:
 
-- Existing `tensors/dump_v1/tier_b/`.
-- Existing `results/analysis_*` and `notes/results_log.md`.
+- `tensors/dump_v1/tier_b/`.
+- `notes/results_log.md` with all Tier B findings.
 
 Action:
 
 - After human approval, delete only Tier B all-position tensor files.
-- Preserve Tier A chunks, `manifest.json`, all result summaries, and `notes/results_log.md`.
+- Preserve Tier A chunks, `manifest.json`, all result summaries, and notes.
 
 Output:
 
@@ -62,12 +101,8 @@ Output:
 
 Go/No-Go:
 
-- Go only if `notes/results_log.md` contains the Tier B conclusions: last/minus2 position findings, mean/max pooling failure, and diagonal/pooling negative results.
-- No-go if any planned Stage 2 experiment still needs full-position Tier B tensors.
-
-Estimated time:
-
-- Minutes.
+- Go: Tier B conclusions are in `notes/results_log.md`.
+- No-go: any remaining planned experiment needs all-position Tier B tensors.
 
 Human approval checkpoint:
 
@@ -77,27 +112,27 @@ Human approval checkpoint:
 
 Input:
 
-- `Qwen3.5-2B-bf16` as reference.
-- `mlx-community/Qwen3.5-2B-MLX-4bit` or equivalent MLX 4-bit model.
+- `models/Qwen3.5-2B-bf16/`.
+- 2B 4-bit MLX model downloaded into `models/`.
 
 Action:
 
-- Run a Phase-0-style hidden-state sanity check on 10-20 prompts.
-- Compare bf16 model hidden vectors against 4-bit model hidden vectors.
-- Run a small retrieval smoke test on a limited subset if hidden cosine passes.
+- Compare bf16 vs 4-bit hidden-state vectors on 10-20 prompts.
+- Run a tiny retrieval smoke test if vector cosine passes.
+- Use the same suffix-end position and late-layer settings as Stage 1.
 
 Output:
 
-- Hidden cosine summary: mean/min.
-- Top-token overlap summary.
+- Hidden cosine mean/min.
+- Top-token overlap.
 - Small retrieval delta vs bf16.
 
 Go/No-Go:
 
-- Go if hidden cosine mean `> 0.99` and min `> 0.98`.
-- Go if small retrieval R@5 degradation is `<= 2pp`.
-- No-go if hidden cosine is unstable or retrieval drops more than `2pp`.
-- If no-go, keep Stage 2 prompt sweeps on 2B bf16 and do not use 4-bit for 9B conclusions.
+- Go if hidden cosine mean `> 0.98` and min `> 0.97`.
+- Go if small retrieval R@5 degradation is `<= 3pp`.
+- No-go if geometry is unstable or retrieval drops more than `3pp`.
+- If no-go, keep 2B prompt sweeps on bf16 and treat 9B-4bit results as scale-only exploratory.
 
 Estimated time:
 
@@ -105,39 +140,103 @@ Estimated time:
 
 Human approval checkpoint:
 
-- Required before any 9B-4bit work.
+- Required before using 4-bit as a default Stage 2 path.
 
-### Step 2: 2B bf16 Prompt Sweep, 50-Instance Exploration
+### Step 1.5: KV-Cache Correctness Smoke
 
 Input:
 
-- 2B bf16 model.
-- LongMemEval-S/round subset of 50 instances.
-- Prompt variants P0/P1/P4/P5 from this document.
+- 2B model that passed Step 1, or 2B bf16 fallback.
+- 10 prompts with several suffix variants.
 
 Action:
 
-- For each prompt variant, dump Tier A all-layer last-token vectors.
-- Evaluate layer scan, anti-PCA/query-only anti-PCA, session metrics, and turn metrics.
-- Do not hardcode layer 22; prompt changes may move the best layer.
+For each `text + suffix`:
+
+1. Run full forward over `text + suffix`.
+2. Run prefix forward over `text`, keeping model cache.
+3. Deep-copy the prefix cache.
+4. Run suffix-only forward from the copied cache.
+5. Compare suffix-end hidden vectors from full vs cached path.
+
+Implementation requirement:
+
+- Use `model.make_cache()` rather than hand-constructing KV cache. Qwen3.5 uses mixed cache types: `ArraysCache` for linear/SSM layers and `KVCache` for full-attention layers.
+- Use `copy.deepcopy(prefix_cache)` per suffix variant.
+- Never reuse a suffix-mutated cache for another suffix.
 
 Output:
 
-- Prompt comparison table on 50 instances.
+- Cosine mean/min between full-forward and cached-forward vectors.
+
+Go/No-Go:
+
+- Go if all prompt vector cosines are `> 0.998`.
+- Warning if any are between `0.99` and `0.998`; inspect before continuing.
+- No-go if any are `< 0.99`; fallback to full forward for smaller subsets.
+
+Fallback:
+
+- Do not do cache hacking.
+- Use full forward with subset reduced to 20 instances.
+
+Human approval checkpoint:
+
+- Required before KV-cache path is used for prompt sweep.
+
+### Step 2: 2B Online Prompt Sweep, 30-Instance Exploration
+
+Input:
+
+- LongMemEval-S/round 30-instance subset.
+- 2B model selected by Step 1.
+- Prompt variants P0/P1/P4/P5.
+
+Action:
+
+Stream by instance:
+
+```text
+for instance:
+    for candidate:
+        prefill candidate text once
+        run P0/P4/P5 suffixes from copied prefix cache
+        use prefix-final vector for P1 no-suffix
+    encode query variants the same way
+    compute rankings and metrics
+    release vectors and cache
+```
+
+For each prompt variant:
+
+- Evaluate `last` and `minus2` suffix-end positions.
+- Evaluate late-layer candidates, not full layer dump.
+- Use Stage 1 score modes:
+  - cosine;
+  - centered cosine / per-instance mean removal;
+  - anti-PCA k=10;
+  - query-only anti-PCA k=10.
+- Do not run mean/max pooling, concat, RRF, or diagonal slices.
+
+Output:
+
+- Prompt comparison table on 30 instances.
 - Best prompt candidate(s) for 100-instance confirmation.
+- Small JSON per run.
 
 Go/No-Go:
 
 - Go to 100-instance confirmation if a prompt improves turn R@5 by `>= 3pp`, session_hit@5 by `>= 1pp`, or materially improves NDCG@5.
-- If no prompt clearly improves over P0, retain P0 and document prompt robustness.
+- If no prompt improves, keep P0 and document prompt robustness.
 
 Estimated time:
 
-- About 2-4 hours depending on forward speed and number of variants.
+- Target: about 30-60 minutes if KV cache works.
+- If full-forward fallback is needed: reduce to 20 instances.
 
 Human approval checkpoint:
 
-- Required before confirming a prompt on 100 instances.
+- Required before 100-instance prompt confirmation.
 
 ### Step 3: 2B Prompt Confirmation, 100 Instances
 
@@ -148,51 +247,63 @@ Input:
 
 Action:
 
-- Run the best prompt on the same 100-instance Tier A setting as Stage 1.
-- Compare against P0 with the same metrics and analysis pipeline.
+- Run online evaluation for best prompt and P0 on the same 100-instance Stage 1 subset.
+- Evaluate the same late-layer / suffix-position / score-mode grid used in Step 2.
+- Do not save intermediate tensors.
 
 Output:
 
-- Confirmed prompt result.
+- Confirmed 2B prompt result.
 - Decision: update default prompt or keep P0.
 
 Go/No-Go:
 
-- Accept new prompt if it preserves or improves session_hit@5 and improves turn R@5 or NDCG@5 by at least `3pp`.
-- Reject if improvement appears only on the 50-instance exploration subset and disappears at 100.
+- Accept new prompt if it preserves/improves session_hit@5 and improves turn R@5 or NDCG@5 by at least `3pp`.
+- Reject if 30-instance gain disappears at 100.
 
 Estimated time:
 
-- About 1-2 hours per confirmed prompt.
+- About 1-2 hours with KV cache; longer with fallback.
 
 Human approval checkpoint:
 
-- Required before any 9B full run uses the selected prompt.
+- Required before using selected prompt for 9B work.
 
-### Step 4: 9B-4bit Wrapper Smoke + Layer Scan
+### Step 4: 9B-4bit Smoke + Late-Layer Scan
 
 Input:
 
+- `models/Qwen3.5-9B-MLX-4bit/`.
 - Selected prompt from Step 3.
-- `mlx-community/Qwen3.5-9B-MLX-4bit` or `mlx-community/Qwen3.5-9B-OptiQ-4bit`.
+- 30-instance subset.
 
 Action:
 
-- Load the 9B-4bit model.
-- Verify wrapper compatibility: model layout, layer count, hidden dimension, one prompt extraction.
-- Dump a 30-50 instance Tier A all-layer last-token subset.
-- Run layer scan and anti-PCA/query-only anti-PCA.
+- Load 9B model.
+- Verify wrapper compatibility:
+  - text model layout;
+  - layer count = 32;
+  - hidden dimension = 4096;
+  - hybrid cache via `model.make_cache()`.
+- Run KV-cache correctness smoke on 9B.
+- Scan:
+  - last-8 layers: `24-31`;
+  - 75% prior: layer `24`;
+  - 92% prior: layer `29`;
+  - final post-norm if available.
+- Evaluate both `last` and `minus2` suffix-end positions.
+- Use centered cosine and anti-PCA / query-only anti-PCA.
 
 Output:
 
-- 9B model compatibility note.
-- 9B subset layer sweet spot.
-- 9B subset retrieval metrics.
+- 9B compatibility note.
+- 9B subset sweet-spot layer / position / score mode.
+- Metrics JSON.
 
 Go/No-Go:
 
-- Go if wrapper works and memory stays within a safe range.
-- Go if any one of these conditions is met on subset:
+- Go if wrapper and cache smoke work and memory remains near target.
+- Go if any one is met:
   - turn R@5 `>= 0.731`;
   - session_hit@5 `>= 0.970`;
   - NDCG@5 `>= 0.60`.
@@ -200,24 +311,27 @@ Go/No-Go:
 
 Estimated time:
 
-- Highly uncertain. Plan for several hours including model download and smoke debugging.
+- About 1-2 hours if KV cache works.
 
 Human approval checkpoint:
 
-- Required before running 9B on 100 instances.
+- Required before 9B 100-instance run.
 
 ### Step 5: 9B-4bit 100-Instance Evaluation
 
 Input:
 
-- 9B-4bit model that passed Step 4.
-- Best prompt from Step 3.
-- Best layer/transform discovered in Step 4.
+- 9B model that passed Step 4.
+- Best prompt / layer / position / score mode from Step 4.
 
 Action:
 
-- Run 100-instance Tier A all-layer dump or targeted all-layer evaluation if storage is constrained.
-- Compare against 2B best, BM25, and Qwen3-Embedding baselines.
+- Run online 100-instance evaluation.
+- Compare against:
+  - 2B best;
+  - BM25;
+  - Qwen3-Embedding-0.6B;
+  - hidden+BM25 fusion if applicable.
 
 Output:
 
@@ -225,7 +339,7 @@ Output:
 
 Go/No-Go:
 
-- Keep 9B as a serious candidate only if it improves over 2B on turn R@5, session_hit@5, or NDCG@5 by the thresholds in Step 4.
+- Keep 9B as serious candidate only if it improves over 2B on turn R@5, session_hit@5, or NDCG@5 by Step 4 thresholds.
 - If 9B does not improve, document that larger model scale does not automatically improve hidden-state retrieval geometry.
 
 Estimated time:
@@ -234,7 +348,7 @@ Estimated time:
 
 Human approval checkpoint:
 
-- Required before any 500-instance evaluation.
+- Required before any 500-instance validation.
 
 ### Step 6: Stage 2 Summary
 
@@ -245,7 +359,7 @@ Input:
 Action:
 
 - Update `notes/results_log.md`.
-- Add a concise Stage 2 conclusion section.
+- Add a concise Stage 2 conclusion.
 - Decide whether a 500-instance run is justified.
 
 Output:
@@ -258,24 +372,24 @@ Go/No-Go:
 
 Human approval checkpoint:
 
-- Required before 500-instance dump/evaluation.
+- Required before 500-instance validation.
 
 ## Prompt Variants
 
 Batch 1 only:
 
-| ID | Template | Hypothesis |
-|---|---|---|
-| P0 | current suffix: `\n请用一个词来summarize上面这段文字，这个词是：“` | Anchor |
-| P1 | no suffix | Test whether the summary instruction is necessary |
-| P4 | `\n用于记忆检索的关键词是：` | Retrieval-specific Chinese instruction |
-| P5 | `\nMemory key:` | Minimal English deployment-friendly instruction |
+| ID | Template | Vector source | Hypothesis |
+|---|---|---|---|
+| P0 | `\n请用一个词来summarize上面这段文字，这个词是：“` | suffix-end | Stage 1 anchor |
+| P1 | no suffix | prefix-final | Test whether summary instruction is necessary |
+| P4 | `\n用于记忆检索的关键词是：` | suffix-end | Retrieval-specific Chinese instruction |
+| P5 | `\nMemory key:` | suffix-end | Minimal English deployment-friendly instruction |
 
 Rules:
 
 - P0/P4/P5 must use symmetric memory/query suffixes.
-- P1 means raw text end; interpret carefully because the final token varies by input text.
-- Dump all-layer last-token Tier A for each prompt variant.
+- P1 is a stress test; final token varies by input text and should not be overinterpreted.
+- For suffix variants, evaluate both `last` and `minus2`.
 - Do not run asymmetric prompts in Batch 1.
 
 Conditional Batch 2:
@@ -286,31 +400,66 @@ Conditional Batch 2:
 | P3 | `\nTopic:` | If P5 helps and language choice matters |
 | P6 | asymmetric memory/query prompts | Only after symmetric prompts are understood |
 
-## 9B Upgrade Plan
+## Score Modes
 
-Candidate models:
+Every prompt/model run should evaluate the small Stage 1 best-practice grid:
 
-- `mlx-community/Qwen3.5-9B-MLX-4bit`.
-- `mlx-community/Qwen3.5-9B-OptiQ-4bit`.
+| Score mode | Reason |
+|---|---|
+| cosine | raw baseline |
+| centered cosine | Stage 1 strong geometry fix |
+| anti-PCA global k=10 | Stage 1 best hidden-only config |
+| query-only anti-PCA global k=10 | Deployment-friendly, nearly as strong as both-sided |
+| optional BM25 fusion α=0.5 | Orthogonal lexical signal, only after hidden-only result |
 
-9B-specific requirements:
+Do not repeat mean/max pooling, layer concat, RRF, z-score, whitening, or diagonal slice unless a new Stage 2 result specifically motivates them.
 
-- Do not assume layer 22 remains best.
-- Record actual layer count and hidden dimension.
-- Run all-layer last-token scans before selecting a layer.
-- Stop early if wrapper layout differs and extraction is ambiguous.
+## Online Evaluator Design
 
-Primary comparison:
+The Stage 2 implementation should be a new online evaluator, not a tensor dumper.
 
-- 2B best from Stage 1/Stage 2 vs 9B-4bit best on the same subset.
+Suggested modules:
+
+- `src/hidden_state/cached_suffix_extractor.py`
+  - `prefill_prefix(text_tokens) -> PrefixState`
+  - `encode_suffix_variants(prefix_state, suffixes, target_layers, positions) -> vectors`
+  - `encode_prompt_variants(text, variants, target_layers, positions) -> vectors`
+- `scripts/stage2_online_eval.py`
+  - loads data;
+  - streams instance by instance;
+  - writes predictions/metrics JSON;
+  - never stores full hidden tensors.
+
+Correctness invariant:
+
+- Cached suffix vectors must match full-forward vectors before any metrics are trusted.
+
+## Memory Budget
+
+Target peak: about `8GB`, hard caution above `10GB`.
+
+Expected contributors:
+
+- 9B-4bit weights: about `6GB`.
+- One prefix cache: candidate-length dependent, expected tens to a few hundred MB.
+- One instance vectors: a few MB to tens of MB.
+- Python/MLX overhead: leave 2GB margin.
+
+Runtime rules:
+
+- One MLX model-forward process at a time.
+- No background diagnostic jobs while model inference is running.
+- Clear MLX cache between large runs.
+- If memory exceeds 10GB or swap pressure appears, stop and reduce subset size.
 
 ## Go/No-Go Criteria Summary
 
 | Decision | Go criteria | No-go criteria |
 |---|---|---|
-| Delete Tier B | Tier B conclusions already summarized | Any upcoming analysis still needs full positions |
-| 2B 4-bit model | cosine mean >0.99, min >0.98, retrieval drop <=2pp | geometry unstable or retrieval drop >2pp |
-| Prompt replacement | 100-instance improvement >=3pp turn R@5 or meaningful NDCG/session gain | 50-subset gain disappears on 100 |
+| Delete Tier B | Tier B conclusions summarized | Any upcoming analysis still needs full positions |
+| 2B 4-bit model | cosine mean >0.98, min >0.97, retrieval drop <=3pp | geometry unstable or retrieval drop >3pp |
+| KV cache path | all full-vs-cache cosines >0.998 | any cosine <0.99 |
+| Prompt replacement | 100-instance improvement >=3pp turn R@5 or meaningful NDCG/session gain | 30-subset gain disappears at 100 |
 | 9B subset | turn R@5 >=0.731 or session_hit@5 >=0.970 or NDCG@5 >=0.60 | turn R@5 >=3pp below 2B best |
 | 500-instance validation | Stage 2 finds robust improvement | no robust improvement or storage/time unacceptable |
 
@@ -318,21 +467,24 @@ Primary comparison:
 
 | Risk | Mitigation |
 |---|---|
-| Disk full from multiple dumps | Delete Tier B first; keep only top prompt dumps |
-| Two MLX jobs contend for GPU/unified memory | Run all model-forward tasks serially |
-| 9B quantized model layout differs from 2B | Wrapper smoke test before any dump |
-| Prompt sweep changes best layer | Dump all-layer last-token vectors, not layer 22 only |
-| P1 no-suffix final token varies | Treat P1 as an exploratory stress test |
-| 100-instance prompt tuning overfits | Explore on 50, confirm on 100 |
-| 9B is slower than expected | Start with 30-50 subset and require approval before 100 |
-| 4-bit weights change hidden geometry | Require bf16-vs-4bit sanity before 9B conclusions |
-| Quantized hidden vector storage distracts from research | Keep int4 vector storage as backburner |
+| KV cache fork mutates shared state | Full-vs-cache smoke; `copy.deepcopy(prefix_cache)` per suffix |
+| Qwen3.5 hybrid cache differs from simple KV | Use `model.make_cache()` only |
+| KV cache path fails | Full-forward fallback on 20-instance subset |
+| Two MLX jobs contend for unified memory | Run all model-forward tasks serially |
+| 9B quantized model layout differs from 2B | Wrapper smoke before metrics |
+| Prompt sweep changes best layer | Scan late layers; do not hardcode 2B layer 22 |
+| P1 no-suffix final token varies | Treat P1 as exploratory stress test |
+| 100-instance prompt tuning overfits | Explore on 30, confirm on 100 |
+| 9B slower or memory-heavy | Start with 30 subset; require approval before 100 |
+| 4-bit weights change hidden geometry | Require 2B bf16-vs-4bit sanity |
+| Disk fills again | No full dumps; write metrics/predictions only |
 
 ## Backburner / Not in Stage 2
 
 - Hidden-vector int4 storage quantization.
 - TurboQuant / KV-cache quantization.
 - Prompt variants P2/P3/P6 unless Batch 1 creates a reason to run them.
+- Full tensor dumps for prompt variants.
 - 500-instance validation before Stage 2 go/no-go is satisfied.
 - Multi-key memory summaries.
 - New benchmark migration.
@@ -340,9 +492,10 @@ Primary comparison:
 ## Human Approval Checkpoints
 
 1. Before deleting Tier B.
-2. After 2B 4-bit sanity, before 9B-related work.
-3. After 50-instance prompt sweep, before 100-instance prompt confirmation.
-4. After 100-instance prompt confirmation, before selecting prompt for 9B.
-5. After 9B wrapper smoke and 30-50 subset layer scan, before 9B 100-instance run.
-6. After 9B 100-instance result, before any 500-instance validation.
-7. Before deleting any non-Tier-B tensors or model files.
+2. After 2B 4-bit sanity, before using 4-bit as default.
+3. After KV-cache smoke, before online prompt sweep.
+4. After 30-instance prompt sweep, before 100-instance prompt confirmation.
+5. After 100-instance prompt confirmation, before selecting prompt for 9B.
+6. After 9B wrapper/cache smoke and 30-instance layer scan, before 9B 100-instance run.
+7. After 9B 100-instance result, before any 500-instance validation.
+8. Before deleting any non-Tier-B tensors or model files.
