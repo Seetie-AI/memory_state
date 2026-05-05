@@ -14,12 +14,14 @@ the existing Tier A/Tier B dumps without spending more model-forward time.
 from __future__ import annotations
 
 import argparse
+import gc
 import json
 import sys
+import warnings
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 import mlx.core as mx
 import numpy as np
@@ -32,6 +34,7 @@ if str(SRC) not in sys.path:
 
 from eval.longmemeval_metrics import Prediction, evaluate
 from longmemeval.data import load_instances
+from method.hidden_state import SUMMARY_PROMPT_SUFFIX
 
 
 ROUND1_ANALYSES = [
@@ -67,6 +70,12 @@ ROUND4_ANALYSES = [
     "session_reframing_table",
     "score_fusion_alpha_sweep",
     "oracle_ceiling_overlap",
+]
+
+TIER_B_EXTRA_ANALYSES = [
+    "content_end_position_scan",
+    "position_debiased_retrieval",
+    "layer_scan_at_content_end",
 ]
 
 
@@ -110,6 +119,7 @@ def parse_args() -> argparse.Namespace:
             *ROUND2_ANALYSES,
             *ROUND3_ANALYSES,
             *ROUND4_ANALYSES,
+            *TIER_B_EXTRA_ANALYSES,
         ],
         required=True,
     )
@@ -183,6 +193,12 @@ def main() -> int:
         result = score_fusion_alpha_sweep(dump_dir, manifest)
     elif args.analysis == "oracle_ceiling_overlap":
         result = oracle_ceiling_overlap(dump_dir, manifest)
+    elif args.analysis == "content_end_position_scan":
+        result = content_end_position_scan(dump_dir, manifest)
+    elif args.analysis == "position_debiased_retrieval":
+        result = position_debiased_retrieval(dump_dir, manifest)
+    elif args.analysis == "layer_scan_at_content_end":
+        result = layer_scan_at_content_end(dump_dir, manifest)
     else:
         raise ValueError(f"Unsupported analysis: {args.analysis}")
 
@@ -831,6 +847,166 @@ def oracle_ceiling_overlap(dump_dir: Path, manifest: dict[str, Any]) -> dict[str
     }
 
 
+def content_end_position_scan(dump_dir: Path, manifest: dict[str, Any]) -> dict[str, Any]:
+    """Tier B extra: compare content-end / suffix-start / late positions.
+
+    Why: Stage 1 showed the position axis is underexplored. Anti-PCA removes
+    corpus-wide directions; content-end and suffix-start positions test a more
+    local hypothesis: whether the fixed summary suffix itself is the source of
+    useful or harmful shared signal. Tier B has only 20 instances, so this is a
+    direction-finding experiment, not a final claim.
+    """
+    suffix_len = suffix_token_count()
+    positions = ["content_end", "suffix_start", "minus2", "last"]
+    valid_prompt_ids = valid_tier_b_prompt_ids(manifest, positions, suffix_len)
+    output: dict[str, Any] = {
+        "disclaimer": tier_b_disclaimer(),
+        "memory_plan": tier_b_memory_plan(),
+        "layer": 22,
+        "suffix_token_count": suffix_len,
+        "valid_prompt_count": len(valid_prompt_ids),
+        "baseline": tier_b_baseline_metrics(
+            dump_dir,
+            manifest,
+            suffix_len=suffix_len,
+            valid_prompt_ids=valid_prompt_ids,
+        ),
+        "positions": {},
+    }
+    records, vectors_by_position, skipped = collect_tier_b_positions_at_layer(
+        dump_dir,
+        manifest,
+        layer=22,
+        positions=positions,
+        suffix_len=suffix_len,
+        valid_prompt_ids=valid_prompt_ids,
+    )
+    for position in positions:
+        vectors = vectors_by_position[position]
+        stats = global_anti_pca_stats(records, vectors, max_components=10)
+        output["positions"][position] = {
+            "skipped_prompt_count": skipped,
+            "metrics": evaluate_transformed(
+                records,
+                vectors,
+                transform="anti_pca_global",
+                transform_kwargs={"components": 10},
+                global_stats=stats,
+            ),
+        }
+        del stats
+        clear_mlx_memory()
+    del records, vectors_by_position
+    clear_mlx_memory()
+    return output
+
+
+def position_debiased_retrieval(dump_dir: Path, manifest: dict[str, Any]) -> dict[str, Any]:
+    """Tier B extra: subtract position-specific means before retrieval.
+
+    Why: anti-PCA is a corpus-wide de-biasing method. Position de-biasing is a
+    more precise variant inspired by the finding that the ignored position axis
+    may encode template/suffix artifacts. It changes only the de-biasing axis:
+    role-pooled mean or role-separated mean at the same layer/position.
+    """
+    suffix_len = suffix_token_count()
+    positions = ["content_end", "minus2", "last"]
+    valid_prompt_ids = valid_tier_b_prompt_ids(manifest, positions, suffix_len)
+    output: dict[str, Any] = {
+        "disclaimer": tier_b_disclaimer(),
+        "memory_plan": tier_b_memory_plan(),
+        "layer": 22,
+        "suffix_token_count": suffix_len,
+        "valid_prompt_count": len(valid_prompt_ids),
+        "baseline": tier_b_baseline_metrics(
+            dump_dir,
+            manifest,
+            suffix_len=suffix_len,
+            valid_prompt_ids=valid_prompt_ids,
+        ),
+        "positions": {},
+    }
+    records, vectors_by_position, skipped = collect_tier_b_positions_at_layer(
+        dump_dir,
+        manifest,
+        layer=22,
+        positions=positions,
+        suffix_len=suffix_len,
+        valid_prompt_ids=valid_prompt_ids,
+    )
+    for position in positions:
+        vectors = vectors_by_position[position]
+        output["positions"][position] = {
+            "skipped_prompt_count": skipped,
+            "role_pooled_mean": evaluate_vectors(
+                records,
+                debias_by_position_mean(records, vectors, role_separated=False),
+                "cosine",
+            ),
+            "role_separated_mean": evaluate_vectors(
+                records,
+                debias_by_position_mean(records, vectors, role_separated=True),
+                "cosine",
+            ),
+        }
+        clear_mlx_memory()
+    del records, vectors_by_position
+    clear_mlx_memory()
+    return output
+
+
+def layer_scan_at_content_end(dump_dir: Path, manifest: dict[str, Any]) -> dict[str, Any]:
+    """Tier B extra: scan layers at the content-end position.
+
+    Why: layer 22 is best at the prompt-final position, but changing the
+    position may move the sweet spot. This keeps the scoring method fixed
+    (anti-PCA k=10) and changes only the layer at content-end.
+    """
+    suffix_len = suffix_token_count()
+    valid_prompt_ids = valid_tier_b_prompt_ids(manifest, ["content_end"], suffix_len)
+    output: dict[str, Any] = {
+        "disclaimer": tier_b_disclaimer(),
+        "memory_plan": tier_b_memory_plan(),
+        "position": "content_end",
+        "suffix_token_count": suffix_len,
+        "valid_prompt_count": len(valid_prompt_ids),
+        "baseline": tier_b_baseline_metrics(
+            dump_dir,
+            manifest,
+            suffix_len=suffix_len,
+            valid_prompt_ids=valid_prompt_ids,
+        ),
+        "layers": {},
+    }
+    layers = list(range(16, 24))
+    records, vectors_by_layer, skipped = collect_tier_b_layers_at_position(
+        dump_dir,
+        manifest,
+        layers=layers,
+        position="content_end",
+        suffix_len=suffix_len,
+        valid_prompt_ids=valid_prompt_ids,
+    )
+    for layer in layers:
+        vectors = vectors_by_layer[layer]
+        stats = global_anti_pca_stats(records, vectors, max_components=10)
+        output["layers"][str(layer)] = {
+            "skipped_prompt_count": skipped,
+            "metrics": evaluate_transformed(
+                records,
+                vectors,
+                transform="anti_pca_global",
+                transform_kwargs={"components": 10},
+                global_stats=stats,
+            ),
+        }
+        del stats
+        clear_mlx_memory()
+    del records, vectors_by_layer
+    clear_mlx_memory()
+    return output
+
+
 def position_scan_within_layer(
     dump_dir: Path,
     manifest: dict[str, Any],
@@ -945,7 +1121,17 @@ def iter_tier_b_by_instance(
     Tier B may contain thousands of prompts. Loading all bf16 tensors and
     casting to fp32 can exceed 16GB memory. Streaming by instance keeps only one
     query+candidates set in memory long enough to build a Prediction.
+
+    Deprecated for new Tier B analyses: even one LongMemEval instance can hold
+    hundreds of full tensors. Use `iter_tier_b_lean` for single layer/position
+    slices so only 2048 fp32 values are materialized per prompt.
     """
+    warnings.warn(
+        "iter_tier_b_by_instance materializes full Tier B tensors and can exceed "
+        "16GB memory; use iter_tier_b_lean for new analyses.",
+        RuntimeWarning,
+        stacklevel=2,
+    )
     grouped: dict[int, list[dict[str, Any]]] = {}
     for record in manifest["prompts"].values():
         if "tier_b_file" in record:
@@ -961,6 +1147,424 @@ def iter_tier_b_by_instance(
             tensor = np.asarray(arrays["all_by_layer"].astype(mx.float32))
             entries.append((record, tensor))
         yield instance_index, entries
+
+
+def clear_mlx_memory() -> None:
+    """Release Python objects and MLX's metal cache between Tier B slices.
+
+    The Tier B files are large enough that relying on process teardown alone is
+    unsafe on a 16GB Mac. MLX exposes `mx.metal.clear_cache()` in recent builds;
+    if it is unavailable, normal Python GC still runs and the analysis proceeds.
+    """
+    gc.collect()
+    try:
+        if hasattr(mx, "metal") and hasattr(mx.metal, "clear_cache"):
+            mx.metal.clear_cache()
+    except Exception:
+        pass
+
+
+def tier_b_memory_plan() -> str:
+    return (
+        "Lean per-prompt slice loading: each safetensors file is opened, one "
+        "small set of (layer, position, 2048) vectors is materialized as fp32, "
+        "then the file object and MLX cache are released. Target peak memory "
+        "for TB extra analyses is below the 8GB budget."
+    )
+
+
+def tier_b_records(manifest: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return Tier B prompt records in manifest order."""
+    return [record for record in manifest["prompts"].values() if "tier_b_file" in record]
+
+
+def record_sequence_length(record: dict[str, Any]) -> int:
+    """Infer the tensor sequence length stored for a Tier B prompt."""
+    truncated = record.get("truncated_to")
+    if truncated is not None:
+        return int(truncated)
+    return int(record["token_count"])
+
+
+def valid_tier_b_prompt_ids(
+    manifest: dict[str, Any],
+    positions: list[str],
+    suffix_len: int,
+) -> set[str]:
+    """Find prompt IDs valid for every compared position.
+
+    This keeps apples-to-apples comparisons exact: if one position is invalid
+    for a short prompt, all position variants drop that same prompt.
+    """
+    valid = set()
+    for record in tier_b_records(manifest):
+        seq_len = record_sequence_length(record)
+        if all(resolve_tier_b_position(seq_len, position, suffix_len) is not None for position in positions):
+            valid.add(str(record["prompt_id"]))
+    return valid
+
+
+def iter_tier_b_lean(
+    dump_dir: Path,
+    manifest: dict[str, Any],
+    layer: int,
+    position_resolver: Callable[[dict[str, Any]], int | None],
+    valid_prompt_ids: set[str] | None = None,
+    clear_every: int = 50,
+) -> "Iterable[tuple[dict[str, Any], np.ndarray]]":
+    """Yield one fp32 vector slice per Tier B prompt.
+
+    New Tier B explorations should use this helper instead of
+    `iter_tier_b_by_instance`. It changes the memory unit from "one full
+    instance worth of 24 x seq_len x dim tensors" to "one 2048-dimensional
+    vector", which is the difference between multi-GB peaks and a few MB.
+    """
+    yielded = 0
+    for record in tier_b_records(manifest):
+        if valid_prompt_ids is not None and str(record["prompt_id"]) not in valid_prompt_ids:
+            continue
+        position = position_resolver(record)
+        if position is None:
+            continue
+        try:
+            vector = load_tier_b_vector_slice(dump_dir, record, layer, position)
+        except IndexError:
+            # Manifest token counts should match tensor lengths, but if a dump
+            # was truncated differently, skip that prompt instead of crashing a
+            # long memory-sensitive run.
+            continue
+        yield record, vector
+        yielded += 1
+        if yielded % clear_every == 0:
+            clear_mlx_memory()
+    clear_mlx_memory()
+
+
+def load_tier_b_vector_slice(
+    dump_dir: Path,
+    record: dict[str, Any],
+    layer: int,
+    position: int,
+) -> np.ndarray:
+    """Load one Tier B vector slice, preferring safetensors slicing.
+
+    `safe_open(...).get_slice()` avoids materializing the full tensor. Some
+    safetensors/numpy combinations do not expose MLX bf16 cleanly, so the
+    fallback uses `mx.load` but immediately indexes one vector before casting to
+    fp32.
+    """
+    path = dump_dir / record["tier_b_file"]
+    try:
+        from safetensors import safe_open
+
+        with safe_open(str(path), framework="np") as handle:
+            vector = np.asarray(handle.get_slice("all_by_layer")[layer, position, :])
+        if vector.dtype != np.float32:
+            vector = vector.astype(np.float32)
+        return np.asarray(vector, dtype=np.float32)
+    except Exception:
+        arrays = mx.load(str(path))
+        vector_mx = arrays["all_by_layer"][layer, position, :].astype(mx.float32)
+        mx.eval(vector_mx)
+        vector = np.array(vector_mx, dtype=np.float32)
+        del arrays, vector_mx
+        clear_mlx_memory()
+        return vector
+
+
+def load_tier_b_multi_slice(
+    dump_dir: Path,
+    record: dict[str, Any],
+    layer_position_pairs: list[tuple[int, int]],
+) -> dict[tuple[int, int], np.ndarray]:
+    """Load several Tier B vector slices from one prompt file open.
+
+    This is the 8GB-budget variant of `load_tier_b_vector_slice`: it still
+    avoids full-tensor accumulation across prompts, but amortizes file IO for
+    analyses that need several layers or positions from the same prompt.
+    """
+    unique_pairs = list(dict.fromkeys(layer_position_pairs))
+    path = dump_dir / record["tier_b_file"]
+    try:
+        from safetensors import safe_open
+
+        output = {}
+        with safe_open(str(path), framework="np") as handle:
+            tensor_slice = handle.get_slice("all_by_layer")
+            for pair in unique_pairs:
+                layer, position = pair
+                vector = np.asarray(tensor_slice[layer, position, :])
+                if vector.dtype != np.float32:
+                    vector = vector.astype(np.float32)
+                output[pair] = np.asarray(vector, dtype=np.float32)
+        return output
+    except Exception:
+        arrays = mx.load(str(path))
+        tensor = arrays["all_by_layer"]
+        output = {}
+        for layer, position in unique_pairs:
+            vector_mx = tensor[layer, position, :].astype(mx.float32)
+            mx.eval(vector_mx)
+            output[(layer, position)] = np.array(vector_mx, dtype=np.float32)
+            del vector_mx
+        del arrays, tensor
+        clear_mlx_memory()
+        return output
+
+
+def load_tier_b_layers_at_position(
+    dump_dir: Path,
+    record: dict[str, Any],
+    position: int,
+    layers: list[int],
+) -> dict[int, np.ndarray]:
+    """Load several layer slices at one position from one prompt file."""
+    slices = load_tier_b_multi_slice(dump_dir, record, [(layer, position) for layer in layers])
+    return {layer: slices[(layer, position)] for layer in layers}
+
+
+def load_tier_b_positions_at_layer(
+    dump_dir: Path,
+    record: dict[str, Any],
+    layer: int,
+    positions: dict[str, int],
+) -> dict[str, np.ndarray]:
+    """Load several position slices at one layer from one prompt file."""
+    slices = load_tier_b_multi_slice(dump_dir, record, [(layer, position) for position in positions.values()])
+    return {name: slices[(layer, position)] for name, position in positions.items()}
+
+
+def suffix_token_count() -> int:
+    """Tokenize the shared suffix locally so content-end positions are exact."""
+    from transformers import AutoTokenizer
+
+    tokenizer_path = ROOT / "models" / "Qwen3.5-2B-hf"
+    if not tokenizer_path.exists():
+        tokenizer_path = ROOT / "models" / "Qwen3.5-2B-bf16"
+    tokenizer = AutoTokenizer.from_pretrained(str(tokenizer_path), trust_remote_code=True)
+    return len(tokenizer.encode(SUMMARY_PROMPT_SUFFIX, add_special_tokens=False))
+
+
+def tier_b_disclaimer() -> str:
+    return (
+        "Tier B contains only 20 LongMemEval-S/round instances. Treat these "
+        "results as direction-finding diagnostics, not final performance claims."
+    )
+
+
+def tier_b_baseline_metrics(
+    dump_dir: Path,
+    manifest: dict[str, Any],
+    suffix_len: int,
+    valid_prompt_ids: set[str] | None = None,
+) -> dict[str, Any]:
+    records, vectors, skipped = collect_tier_b_position_vectors(
+        dump_dir,
+        manifest,
+        layer=22,
+        position="last",
+        suffix_len=suffix_len,
+        valid_prompt_ids=valid_prompt_ids,
+    )
+    stats = global_anti_pca_stats(records, vectors, max_components=10)
+    metrics = evaluate_transformed(
+        records,
+        vectors,
+        transform="anti_pca_global",
+        transform_kwargs={"components": 10},
+        global_stats=stats,
+    )
+    valid_count = len(records)
+    del records, vectors, stats
+    clear_mlx_memory()
+    return {
+        "config": "layer22_last_anti_pca_global_k10",
+        "valid_prompt_count": valid_count,
+        "skipped_prompt_count": skipped,
+        "metrics": metrics,
+    }
+
+
+def collect_tier_b_position_vectors(
+    dump_dir: Path,
+    manifest: dict[str, Any],
+    layer: int,
+    position: str,
+    suffix_len: int,
+    valid_prompt_ids: set[str] | None = None,
+) -> tuple[list[dict[str, Any]], np.ndarray, int]:
+    """Collect one Tier B layer/position matrix with <1GB peak memory.
+
+    This deliberately does not use `iter_tier_b_by_instance`: the latter
+    materializes full tensors for hundreds of prompts. Here each prompt loads
+    only one 2048-dimensional vector slice, then releases its file/cache before
+    the next prompt.
+    """
+    records = []
+    vectors = []
+    eligible_records = [
+        record
+        for record in tier_b_records(manifest)
+        if valid_prompt_ids is None or str(record["prompt_id"]) in valid_prompt_ids
+    ]
+
+    def resolve_for_record(record: dict[str, Any]) -> int | None:
+        return resolve_tier_b_position(record_sequence_length(record), position, suffix_len)
+
+    for record, vector in iter_tier_b_lean(
+        dump_dir,
+        manifest,
+        layer=layer,
+        position_resolver=resolve_for_record,
+        valid_prompt_ids=valid_prompt_ids,
+    ):
+        records.append(record)
+        vectors.append(vector)
+    if not vectors:
+        raise ValueError(f"No Tier B vectors collected for layer={layer} position={position}.")
+    skipped = len(eligible_records) - len(records)
+    matrix = np.stack(vectors, axis=0).astype(np.float32, copy=False)
+    del vectors
+    clear_mlx_memory()
+    return records, matrix, skipped
+
+
+def collect_tier_b_positions_at_layer(
+    dump_dir: Path,
+    manifest: dict[str, Any],
+    layer: int,
+    positions: list[str],
+    suffix_len: int,
+    valid_prompt_ids: set[str] | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, np.ndarray], int]:
+    """Collect several position matrices with one file open per prompt.
+
+    Used by position-debias analyses. It changes only IO scheduling relative
+    to `collect_tier_b_position_vectors`; the vector definitions and valid
+    prompt filtering remain identical.
+    """
+    records = []
+    vectors_by_position: dict[str, list[np.ndarray]] = {position: [] for position in positions}
+    eligible_records = [
+        record
+        for record in tier_b_records(manifest)
+        if valid_prompt_ids is None or str(record["prompt_id"]) in valid_prompt_ids
+    ]
+    loaded = 0
+    for record in eligible_records:
+        resolved = {
+            position: resolve_tier_b_position(record_sequence_length(record), position, suffix_len)
+            for position in positions
+        }
+        if any(value is None for value in resolved.values()):
+            continue
+        try:
+            slices = load_tier_b_positions_at_layer(
+                dump_dir,
+                record,
+                layer=layer,
+                positions={name: int(value) for name, value in resolved.items() if value is not None},
+            )
+        except IndexError:
+            continue
+        records.append(record)
+        for position in positions:
+            vectors_by_position[position].append(slices[position])
+        loaded += 1
+        if loaded % 50 == 0:
+            clear_mlx_memory()
+    if not records:
+        raise ValueError(f"No Tier B vectors collected for layer={layer} positions={positions}.")
+    matrices = {
+        position: np.stack(vectors, axis=0).astype(np.float32, copy=False)
+        for position, vectors in vectors_by_position.items()
+    }
+    skipped = len(eligible_records) - len(records)
+    del vectors_by_position
+    clear_mlx_memory()
+    return records, matrices, skipped
+
+
+def collect_tier_b_layers_at_position(
+    dump_dir: Path,
+    manifest: dict[str, Any],
+    layers: list[int],
+    position: str,
+    suffix_len: int,
+    valid_prompt_ids: set[str] | None = None,
+) -> tuple[list[dict[str, Any]], dict[int, np.ndarray], int]:
+    """Collect several layer matrices with one file open per prompt.
+
+    Used by content-end layer scans. Holding eight 5043 x 2048 fp32 matrices is
+    roughly a few hundred MB, comfortably below the requested 8GB ceiling while
+    avoiding the previous 8x repeated file-open pattern.
+    """
+    records = []
+    vectors_by_layer: dict[int, list[np.ndarray]] = {layer: [] for layer in layers}
+    eligible_records = [
+        record
+        for record in tier_b_records(manifest)
+        if valid_prompt_ids is None or str(record["prompt_id"]) in valid_prompt_ids
+    ]
+    loaded = 0
+    for record in eligible_records:
+        resolved = resolve_tier_b_position(record_sequence_length(record), position, suffix_len)
+        if resolved is None:
+            continue
+        try:
+            slices = load_tier_b_layers_at_position(dump_dir, record, int(resolved), layers)
+        except IndexError:
+            continue
+        records.append(record)
+        for layer in layers:
+            vectors_by_layer[layer].append(slices[layer])
+        loaded += 1
+        if loaded % 50 == 0:
+            clear_mlx_memory()
+    if not records:
+        raise ValueError(f"No Tier B vectors collected for layers={layers} position={position}.")
+    matrices = {
+        layer: np.stack(vectors, axis=0).astype(np.float32, copy=False)
+        for layer, vectors in vectors_by_layer.items()
+    }
+    skipped = len(eligible_records) - len(records)
+    del vectors_by_layer
+    clear_mlx_memory()
+    return records, matrices, skipped
+
+
+def resolve_tier_b_position(seq_len: int, position: str, suffix_len: int) -> int | None:
+    if position == "last":
+        return seq_len - 1
+    if position == "minus2":
+        return seq_len - 2 if seq_len >= 2 else None
+    suffix_start = seq_len - suffix_len
+    if position == "suffix_start":
+        return suffix_start if 0 <= suffix_start < seq_len else None
+    if position == "content_end":
+        content_end = suffix_start - 1
+        return content_end if 0 <= content_end < seq_len else None
+    raise ValueError(f"Unsupported Tier B position: {position}")
+
+
+def debias_by_position_mean(
+    records: list[dict[str, Any]],
+    vectors: np.ndarray,
+    role_separated: bool,
+) -> np.ndarray:
+    if not role_separated:
+        return vectors - np.mean(vectors, axis=0, keepdims=True)
+    output = vectors.copy()
+    for role in ["query", "candidate"]:
+        indices = [
+            index
+            for index, record in enumerate(records)
+            if (record["role"] == "query") == (role == "query")
+        ]
+        if not indices:
+            continue
+        output[indices] = output[indices] - np.mean(output[indices], axis=0, keepdims=True)
+    return output
 
 
 def vectors_for_spec(tensors: dict[str, np.ndarray], spec: VectorSpec) -> np.ndarray:

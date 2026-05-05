@@ -384,3 +384,64 @@ Storage cost is unchanged from Phase 0/2. The transform is one mean subtraction 
 ### Statistical disclaimer
 
 All numbers above are on the same 100-instance, 94-scored subset. Subset bias is real (Round 2 showed first 100 of M had +8pp BM25 inflation; here we cannot rule out a similar effect on S). The conclusions about method ranking, layer choice, query reframing, fusion orthogonality, and session-vs-turn framing are stable under 50/50 split and 1000-bootstrap, so we treat them as well supported. The absolute R@5 numbers are not yet definitive.
+
+## Tier B Extra Exploration (post-Round 5)
+
+### Disclaimer
+
+Tier B contains only 20 LongMemEval-S/round instances. These results are direction-finding diagnostics before deleting the large all-position tensor dump, not conclusive performance claims. All comparisons below are apples-to-apples on the same 20 scored questions and 5,043 valid prompts.
+
+### Content-end / suffix-position scan
+
+Layer fixed at 22, score fixed to global anti-PCA k=10 unless noted.
+
+| Position | R@5 | NDCG@5 | Note |
+|---|---:|---:|---|
+| content_end | 0.45 | 0.351 | Last content token before summary suffix |
+| suffix_start | 0.35 | 0.229 | First token of fixed summary suffix |
+| minus2 | **0.90** | 0.688 | Second-to-last prompt position |
+| last | 0.85 | **0.727** | Existing Tier B baseline |
+
+Takeaway: the suffix is not just noise. The final summary-prompt positions are much stronger than the raw content-end vector. `minus2` has higher R@5 than `last` on this tiny subset, but lower NDCG; treat this as a possible follow-up, not a new best claim.
+
+### Position-debiased retrieval
+
+Layer fixed at 22. This replaces global anti-PCA with simple position-specific mean subtraction, either pooled across query/candidate roles or separated by role.
+
+| Position | Debias scheme | R@5 | NDCG@5 |
+|---|---|---:|---:|
+| content_end | role-pooled mean | 0.10 | 0.053 |
+| content_end | role-separated mean | 0.35 | 0.294 |
+| minus2 | role-pooled mean | **0.90** | 0.720 |
+| minus2 | role-separated mean | **0.90** | **0.741** |
+| last | role-pooled mean | 0.85 | 0.720 |
+| last | role-separated mean | 0.85 | 0.702 |
+
+Takeaway: per-position centering is approximately equivalent to anti-PCA for late suffix positions. This supports the interpretation that anti-PCA mainly removes a position/template-specific shared direction rather than discovering an unrelated semantic transform.
+
+### Layer scan at content_end
+
+Position fixed at `content_end`; score fixed to global anti-PCA k=10.
+
+| Layer | R@5 | NDCG@5 |
+|---|---:|---:|
+| 16 | 0.25 | 0.163 |
+| 17 | 0.30 | 0.170 |
+| 18 | 0.25 | 0.146 |
+| 19 | 0.40 | 0.301 |
+| 20 | 0.45 | 0.326 |
+| 21 | **0.50** | **0.377** |
+| 22 | 0.45 | 0.351 |
+| 23 | **0.50** | 0.336 |
+
+Takeaway: changing position shifts the best content-end layer slightly (21/23 tie), but no content-end layer comes close to late suffix positions (`last` R@5 0.85, `minus2` R@5 0.90). The practical recipe remains layer 22 near the prompt end.
+
+### Decision
+
+These three Tier B checks address the remaining all-position hypotheses without repeating previously falsified mean/max pooling or diagonal-slice experiments. The main hypotheses are now either supported or ruled out:
+
+- **Suffix necessary**: content-end vectors are much weaker than late suffix vectors.
+- **Per-position de-bias explains anti-PCA**: late-position mean subtraction matches anti-PCA-style performance on this subset.
+- **Layer 22 robust near prompt end**: content-end layer choice shifts slightly, but the strong signal remains in the final suffix positions.
+
+There is no clear reason to spend another Tier B round before Stage 2. Tier B can be deleted according to `notes/stage_2_plan.md` after human approval.
