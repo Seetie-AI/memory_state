@@ -12,8 +12,10 @@ Design notes for this fork:
   point: layers 29/30/31. The default position is `last` only: prior 9B results
   already favored the quote-final state over the colon position, and dropping
   `minus2` halves vector storage for the prompt sweep.
-- This script only encodes raw hidden-state vectors and keeps the original
-  online cosine/centered-cosine sanity metrics. Query-only anti-PCA k=2 is an
+- This script encodes raw hidden-state vectors and keeps the original online
+  cosine/centered-cosine sanity metrics. Optionally, `--store-topk-logits K`
+  stores final-layer next-token top-K logits as a sparse PromptReps-style audit
+  signal without saving full-vocab distributions. Query-only anti-PCA k=2 is an
   offline analysis step because prior results showed it matches the stronger
   both-sided anti-PCA result while keeping candidate vectors reusable.
 - BM25 fusion is deliberately excluded from this prompt sweep so prompt effects
@@ -22,6 +24,11 @@ Design notes for this fork:
   `results/stage3_prompt_sweep/` to avoid overwriting Stage 2 artifacts.
 - LongMemEval is evidence/fact biased; preference/style/pattern prompt variants
   need a caveat when interpreting benchmark results.
+- Speed/safety knobs are Stage 3-specific: by default the script keeps a small
+  MLX Metal allocation cache and clears it once per text row, not once per
+  suffix. This does not delete live prefix KV caches; it only controls reusable
+  Metal buffers. Vectors are flushed after every instance, and SIGINT/SIGTERM
+  closes the writer so completed chunks are not lost.
 
 Prompt matrix audit notes:
 - `1-1_CN` uses `代表` as the Chinese anchor verb because PromptReps found the
@@ -55,6 +62,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import signal
 import shutil
 import sys
 import time
@@ -62,6 +70,7 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
+import mlx.core as mx
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -143,6 +152,38 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--bootstrap-samples", type=int, default=1000)
     parser.add_argument("--target-chunk-mb", type=int, default=512)
     parser.add_argument("--min-free-gb", type=float, default=20.0)
+    parser.add_argument(
+        "--store-topk-logits",
+        type=int,
+        default=0,
+        help=(
+            "When >0, store final-layer next-token top-K token ids/logits for "
+            "each prompt row, variant, and position. Disabled by default because "
+            "hidden-vector sweeps do not need logits and full-vocab logits would "
+            "be too large."
+        ),
+    )
+    parser.add_argument(
+        "--metal-cache-limit-gb",
+        type=float,
+        default=2.0,
+        help=(
+            "MLX/Metal reusable cache limit. Stage 3 defaults to 2GB because "
+            "the 16GB Mac target has limited headroom; raise cautiously only "
+            "after watching active/cache memory stay below the 8GB target."
+        ),
+    )
+    parser.add_argument(
+        "--clear-cache-every",
+        choices=["suffix", "row", "instance"],
+        default="row",
+        help=(
+            "How often to call mx.metal.clear_cache(). `suffix` preserves the "
+            "Stage 2 conservative behavior; `row` reuses Metal allocations "
+            "across the 17 short suffix forwards for one text; `instance` is "
+            "faster but uses more cache memory."
+        ),
+    )
     parser.add_argument("--output-dir", default=None)
     parser.add_argument("--result-path", default=None)
     return parser.parse_args()
@@ -198,9 +239,12 @@ def estimate_output_bytes(
     layer_count: int,
     position_count: int,
     hidden_dim: int,
+    topk_logits: int,
 ) -> int:
     prompt_rows = sum(len(iter_round_candidates(instance)) + 1 for instance in instances)
-    return int(prompt_rows * variant_count * layer_count * position_count * hidden_dim * 2 * 1.10)
+    vector_bytes = prompt_rows * variant_count * layer_count * position_count * hidden_dim * 2
+    logit_bytes = prompt_rows * variant_count * position_count * topk_logits * (4 + 2)
+    return int((vector_bytes + logit_bytes) * 1.10)
 
 
 def check_storage_budget(output_dir: Path, estimated_bytes: int, min_free_gb: float) -> None:
@@ -227,6 +271,39 @@ def format_duration(seconds: float) -> str:
     if minutes:
         return f"{minutes}m{seconds_rem:02d}s"
     return f"{seconds_rem}s"
+
+
+def configure_metal_cache(limit_gb: float) -> None:
+    """Set an MLX/Metal reusable-cache cap without changing live tensor limits."""
+    if limit_gb <= 0:
+        return
+    try:
+        if hasattr(mx, "metal") and hasattr(mx.metal, "set_cache_limit"):
+            mx.metal.set_cache_limit(int(limit_gb * 1024**3))
+            print(f"MLX Metal cache limit set to {limit_gb:.2f} GiB")
+        if hasattr(mx, "metal") and hasattr(mx.metal, "reset_peak_memory"):
+            mx.metal.reset_peak_memory()
+    except Exception as exc:
+        print(f"warning: could not configure MLX Metal cache limit: {exc}")
+
+
+def metal_memory_summary() -> str:
+    """Return active/cache/peak Metal memory for progress logs when available."""
+    try:
+        if not hasattr(mx, "metal"):
+            return "metal_mem unavailable"
+        fields = []
+        for label, attr in [
+            ("active", "get_active_memory"),
+            ("cache", "get_cache_memory"),
+            ("peak", "get_peak_memory"),
+        ]:
+            if hasattr(mx.metal, attr):
+                value_gib = getattr(mx.metal, attr)() / 1024**3
+                fields.append(f"{label} {value_gib:.2f}GiB")
+        return "metal_mem " + " ".join(fields) if fields else "metal_mem unavailable"
+    except Exception as exc:
+        return f"metal_mem unavailable ({exc})"
 
 
 def l2_normalize(vector: np.ndarray) -> np.ndarray:
@@ -273,7 +350,14 @@ def encode_variants_for_text(
     variants: list[str],
     layers: list[int],
     positions: list[str],
-) -> tuple[dict[tuple[str, int, str], np.ndarray], int]:
+    *,
+    clear_metal_cache_after_text: bool = True,
+    topk_logits: int = 0,
+) -> tuple[
+    dict[tuple[str, int, str], np.ndarray],
+    int,
+    dict[tuple[str, str], tuple[np.ndarray, np.ndarray]],
+]:
     """Encode all variants for one text while respecting BPE boundaries.
 
     Stage 3 variants are suffix prompts. They first try to reuse the raw text
@@ -284,11 +368,18 @@ def encode_variants_for_text(
     text_prefix_state = extractor.prefill_prefix(text, layers, positions)
     newline_prefix_state: PrefixState | None = None
     output: dict[tuple[str, int, str], np.ndarray] = {}
+    top_logit_output: dict[tuple[str, str], tuple[np.ndarray, np.ndarray]] = {}
     try:
         for variant in variants:
             suffix = PROMPT_VARIANTS[variant]
             try:
-                vectors = extractor.encode_suffix(text_prefix_state, suffix, layers, positions)
+                vectors, top_logits = extractor.encode_suffix_with_logits(
+                    text_prefix_state,
+                    suffix,
+                    layers,
+                    positions,
+                    topk_logits=topk_logits,
+                )
             except ValueError as exc:
                 if not str(exc).startswith("Cannot reuse prefix cache") or not suffix.startswith("\n"):
                     raise
@@ -298,11 +389,12 @@ def encode_variants_for_text(
                         layers,
                         positions,
                     )
-                vectors = extractor.encode_suffix(
+                vectors, top_logits = extractor.encode_suffix_with_logits(
                     newline_prefix_state,
                     suffix[1:],
                     layers,
                     positions,
+                    topk_logits=topk_logits,
                 )
                 if "content_end" in positions:
                     for layer in layers:
@@ -312,12 +404,14 @@ def encode_variants_for_text(
 
             for (layer, position), vector in vectors.items():
                 output[(variant, layer, position)] = vector
-        return output, text_prefix_state.token_count
+            for position, top_logit_pair in top_logits.items():
+                top_logit_output[(variant, position)] = top_logit_pair
+        return output, text_prefix_state.token_count, top_logit_output
     finally:
         del text_prefix_state
         if newline_prefix_state is not None:
             del newline_prefix_state
-        clear_mlx_memory()
+        clear_mlx_memory(clear_metal_cache=clear_metal_cache_after_text)
 
 
 def encode_variants(
@@ -383,9 +477,11 @@ def main() -> int:
         layer_count=len(layers),
         position_count=len(positions),
         hidden_dim=config["hidden_dim"],
+        topk_logits=args.store_topk_logits,
     )
     check_storage_budget(vector_dir, estimated_bytes, min_free_gb=args.min_free_gb)
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    configure_metal_cache(args.metal_cache_limit_gb)
 
     writer = Stage2VectorWriter(
         vector_dir,
@@ -396,8 +492,15 @@ def main() -> int:
         positions=positions,
         score_modes_evaluated=ONLINE_SCORE_MODES,
         target_chunk_mb=args.target_chunk_mb,
+        topk_logits=args.store_topk_logits,
     )
-    extractor = CachedSuffixExtractor(str(model_path))
+    clear_metal_on_suffix = args.clear_cache_every == "suffix"
+    clear_metal_on_row = args.clear_cache_every == "row"
+    clear_metal_on_instance = args.clear_cache_every == "instance"
+    extractor = CachedSuffixExtractor(
+        str(model_path),
+        clear_metal_cache_after_suffix=clear_metal_on_suffix,
+    )
 
     predictions_by_config: dict[str, list[Prediction]] = {}
     skipped_candidates: list[dict[str, Any]] = []
@@ -407,6 +510,13 @@ def main() -> int:
     processed_prompt_rows = 0
     last_progress_report = 0
     start_time = time.monotonic()
+
+    def handle_stop(signum: int, _frame: Any) -> None:
+        print(f"\nreceived signal {signum}; flushing vectors before exit")
+        raise KeyboardInterrupt
+
+    for stop_signal in (signal.SIGINT, signal.SIGTERM):
+        signal.signal(stop_signal, handle_stop)
 
     def report_progress(instance_index: int) -> None:
         nonlocal last_progress_report
@@ -420,7 +530,8 @@ def main() -> int:
         print(
             f"processed {processed_prompt_rows}/{total_prompt_rows} prompt rows "
             f"(instance {instance_index + 1}/{len(instances)}) "
-            f"elapsed {format_duration(elapsed)} ETA {format_duration(remaining)}"
+            f"elapsed {format_duration(elapsed)} ETA {format_duration(remaining)} "
+            f"{metal_memory_summary()}"
         )
         last_progress_report = processed_prompt_rows
 
@@ -433,12 +544,14 @@ def main() -> int:
 
             for candidate_index, (candidate_id, text, is_gold) in enumerate(candidates):
                 try:
-                    vectors, token_count = encode_variants_for_text(
+                    vectors, token_count, top_logits = encode_variants_for_text(
                         extractor,
                         text,
                         variants,
                         layers,
                         positions,
+                        clear_metal_cache_after_text=clear_metal_on_row,
+                        topk_logits=args.store_topk_logits,
                     )
                 except ValueError as exc:
                     if "no prefix tokens" not in str(exc).lower():
@@ -457,7 +570,7 @@ def main() -> int:
                         "warning: skipped empty-prefix candidate "
                         f"{candidate_id} in {instance.question_id}"
                     )
-                    clear_mlx_memory()
+                    clear_mlx_memory(clear_metal_cache=clear_metal_on_row)
                     processed_prompt_rows += 1
                     report_progress(instance_index)
                     continue
@@ -476,17 +589,20 @@ def main() -> int:
                         resolved_positions={position: None for position in positions},
                     ),
                     vectors,
+                    top_logits=top_logits,
                 )
-                clear_mlx_memory()
+                clear_mlx_memory(clear_metal_cache=False)
                 processed_prompt_rows += 1
                 report_progress(instance_index)
 
-            query_vectors, query_token_count = encode_variants_for_text(
+            query_vectors, query_token_count, query_top_logits = encode_variants_for_text(
                 extractor,
                 instance.question,
                 variants,
                 layers,
                 positions,
+                clear_metal_cache_after_text=clear_metal_on_row,
+                topk_logits=args.store_topk_logits,
             )
             writer.add(
                 PromptMetadata(
@@ -500,8 +616,9 @@ def main() -> int:
                     resolved_positions={position: None for position in positions},
                 ),
                 query_vectors,
+                top_logits=query_top_logits,
             )
-            clear_mlx_memory()
+            clear_mlx_memory(clear_metal_cache=False)
             processed_prompt_rows += 1
             report_progress(instance_index)
 
@@ -537,14 +654,13 @@ def main() -> int:
                             )
 
             processed_instances += 1
-            if processed_instances % 5 == 0:
-                writer.flush_chunk()
-                clear_mlx_memory()
-                print(f"processed {processed_instances}/{len(instances)} instances")
+            writer.flush_chunk()
+            if clear_metal_on_instance:
+                clear_mlx_memory(clear_metal_cache=True)
     finally:
         writer.close()
         del extractor
-        clear_mlx_memory()
+        clear_mlx_memory(clear_metal_cache=True)
 
     metrics_by_config = {
         config_key: evaluate(
@@ -569,6 +685,9 @@ def main() -> int:
             "vector_dir": str(vector_dir),
             "estimated_vector_output_gb": estimated_bytes / 1024**3,
             "score_modes": ONLINE_SCORE_MODES,
+            "metal_cache_limit_gb": args.metal_cache_limit_gb,
+            "clear_cache_every": args.clear_cache_every,
+            "store_topk_logits": args.store_topk_logits,
         },
         "skipped_candidates": skipped_candidates,
         "skipped_candidate_count": len(skipped_candidates),

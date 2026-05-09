@@ -28,6 +28,19 @@ The manifest keeps `role`, `instance_index`, `question_id`, `candidate_id`, and
 `is_gold`, so offline analysis can split candidates and queries and recover the
 gold labels.
 
+Optional sparse logits can be stored with `--store-topk-logits K`. When enabled,
+each chunk also contains:
+
+```text
+top_logit_token_ids: (n_prompts, n_variants, n_positions, K)
+top_logit_values:    (n_prompts, n_variants, n_positions, K)
+```
+
+These are final-layer next-token logits at the same prompt positions as the
+hidden vectors. They do not repeat across the layer axis. The option defaults to
+`0` because full-vocab distributions would be too large, while top-K logits are
+only a lightweight sparse audit signal.
+
 ## Does This Support Later Vector-Combination Search?
 
 Yes. The Stage 3 encoder stores raw vectors before anti-PCA, BM25 fusion, or any
@@ -46,6 +59,19 @@ The current script does not implement those combination scorers. It only ensures
 the raw material is preserved. A later offline evaluator can load the same
 candidate/query rows and build combined representations from the variant/layer
 axes.
+
+## Runtime Safety
+
+Stage 3 writes under `tensors/stage3_prompt_sweep/` and flushes a chunk after
+each instance. If the process receives SIGINT or SIGTERM, the writer is closed in
+the cleanup path so completed rows are preserved.
+
+The default runtime knobs are conservative for the 16GB Mac target:
+
+- `--metal-cache-limit-gb 2`: keep a bounded MLX/Metal reusable allocation cache.
+- `--clear-cache-every row`: reuse Metal buffers across all suffix prompts for
+  one text row, then clear them. This does not delete the live prefix KV cache;
+  it only controls reusable temporary buffers.
 
 ## Multi-Token Follow-Up
 

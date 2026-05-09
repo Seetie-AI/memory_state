@@ -30,6 +30,13 @@ from hidden_state.mlx_wrapper import MLXHiddenStateExtractor
 PositionName = str
 LayerIndex = int
 VectorMap = dict[tuple[LayerIndex, PositionName], np.ndarray]
+TopLogitMap = dict[PositionName, tuple[np.ndarray, np.ndarray]]
+
+
+@dataclass
+class ForwardOutput:
+    vectors: VectorMap
+    top_logits: TopLogitMap
 
 
 @dataclass
@@ -51,8 +58,14 @@ class PrefixState:
 class CachedSuffixExtractor:
     """Extract compact suffix/end hidden-state vectors with prefix KV reuse."""
 
-    def __init__(self, model_path: str) -> None:
+    def __init__(
+        self,
+        model_path: str,
+        *,
+        clear_metal_cache_after_suffix: bool = True,
+    ) -> None:
         self.model_path = model_path
+        self.clear_metal_cache_after_suffix = clear_metal_cache_after_suffix
         self.extractor = MLXHiddenStateExtractor(model_path, dtype_note="mlx")
         self.model = self.extractor.model
         self.base_model = self.extractor.base_model
@@ -88,7 +101,7 @@ class CachedSuffixExtractor:
             for position in target_positions
             if position in {"last", "minus2", "minus3", "content_end"}
         ]
-        vectors = self._forward_collect(
+        output = self._forward_collect(
             token_ids=token_ids,
             cache=cache,
             target_layers=target_layers,
@@ -99,7 +112,7 @@ class CachedSuffixExtractor:
             text=text,
             token_ids=token_ids,
             cache=cache,
-            vectors=vectors,
+            vectors=output.vectors,
             token_count=len(token_ids),
         )
 
@@ -110,6 +123,23 @@ class CachedSuffixExtractor:
         target_layers: list[int],
         target_positions: list[str],
     ) -> VectorMap:
+        vectors, _top_logits = self.encode_suffix_with_logits(
+            prefix_state=prefix_state,
+            suffix_text=suffix_text,
+            target_layers=target_layers,
+            target_positions=target_positions,
+            topk_logits=0,
+        )
+        return vectors
+
+    def encode_suffix_with_logits(
+        self,
+        prefix_state: PrefixState,
+        suffix_text: str,
+        target_layers: list[int],
+        target_positions: list[str],
+        topk_logits: int = 0,
+    ) -> tuple[VectorMap, TopLogitMap]:
         """Run a suffix from a deep-copied prefix cache and return vectors.
 
         The tokenizer split is verified exactly. If `encode(text + suffix)` is
@@ -133,13 +163,15 @@ class CachedSuffixExtractor:
             if position in {"last", "minus2", "minus3", "suffix_start"}
         ]
         cache = copy.deepcopy(prefix_state.cache)
-        vectors = self._forward_collect(
+        output = self._forward_collect(
             token_ids=suffix_tokens,
             cache=cache,
             target_layers=target_layers,
             target_positions=suffix_positions,
             position_context="suffix",
+            topk_logits=topk_logits,
         )
+        vectors = output.vectors
 
         if "content_end" in target_positions:
             for layer in target_layers:
@@ -148,8 +180,13 @@ class CachedSuffixExtractor:
                     vectors[(layer, "content_end")] = source
 
         del cache
-        clear_mlx_memory()
-        return vectors
+        # Stage 3 may reuse the Metal allocation cache across many short suffix
+        # forwards. The live prefix KV cache remains referenced by PrefixState;
+        # this only controls whether MLX/Metal reusable buffers are purged after
+        # every suffix or at a coarser row/instance boundary by the caller.
+        if self.clear_metal_cache_after_suffix:
+            clear_mlx_memory(clear_metal_cache=True)
+        return vectors, output.top_logits
 
     def encode_no_suffix(
         self,
@@ -183,7 +220,10 @@ class CachedSuffixExtractor:
         target_layers: list[int],
         target_positions: list[str],
         position_context: str,
-    ) -> VectorMap:
+        topk_logits: int = 0,
+    ) -> ForwardOutput:
+        if topk_logits < 0:
+            raise ValueError(f"topk_logits must be >= 0, got {topk_logits}.")
         layers = getattr(self.base_model, "layers", None)
         if not layers:
             raise TypeError("CachedSuffixExtractor requires base_model.layers.")
@@ -206,6 +246,7 @@ class CachedSuffixExtractor:
         )
 
         selected: dict[tuple[int, str], mx.array] = {}
+        resolved_top_logit_positions: dict[str, int] = {}
         for layer_index, (layer, layer_cache) in enumerate(zip(layers, cache, strict=True)):
             mask = ssm_mask if layer.is_linear else fa_mask
             hidden_states = layer(hidden_states, mask, layer_cache)
@@ -223,17 +264,43 @@ class CachedSuffixExtractor:
                 selected[(layer_index, position_name)] = hidden_states[
                     :, resolved_position, :
                 ].astype(mx.float32)
+                if topk_logits > 0:
+                    resolved_top_logit_positions[position_name] = resolved_position
 
         mx.eval(hidden_states)
         if selected:
             mx.eval(*selected.values())
+
+        top_logits: TopLogitMap = {}
+        if topk_logits > 0 and resolved_top_logit_positions:
+            final_hidden = self.base_model.norm(hidden_states)
+            logits = self.extractor._project_logits(final_hidden)
+            vocab_size = int(logits.shape[-1])
+            if topk_logits > vocab_size:
+                raise ValueError(f"topk_logits={topk_logits} exceeds vocab_size={vocab_size}.")
+            for position_name, resolved_position in resolved_top_logit_positions.items():
+                position_logits = logits[:, resolved_position, :]
+                top_ids = mx.argpartition(
+                    position_logits,
+                    kth=vocab_size - topk_logits,
+                    axis=-1,
+                )[:, -topk_logits:]
+                top_values = mx.take_along_axis(position_logits, top_ids, axis=-1)
+                order = mx.argsort(top_values, axis=-1)[:, ::-1]
+                top_ids = mx.take_along_axis(top_ids, order, axis=-1)
+                top_values = mx.take_along_axis(top_values, order, axis=-1)
+                mx.eval(top_ids, top_values)
+                top_logits[position_name] = (
+                    np.array(top_ids[0], dtype=np.int32),
+                    np.array(top_values[0], dtype=np.float32),
+                )
 
         output: VectorMap = {}
         for key, value in selected.items():
             output[key] = np.array(value[0], dtype=np.float32)
             if not np.all(np.isfinite(output[key])):
                 raise ValueError(f"Non-finite hidden vector for {key}.")
-        return output
+        return ForwardOutput(vectors=output, top_logits=top_logits)
 
     def _resolve_layer(self, layer_index: int) -> int:
         resolved = layer_index if layer_index >= 0 else self.num_layers + layer_index
@@ -272,8 +339,10 @@ def _cache_subset(cache: list[Any], indices: int | list[int]) -> Any:
     return [cache[index] for index in indices]
 
 
-def clear_mlx_memory() -> None:
+def clear_mlx_memory(*, clear_metal_cache: bool = True) -> None:
     gc.collect()
+    if not clear_metal_cache:
+        return
     try:
         if hasattr(mx, "metal") and hasattr(mx.metal, "clear_cache"):
             mx.metal.clear_cache()
