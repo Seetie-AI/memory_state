@@ -622,3 +622,36 @@ implementation. Alpha=0.75 reaches exact R@5 parity with Qwen3-Embedding-0.6B.
 Training-free LLM-native memory retrieval is now **R@5-parity with a dedicated
 embedding model** on this subset, while still using only the LLM's own hidden
 states plus a cheap lexical reranker.
+
+## 2026-05-09: Hidden-only ensemble batch over saved 9B P0 vectors
+
+Output files:
+
+- `results/offline_hidden_ensemble_full_20260509T170236Z.json`
+- `results/offline_hidden_ensemble_full_20260509T170236Z.md`
+
+Design notes: this run is strictly hidden-only, uses the existing
+`tensors/stage2/9b_4bit_100_p0/` dump, and does not rerun the model. We use
+N=100 (94 scored) rather than N=30 because an identical 2B config swung from
+R@5 0.833 on 30 instances to 0.596 on the 100-instance run. RRF is used over
+rank instead of score-linear fusion to avoid score-scale calibration across
+layers, positions, and anti-PCA strengths. Deltas below +0.05 R@5 are treated
+as noise on this sample size.
+
+| Config | R@5 | NDCG@5 | Paired ΔR@5 vs k15 | Interpretation |
+|---|---:|---:|---:|---|
+| k RRF: layer30 last anti-PCA k=5/10/15/20 | **0.766** | 0.772 | +0.011 [0.000, +0.032] | Noise-range gain |
+| Baseline: layer30 last anti-PCA k=15 | 0.755 | **0.779** | 0.000 | Best prior hidden-only |
+| layer RRF: layers 28/29/30/31, k=15, last | 0.755 | 0.771 | 0.000 [-0.032, +0.032] | No gain |
+| layer × k RRF: layers 28-31, k=5/10/15/20 | 0.745 | 0.772 | -0.011 [-0.064, +0.032] | Noise-range |
+| multi-vector positions + per-position anti-PCA k=15 | 0.702 | 0.725 | -0.053 [-0.106, -0.011] | Regression |
+| position × k RRF: layer30, all positions/k | 0.564 | 0.473 | -0.191 [-0.277, -0.117] | Clear regression |
+| position RRF: layer30, all positions, k=15 | 0.553 | 0.475 | -0.202 [-0.287, -0.128] | Clear regression |
+| raw multi-vector positions | 0.245 | 0.210 | -0.511 [-0.606, -0.404] | Clear regression |
+
+Takeaway: hidden-only ensemble does not yet produce a reliable improvement
+over the simple 9B layer30-last anti-PCA k=15 baseline. The only positive row
+is k-RRF at +1.1pp R@5, but its paired confidence interval touches zero and is
+well below the +5pp signal threshold. Position mixing is actively harmful here,
+which reinforces the earlier finding that the prompt-final `last` token is the
+critical state for retrieval.
