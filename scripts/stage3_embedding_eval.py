@@ -84,7 +84,14 @@ class InstanceEmbeddingMetadata:
 
 
 class EmbeddingStoreWriter:
-    """Small per-instance embedding store with atomic manifest snapshots."""
+    """Small per-instance embedding store with atomic manifest snapshots.
+
+    Resume is explicit because a Stage 3 repo reorganization once moved an
+    output directory while a long embedding run was active, causing a late
+    FileNotFoundError. Long runs need recovery, but silent append/overwrite is
+    dangerous, so ``--resume`` defaults to false and requires exact manifest
+    compatibility with the current CLI/configuration.
+    """
 
     def __init__(
         self,
@@ -97,18 +104,13 @@ class EmbeddingStoreWriter:
         storage_dtype: str,
         normalize: bool,
         config: dict[str, Any],
+        resume: bool,
     ) -> None:
         self.output_dir = output_dir
-        self.output_dir.mkdir(parents=True, exist_ok=True)
-        existing = list(self.output_dir.iterdir())
-        if existing:
-            raise FileExistsError(
-                f"Refusing to write into non-empty output directory: {self.output_dir}. "
-                "Choose a new --output-dir or remove the old run after review."
-            )
         self.storage_dtype = np.float16 if storage_dtype == "float16" else np.float32
-        self.manifest: dict[str, Any] = {
-            "created_utc": datetime.now(timezone.utc).isoformat(),
+        self.completed_instances: dict[int, dict[str, Any]] = {}
+
+        expected_manifest = {
             "model_path": model_path,
             "backend": backend,
             "pooling": pooling,
@@ -116,9 +118,32 @@ class EmbeddingStoreWriter:
             "storage_dtype": storage_dtype,
             "normalize": normalize,
             "config": config,
-            "embedding_dim": None,
-            "instances": [],
         }
+
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+        existing = list(self.output_dir.iterdir())
+        manifest_path = self.output_dir / "manifest.json"
+        if existing and not resume:
+            raise FileExistsError(
+                f"Refusing to write into non-empty output directory: {self.output_dir}. "
+                "Choose a new --output-dir, remove the old run after review, or pass --resume."
+            )
+
+        if resume and manifest_path.exists():
+            self.manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            validate_resume_manifest(self.manifest, expected_manifest)
+            self.completed_instances = completed_instances_from_manifest(self.manifest, self.output_dir)
+        elif existing:
+            raise FileExistsError(
+                f"Cannot resume {self.output_dir}: directory is non-empty but manifest.json is missing."
+            )
+        else:
+            self.manifest: dict[str, Any] = {
+                "created_utc": datetime.now(timezone.utc).isoformat(),
+                **expected_manifest,
+                "embedding_dim": None,
+                "instances": [],
+            }
 
     def add_instance(
         self,
@@ -151,12 +176,20 @@ class EmbeddingStoreWriter:
         elif int(self.manifest["embedding_dim"]) != int(query_embedding.shape[0]):
             raise ValueError("embedding dimension changed during run")
 
+        output_path = self.output_dir / metadata.file
+        if output_path.exists():
+            raise FileExistsError(
+                f"Refusing to overwrite existing embedding file for incomplete manifest entry: {output_path}"
+            )
+
         np.savez(
-            self.output_dir / metadata.file,
+            output_path,
             candidate_embeddings=candidate_embeddings.astype(self.storage_dtype, copy=False),
             query_embedding=query_embedding.astype(self.storage_dtype, copy=False),
         )
-        self.manifest["instances"].append(asdict(metadata))
+        metadata_dict = asdict(metadata)
+        self.manifest["instances"].append(metadata_dict)
+        self.completed_instances[metadata.instance_index] = metadata_dict
         self.write_manifest()
 
     def write_manifest(self) -> None:
@@ -164,6 +197,34 @@ class EmbeddingStoreWriter:
         tmp = self.output_dir / "manifest.json.tmp"
         tmp.write_text(json.dumps(self.manifest, ensure_ascii=False, indent=2), encoding="utf-8")
         os.replace(tmp, target)
+
+
+def validate_resume_manifest(manifest: dict[str, Any], expected: dict[str, Any]) -> None:
+    """Fail fast if a resumed run would mix incompatible embeddings."""
+    mismatches = []
+    for key, expected_value in expected.items():
+        actual_value = manifest.get(key)
+        if actual_value != expected_value:
+            mismatches.append((key, actual_value, expected_value))
+    if mismatches:
+        details = "; ".join(
+            f"{key}: manifest={actual!r} current={expected!r}"
+            for key, actual, expected in mismatches
+        )
+        raise ValueError(f"Cannot resume run with incompatible manifest fields: {details}")
+
+
+def completed_instances_from_manifest(manifest: dict[str, Any], output_dir: Path) -> dict[int, dict[str, Any]]:
+    completed: dict[int, dict[str, Any]] = {}
+    for item in manifest.get("instances", []):
+        instance_index = int(item["instance_index"])
+        if instance_index in completed:
+            raise ValueError(f"Manifest has duplicate instance_index={instance_index}")
+        path = output_dir / str(item["file"])
+        if not path.exists():
+            raise FileNotFoundError(f"Manifest marks instance {instance_index} complete, but {path} is missing")
+        completed[instance_index] = item
+    return completed
 
 
 class SentenceTransformerBackend:
@@ -435,6 +496,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--min-free-gb", type=float, default=10.0)
     parser.add_argument("--dry-run", action="store_true", help="Count work and estimate storage without loading model.")
     parser.add_argument(
+        "--resume",
+        action="store_true",
+        help=(
+            "Resume an interrupted embedding run from output_dir/manifest.json. "
+            "All manifest fields must match the current CLI/config."
+        ),
+    )
+    parser.add_argument(
         "--mlx-clear-cache-every",
         choices=["text", "instance", "never"],
         default="instance",
@@ -496,6 +565,7 @@ def main() -> int:
             "mlx_clear_cache_every": args.mlx_clear_cache_every,
             "task_description": args.task_description,
         },
+        resume=args.resume,
     )
 
     predictions: list[Prediction] = []
@@ -517,6 +587,21 @@ def main() -> int:
         candidate_texts = [text for _candidate_id, text, _is_gold in candidates]
         gold_ids = [candidate_id for candidate_id, _text, is_gold in candidates if is_gold]
         has_target = has_round_side_answer_label(instance)
+
+        if instance_index in writer.completed_instances:
+            predictions.append(
+                prediction_from_stored_instance(
+                    output_dir,
+                    writer.completed_instances[instance_index],
+                    instance=instance,
+                    candidate_ids=candidate_ids,
+                    gold_ids=gold_ids,
+                    has_target=has_target,
+                    top_k=args.top_k,
+                )
+            )
+            print(f"skipping completed instance_index={instance_index}")
+            continue
 
         doc_started = time.perf_counter()
         candidate_embeddings = backend.encode_documents(candidate_texts)
@@ -617,6 +702,42 @@ def main() -> int:
     print(f"embedding_dir: {output_dir}")
     print(f"result file: {result_path}")
     return 0
+
+
+def prediction_from_stored_instance(
+    output_dir: Path,
+    metadata: dict[str, Any],
+    *,
+    instance: Instance,
+    candidate_ids: list[str],
+    gold_ids: list[str],
+    has_target: bool,
+    top_k: int,
+) -> Prediction:
+    stored_candidate_ids = [str(value) for value in metadata.get("candidate_ids", [])]
+    if stored_candidate_ids != candidate_ids:
+        raise ValueError(
+            f"Stored candidate IDs for instance {metadata.get('instance_index')} do not match current data."
+        )
+
+    arrays = np.load(output_dir / str(metadata["file"]))
+    candidate_embeddings = np.asarray(arrays["candidate_embeddings"], dtype=np.float32)
+    query_embedding = np.asarray(arrays["query_embedding"], dtype=np.float32)
+    if query_embedding.ndim != 1:
+        raise ValueError(f"Stored query embedding must be 1D, got {query_embedding.shape}")
+    if candidate_embeddings.shape[0] != len(candidate_ids):
+        raise ValueError(
+            f"Stored candidate rows {candidate_embeddings.shape[0]} != candidate IDs {len(candidate_ids)}"
+        )
+    scores = query_embedding @ candidate_embeddings.T
+    top_indices = np.argsort(-scores)[: min(top_k, len(scores))]
+    return Prediction(
+        question_id=instance.question_id,
+        retrieved_ids=[candidate_ids[int(index)] for index in top_indices],
+        gold_ids=gold_ids,
+        is_abstention=instance.is_abstention,
+        has_target=has_target,
+    )
 
 
 def make_backend(args: argparse.Namespace, model_path: str) -> EmbeddingBackend:
