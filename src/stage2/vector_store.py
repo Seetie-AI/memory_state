@@ -59,10 +59,12 @@ class Stage2VectorWriter:
             raise ValueError(f"topk_logits must be >= 0, got {topk_logits}.")
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        if (self.output_dir / "manifest.json").exists():
+        existing_files = list(self.output_dir.iterdir())
+        if existing_files:
             raise FileExistsError(
-                f"Refusing to overwrite existing Stage 2 vector store: {self.output_dir}. "
-                "Choose a new --output-dir or remove the old temporary run after review."
+                f"Refusing to write into non-empty vector store directory: {self.output_dir}. "
+                "Choose a new --output-dir or remove the old temporary run after review. "
+                f"Existing entries include: {[path.name for path in existing_files[:5]]}"
             )
         self.model_path = model_path
         self.tokenizer_path = tokenizer_path

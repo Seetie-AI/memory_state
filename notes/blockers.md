@@ -55,4 +55,4 @@ Notes:
 
 - `scripts/download_models.py` downloads about 9 GB into `./models/`.
 - Do not move the models into the default HuggingFace cache; the project expects local paths under `./models/`.
-- After the sanity check finishes, share `results/phase0_sanity_check.json` for review.
+- After the sanity check finishes, share `results/stage1/phase0_sanity_check.json` for review.

@@ -287,8 +287,8 @@ class CachedSuffixExtractor:
                 )[:, -topk_logits:]
                 top_values = mx.take_along_axis(position_logits, top_ids, axis=-1)
                 order = mx.argsort(top_values, axis=-1)[:, ::-1]
-                top_ids = mx.take_along_axis(top_ids, order, axis=-1)
-                top_values = mx.take_along_axis(top_values, order, axis=-1)
+                top_ids = mx.take_along_axis(top_ids, order, axis=-1).astype(mx.int32)
+                top_values = mx.take_along_axis(top_values, order, axis=-1).astype(mx.float32)
                 mx.eval(top_ids, top_values)
                 top_logits[position_name] = (
                     np.array(top_ids[0], dtype=np.int32),
@@ -344,7 +344,9 @@ def clear_mlx_memory(*, clear_metal_cache: bool = True) -> None:
     if not clear_metal_cache:
         return
     try:
-        if hasattr(mx, "metal") and hasattr(mx.metal, "clear_cache"):
+        if hasattr(mx, "clear_cache"):
+            mx.clear_cache()
+        elif hasattr(mx, "metal") and hasattr(mx.metal, "clear_cache"):
             mx.metal.clear_cache()
     except Exception:
         pass

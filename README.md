@@ -203,7 +203,7 @@ python scripts/stage2_online_eval.py \
   --layers 24-31 \
   --positions last,minus2,minus3,suffix_start,content_end \
   --output-dir tensors/stage2/9b_4bit_100_p0 \
-  --result-path results/stage2_step5_9b_4bit_100_p0.json
+  --result-path results/stage2/stage2_step5_9b_4bit_100_p0.json
 ```
 
 Then run Path B's offline analysis commands to reproduce the final anti-PCA and
@@ -263,24 +263,31 @@ run can be scaled to the planned 30-instance probe before committing to it.
 | `scripts/stage2_online_eval.py` | Stage 2 online model runner and compact vector writer. |
 | `scripts/stage2_offline_analyze.py` | Stage 2 offline analyzer over saved vectors. |
 | `scripts/select_stage2_layers.py` | Copies selected Stage 2 layers into a smaller verified vector store. |
+| `scripts/stage3_prompt_sweep.py` | Stage 3 prompt-variant encoder/evaluator. |
+| `scripts/stage3_merge_stores.py` | Stage 3 multi-machine vector-store merge utility. |
+| `scripts/stage3_merged_store_check.py` | Stage 3 merged-store self-consistency checker. |
+| `scripts/stage3_embedding_eval.py` | Stage 3 embedding-model counterpart evaluator. |
 | `scripts/gguf_final_embedding_eval.py` | Runs the GGUF Base-model final-embedding approximation with llama.cpp. |
 | `src/hidden_state/` | MLX / transformers hidden-state extraction utilities. |
 | `src/stage2/vector_store.py` | Compact Stage 2 vector storage. |
 | `src/eval/longmemeval_metrics.py` | Recall@k / NDCG / bootstrap metrics. |
 | `data/` | Local LongMemEval cleaned JSON files. Gitignored. |
 | `models/` | Local model weights. Gitignored. |
-| `tensors/` | Saved hidden-state/vector artifacts. Gitignored. |
-| `results/` | Per-run JSON/markdown outputs. Gitignored. |
+| `tensors/stage1/`, `tensors/stage2/`, `tensors/stage3/` | Saved hidden-state/vector artifacts, organized by stage. Gitignored. |
+| `results/stage1/`, `results/stage2/`, `results/stage3/` | Per-run JSON/markdown outputs, organized by stage. Gitignored. |
 
 ## Current Local Artifacts
 
-The key local tensor artifacts are:
+The key local tensor artifacts are listed below. The original Stage 1 dump
+archive now lives at `tensors/stage1/dump_v1/`.
 
 | Artifact | Role |
 |---|---|
-| `tensors/dump_v1/` | Stage 1 2B bf16 Tier A archive. |
+| `tensors/stage1/dump_v1/` | Stage 1 2B bf16 Tier A archive. |
 | `tensors/stage2/2b_4bit_100_p0_selected/` | Stage 2 2B 4-bit comparison vectors, reduced to layers 20-23 after exact verification. |
 | `tensors/stage2/9b_4bit_100_p0/` | Stage 2 final 9B 4-bit vectors used by offline analyses. |
+| `tensors/stage3/prompt_sweep/merged_subset0-100_cache2gb_logits256/` | Stage 3 merged prompt-sweep vectors for instances 0-99. |
+| `tensors/stage3/embedding_eval/qwen3_embedding_8b_dwq_subset0-100/` | Stage 3 Qwen3 embedding-eval stored outputs. |
 
 The selected 2B store keeps the late layers that carried the useful retrieval
 signal while dropping earlier layers from the larger confirmation dump. It was
@@ -292,7 +299,7 @@ The temporary `tensors/stage2/9b_4bit_30_layer_scan/`,
 `tensors/dump_preview/`, and `models/Qwen3.5-2B-hf/` artifacts were cleanup
 candidates after their results had been summarized. They were removed after
 human approval; the logged results remain in `notes/results_log.md` and
-`results/`.
+`results/stage1/` and `results/stage2/`.
 
 ## Known Limitations
 

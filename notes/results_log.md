@@ -27,7 +27,7 @@ Key observations:
 
 ## Round 1: vector geometry sweep (2026-05-04)
 
-Setup: existing `tensors/dump_v1` only; no model rerun. Tier A 100-instance (94 scored). All centered_cosine unless noted.
+Setup: existing `tensors/stage1/dump_v1` only; no model rerun. Tier A 100-instance (94 scored). All centered_cosine unless noted.
 
 ### Top configs by R@5
 
@@ -89,7 +89,7 @@ See Round 2 section.
 
 ## Round 2: deeper geometry sweep (2026-05-04)
 
-Setup: existing `tensors/dump_v1`. Tier A 100-instance (94 scored). Each direction varies one variable per row.
+Setup: existing `tensors/stage1/dump_v1`. Tier A 100-instance (94 scored). Each direction varies one variable per row.
 
 ### Anti-PCA extended sweep (control: layer 22 fixed)
 
@@ -182,7 +182,7 @@ See Round 3 section.
 
 ## Round 3: deployment-relevant validation (2026-05-04)
 
-Setup: existing `tensors/dump_v1`. Tier A 100-instance (94 scored). Targeting Round 2 questions: is query-only transform stable? How much corpus needed? Is the 62% same-session FP a routing-vs-disambiguation issue?
+Setup: existing `tensors/stage1/dump_v1`. Tier A 100-instance (94 scored). Targeting Round 2 questions: is query-only transform stable? How much corpus needed? Is the 62% same-session FP a routing-vs-disambiguation issue?
 
 ### Query-only anti-PCA stability (Round 2 hypothesis verification)
 
@@ -627,8 +627,8 @@ states plus a cheap lexical reranker.
 
 Output files:
 
-- `results/offline_hidden_ensemble_full_20260509T170236Z.json`
-- `results/offline_hidden_ensemble_full_20260509T170236Z.md`
+- `results/stage2/offline_hidden_ensemble_full_20260509T170236Z.json`
+- `results/stage2/offline_hidden_ensemble_full_20260509T170236Z.md`
 
 Design notes: this run is strictly hidden-only, uses the existing
 `tensors/stage2/9b_4bit_100_p0/` dump, and does not rerun the model. We use

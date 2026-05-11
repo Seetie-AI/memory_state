@@ -4,8 +4,8 @@ Stage 3 is a prompt-variant sweep for chatbot memory retrieval. It keeps the
 Stage 2 encoder path but writes new artifacts under Stage 3 locations:
 
 - script: `scripts/stage3_prompt_sweep.py`
-- vectors: `tensors/stage3_prompt_sweep/<run_label>/`
-- online sanity metrics: `results/stage3_prompt_sweep/<run_label>.json`
+- vectors: `tensors/stage3/prompt_sweep/<run_label>/`
+- online sanity metrics: `results/stage3/prompt_sweep/<run_label>.json`
 
 The original Stage 2 scripts and vectors are left untouched.
 
@@ -62,7 +62,7 @@ axes.
 
 ## Runtime Safety
 
-Stage 3 writes under `tensors/stage3_prompt_sweep/` and flushes a chunk after
+Stage 3 writes under `tensors/stage3/prompt_sweep/` and flushes a chunk after
 each instance. If the process receives SIGINT or SIGTERM, the writer is closed in
 the cleanup path so completed rows are preserved.
 
@@ -72,6 +72,41 @@ The default runtime knobs are conservative for the 16GB Mac target:
 - `--clear-cache-every row`: reuse Metal buffers across all suffix prompts for
   one text row, then clear them. This does not delete the live prefix KV cache;
   it only controls reusable temporary buffers.
+- `--profile-timing`: optional coarse timing profiler. It persists aggregate
+  prefix prefill, suffix encode, vector writing, chunk flush, and online scoring
+  timings in the result JSON without storing per-row traces.
+
+## Multi-Machine Splits
+
+Use `--subset-start S --subset N` to encode a disjoint global instance slice.
+The script preserves original LongMemEval `instance_index` values in prompt IDs
+and metadata so two machines can be merged later without label collisions.
+
+Machine B can run from the prepared `airdrop_machineB/` folder. After its
+`output/` folder returns, merge the two vector stores with:
+
+```bash
+python scripts/stage3_merge_stores.py \
+  --store-a tensors/stage3/prompt_sweep/<machineA_vectors> \
+  --store-b tensors/stage3/prompt_sweep/<imported_machineB_vectors> \
+  --output-dir tensors/stage3/prompt_sweep/<merged_vectors>
+```
+
+Final anti-PCA/retrieval analysis should run on the merged store. Split metrics
+are only smoke checks because PCA components depend on the full candidate
+corpus.
+
+Current local merged store:
+
+```text
+tensors/stage3/prompt_sweep/merged_subset0-100_cache2gb_logits256/
+```
+
+This store was created after machine A and B completed disjoint slices. The
+current local merge used a CPU byte-preserving chunk-copy fallback because MLX
+was unavailable in the maintenance session; see the store-local
+`MERGE_NOTES.md` for audit details and differences from the canonical rechunking
+merge script.
 
 ## Multi-Token Follow-Up
 

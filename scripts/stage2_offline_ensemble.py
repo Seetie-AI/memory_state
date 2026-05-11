@@ -356,7 +356,7 @@ def print_plan(manifest: dict[str, Any], selected: list[str], dump_dir: Path) ->
     print(f"variants available: {manifest['prompt_variants']}")
     print(f"one fp32 slice estimate: {slice_gb:.2f} GiB")
     print(f"selected experiments: {', '.join(selected)}")
-    print("no model execution; output is results/offline_hidden_ensemble_<timestamp>.json/.md")
+    print("no model execution; output is results/stage2/offline_hidden_ensemble_<timestamp>.json/.md")
 
 
 def design_decisions() -> list[str]:
@@ -768,8 +768,8 @@ def top_metric_rows(configs: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
 
 def write_outputs(result: dict[str, Any], prefix: str) -> None:
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    results_dir = ROOT / "results"
-    results_dir.mkdir(exist_ok=True)
+    results_dir = ROOT / "results" / "stage2"
+    results_dir.mkdir(parents=True, exist_ok=True)
     json_path = results_dir / f"{prefix}_{timestamp}.json"
     md_path = results_dir / f"{prefix}_{timestamp}.md"
     json_path.write_text(json.dumps(to_jsonable(result), ensure_ascii=False, indent=2), encoding="utf-8")

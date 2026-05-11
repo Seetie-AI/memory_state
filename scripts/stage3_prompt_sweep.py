@@ -20,8 +20,8 @@ Design notes for this fork:
   both-sided anti-PCA result while keeping candidate vectors reusable.
 - BM25 fusion is deliberately excluded from this prompt sweep so prompt effects
   are not diluted by a lexical signal.
-- Default outputs live under `tensors/stage3_prompt_sweep/` and
-  `results/stage3_prompt_sweep/` to avoid overwriting Stage 2 artifacts.
+- Default outputs live under `tensors/stage3/prompt_sweep/` and
+  `results/stage3/prompt_sweep/` to avoid overwriting Stage 2 artifacts.
 - LongMemEval is evidence/fact biased; preference/style/pattern prompt variants
   need a caveat when interpreting benchmark results.
 - Speed/safety knobs are Stage 3-specific: by default the script keeps a small
@@ -66,6 +66,7 @@ import signal
 import shutil
 import sys
 import time
+from collections import defaultdict
 from dataclasses import asdict
 from pathlib import Path
 from typing import Any
@@ -140,6 +141,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model-path", required=True)
     parser.add_argument("--data", default=str(ROOT / "data" / "longmemeval_s_cleaned.json"))
     parser.add_argument("--subset", type=int, default=30)
+    parser.add_argument(
+        "--subset-start",
+        type=int,
+        default=0,
+        help=(
+            "Global LongMemEval instance offset. For multi-machine runs this "
+            "must preserve original instance_index values, otherwise merged "
+            "vector stores collide on prompt IDs and labels."
+        ),
+    )
     parser.add_argument("--granularity", choices=["round"], default="round")
     parser.add_argument("--variants", default="1-1_CN")
     parser.add_argument(
@@ -152,6 +163,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--bootstrap-samples", type=int, default=1000)
     parser.add_argument("--target-chunk-mb", type=int, default=512)
     parser.add_argument("--min-free-gb", type=float, default=20.0)
+    parser.add_argument(
+        "--profile-timing",
+        action="store_true",
+        help=(
+            "Persist coarse runtime timing counters in the result JSON. This is "
+            "low overhead and useful for separating prefix prefill, suffix "
+            "encoding, vector writing, and online scoring time."
+        ),
+    )
     parser.add_argument(
         "--store-topk-logits",
         type=int,
@@ -273,15 +293,66 @@ def format_duration(seconds: float) -> str:
     return f"{seconds_rem}s"
 
 
+class TimingStats:
+    """Small aggregate profiler for Stage 3 runs.
+
+    The profiler stores only totals and counts, not per-row details, so it can
+    stay enabled during smoke tests without making result JSON large.
+    """
+
+    def __init__(self, enabled: bool) -> None:
+        self.enabled = enabled
+        self.seconds: defaultdict[str, float] = defaultdict(float)
+        self.counts: defaultdict[str, int] = defaultdict(int)
+
+    def add(self, name: str, elapsed_s: float, count: int = 1) -> None:
+        if not self.enabled:
+            return
+        self.seconds[name] += elapsed_s
+        self.counts[name] += count
+
+    def increment(self, name: str, count: int = 1) -> None:
+        if not self.enabled:
+            return
+        self.counts[name] += count
+
+    def summary(self, total_runtime_s: float) -> dict[str, Any]:
+        if not self.enabled:
+            return {"enabled": False}
+        average_seconds = {
+            name: self.seconds[name] / self.counts[name]
+            for name in self.seconds
+            if self.counts[name] > 0
+        }
+        accounted = sum(self.seconds.values())
+        return {
+            "enabled": True,
+            "total_runtime_s": total_runtime_s,
+            "seconds": dict(sorted(self.seconds.items())),
+            "counts": dict(sorted(self.counts.items())),
+            "average_seconds": dict(sorted(average_seconds.items())),
+            "unaccounted_runtime_s": max(0.0, total_runtime_s - accounted),
+            "note": (
+                "suffix_encode_s includes cache deepcopy, suffix model forward, "
+                "optional final-layer logits/top-k, and vector transfer."
+            ),
+        }
+
+
 def configure_metal_cache(limit_gb: float) -> None:
     """Set an MLX/Metal reusable-cache cap without changing live tensor limits."""
     if limit_gb <= 0:
         return
     try:
-        if hasattr(mx, "metal") and hasattr(mx.metal, "set_cache_limit"):
+        if hasattr(mx, "set_cache_limit"):
+            mx.set_cache_limit(int(limit_gb * 1024**3))
+            print(f"MLX cache limit set to {limit_gb:.2f} GiB")
+        elif hasattr(mx, "metal") and hasattr(mx.metal, "set_cache_limit"):
             mx.metal.set_cache_limit(int(limit_gb * 1024**3))
             print(f"MLX Metal cache limit set to {limit_gb:.2f} GiB")
-        if hasattr(mx, "metal") and hasattr(mx.metal, "reset_peak_memory"):
+        if hasattr(mx, "reset_peak_memory"):
+            mx.reset_peak_memory()
+        elif hasattr(mx, "metal") and hasattr(mx.metal, "reset_peak_memory"):
             mx.metal.reset_peak_memory()
     except Exception as exc:
         print(f"warning: could not configure MLX Metal cache limit: {exc}")
@@ -290,7 +361,10 @@ def configure_metal_cache(limit_gb: float) -> None:
 def metal_memory_summary() -> str:
     """Return active/cache/peak Metal memory for progress logs when available."""
     try:
-        if not hasattr(mx, "metal"):
+        if not hasattr(mx, "metal") and not any(
+            hasattr(mx, attr)
+            for attr in ["get_active_memory", "get_cache_memory", "get_peak_memory"]
+        ):
             return "metal_mem unavailable"
         fields = []
         for label, attr in [
@@ -298,7 +372,10 @@ def metal_memory_summary() -> str:
             ("cache", "get_cache_memory"),
             ("peak", "get_peak_memory"),
         ]:
-            if hasattr(mx.metal, attr):
+            if hasattr(mx, attr):
+                value_gib = getattr(mx, attr)() / 1024**3
+                fields.append(f"{label} {value_gib:.2f}GiB")
+            elif hasattr(mx.metal, attr):
                 value_gib = getattr(mx.metal, attr)() / 1024**3
                 fields.append(f"{label} {value_gib:.2f}GiB")
         return "metal_mem " + " ".join(fields) if fields else "metal_mem unavailable"
@@ -353,6 +430,7 @@ def encode_variants_for_text(
     *,
     clear_metal_cache_after_text: bool = True,
     topk_logits: int = 0,
+    timing: TimingStats | None = None,
 ) -> tuple[
     dict[tuple[str, int, str], np.ndarray],
     int,
@@ -365,7 +443,10 @@ def encode_variants_for_text(
     fall back to a `text + "\n"` prefix and suffix body, while `content_end`
     remains sourced from the raw-text prefix for apples-to-apples diagnostics.
     """
+    prefix_started = time.perf_counter()
     text_prefix_state = extractor.prefill_prefix(text, layers, positions)
+    if timing is not None:
+        timing.add("prefix_prefill_s", time.perf_counter() - prefix_started)
     newline_prefix_state: PrefixState | None = None
     output: dict[tuple[str, int, str], np.ndarray] = {}
     top_logit_output: dict[tuple[str, str], tuple[np.ndarray, np.ndarray]] = {}
@@ -373,6 +454,7 @@ def encode_variants_for_text(
         for variant in variants:
             suffix = PROMPT_VARIANTS[variant]
             try:
+                suffix_started = time.perf_counter()
                 vectors, top_logits = extractor.encode_suffix_with_logits(
                     text_prefix_state,
                     suffix,
@@ -380,15 +462,25 @@ def encode_variants_for_text(
                     positions,
                     topk_logits=topk_logits,
                 )
+                if timing is not None:
+                    timing.add("suffix_encode_s", time.perf_counter() - suffix_started)
+                    timing.increment("suffix_forwards")
             except ValueError as exc:
                 if not str(exc).startswith("Cannot reuse prefix cache") or not suffix.startswith("\n"):
                     raise
                 if newline_prefix_state is None:
+                    newline_prefix_started = time.perf_counter()
                     newline_prefix_state = extractor.prefill_prefix(
                         text + "\n",
                         layers,
                         positions,
                     )
+                    if timing is not None:
+                        timing.add(
+                            "newline_prefix_prefill_s",
+                            time.perf_counter() - newline_prefix_started,
+                        )
+                suffix_started = time.perf_counter()
                 vectors, top_logits = extractor.encode_suffix_with_logits(
                     newline_prefix_state,
                     suffix[1:],
@@ -396,6 +488,9 @@ def encode_variants_for_text(
                     positions,
                     topk_logits=topk_logits,
                 )
+                if timing is not None:
+                    timing.add("suffix_encode_s", time.perf_counter() - suffix_started)
+                    timing.increment("suffix_forwards")
                 if "content_end" in positions:
                     for layer in layers:
                         source = text_prefix_state.vectors.get((layer, "content_end"))
@@ -408,10 +503,13 @@ def encode_variants_for_text(
                 top_logit_output[(variant, position)] = top_logit_pair
         return output, text_prefix_state.token_count, top_logit_output
     finally:
+        cleanup_started = time.perf_counter()
         del text_prefix_state
         if newline_prefix_state is not None:
             del newline_prefix_state
         clear_mlx_memory(clear_metal_cache=clear_metal_cache_after_text)
+        if timing is not None:
+            timing.add("row_cleanup_s", time.perf_counter() - cleanup_started)
 
 
 def encode_variants(
@@ -435,7 +533,10 @@ def prompt_id(prefix: str, instance_index: int, local_index: int) -> str:
 
 
 def result_paths(args: argparse.Namespace, model_path: Path) -> tuple[Path, Path]:
-    subset_label = args.subset if args.subset and args.subset > 0 else "full"
+    if args.subset and args.subset > 0:
+        subset_label = f"{args.subset_start}-{args.subset_start + args.subset}"
+    else:
+        subset_label = f"{args.subset_start}-full"
     model_label = model_path.name.replace("/", "_")
     variant_label = "-".join(parse_csv(args.variants))
     layer_label = parse_csv(args.layers) if args.layers != "all" else ["all"]
@@ -445,12 +546,12 @@ def result_paths(args: argparse.Namespace, model_path: Path) -> tuple[Path, Path
     vector_dir = (
         Path(args.output_dir)
         if args.output_dir
-        else ROOT / "tensors" / "stage3_prompt_sweep" / run_label
+        else ROOT / "tensors" / "stage3" / "prompt_sweep" / run_label
     )
     result_path = (
         Path(args.result_path)
         if args.result_path
-        else ROOT / "results" / "stage3_prompt_sweep" / f"{run_label}.json"
+        else ROOT / "results" / "stage3" / "prompt_sweep" / f"{run_label}.json"
     )
     return vector_dir, result_path
 
@@ -466,9 +567,21 @@ def main() -> int:
     config = model_config(model_path)
     layers = parse_layers(args.layers, num_layers=config["num_layers"])
     positions = parse_csv(args.positions)
-    instances = load_instances(args.data)
+    all_instances = load_instances(args.data)
+    if args.subset_start < 0:
+        raise ValueError(f"--subset-start must be >= 0, got {args.subset_start}.")
+    if args.subset_start >= len(all_instances):
+        raise ValueError(
+            f"--subset-start {args.subset_start} is outside dataset length {len(all_instances)}."
+        )
+    # Keep the original global instance_index. Two machines may encode
+    # disjoint slices, and merged stores must not have prompt_id/label collisions.
+    indexed_instances = list(enumerate(all_instances))
     if args.subset and args.subset > 0:
-        instances = instances[: args.subset]
+        indexed_instances = indexed_instances[args.subset_start : args.subset_start + args.subset]
+    else:
+        indexed_instances = indexed_instances[args.subset_start :]
+    instances = [instance for _global_index, instance in indexed_instances]
 
     vector_dir, output_path = result_paths(args, model_path)
     estimated_bytes = estimate_output_bytes(
@@ -510,6 +623,7 @@ def main() -> int:
     processed_prompt_rows = 0
     last_progress_report = 0
     start_time = time.monotonic()
+    timing = TimingStats(enabled=args.profile_timing)
 
     def handle_stop(signum: int, _frame: Any) -> None:
         print(f"\nreceived signal {signum}; flushing vectors before exit")
@@ -518,7 +632,7 @@ def main() -> int:
     for stop_signal in (signal.SIGINT, signal.SIGTERM):
         signal.signal(stop_signal, handle_stop)
 
-    def report_progress(instance_index: int) -> None:
+    def report_progress(local_instance_index: int, global_instance_index: int) -> None:
         nonlocal last_progress_report
         if processed_prompt_rows < total_prompt_rows and (
             processed_prompt_rows - last_progress_report < progress_interval
@@ -529,14 +643,15 @@ def main() -> int:
         remaining = (total_prompt_rows - processed_prompt_rows) / max(rate, 1e-9)
         print(
             f"processed {processed_prompt_rows}/{total_prompt_rows} prompt rows "
-            f"(instance {instance_index + 1}/{len(instances)}) "
+            f"(instance {local_instance_index + 1}/{len(indexed_instances)}, "
+            f"global {global_instance_index}) "
             f"elapsed {format_duration(elapsed)} ETA {format_duration(remaining)} "
             f"{metal_memory_summary()}"
         )
         last_progress_report = processed_prompt_rows
 
     try:
-        for instance_index, instance in enumerate(instances):
+        for local_instance_index, (instance_index, instance) in enumerate(indexed_instances):
             candidates = iter_round_candidates(instance)
             gold_ids = [candidate_id for candidate_id, _text, is_gold in candidates if is_gold]
             active_candidate_ids: list[str] = []
@@ -552,6 +667,7 @@ def main() -> int:
                         positions,
                         clear_metal_cache_after_text=clear_metal_on_row,
                         topk_logits=args.store_topk_logits,
+                        timing=timing,
                     )
                 except ValueError as exc:
                     if "no prefix tokens" not in str(exc).lower():
@@ -572,11 +688,12 @@ def main() -> int:
                     )
                     clear_mlx_memory(clear_metal_cache=clear_metal_on_row)
                     processed_prompt_rows += 1
-                    report_progress(instance_index)
+                    report_progress(local_instance_index, instance_index)
                     continue
 
                 active_candidate_ids.append(candidate_id)
                 candidate_vector_maps.append(vectors)
+                writer_started = time.perf_counter()
                 writer.add(
                     PromptMetadata(
                         prompt_id=prompt_id("cand", instance_index, candidate_index),
@@ -591,9 +708,10 @@ def main() -> int:
                     vectors,
                     top_logits=top_logits,
                 )
+                timing.add("writer_add_s", time.perf_counter() - writer_started)
                 clear_mlx_memory(clear_metal_cache=False)
                 processed_prompt_rows += 1
-                report_progress(instance_index)
+                report_progress(local_instance_index, instance_index)
 
             query_vectors, query_token_count, query_top_logits = encode_variants_for_text(
                 extractor,
@@ -603,7 +721,9 @@ def main() -> int:
                 positions,
                 clear_metal_cache_after_text=clear_metal_on_row,
                 topk_logits=args.store_topk_logits,
+                timing=timing,
             )
+            writer_started = time.perf_counter()
             writer.add(
                 PromptMetadata(
                     prompt_id=prompt_id("query", instance_index, 0),
@@ -618,10 +738,12 @@ def main() -> int:
                 query_vectors,
                 top_logits=query_top_logits,
             )
+            timing.add("writer_add_s", time.perf_counter() - writer_started)
             clear_mlx_memory(clear_metal_cache=False)
             processed_prompt_rows += 1
-            report_progress(instance_index)
+            report_progress(local_instance_index, instance_index)
 
+            scoring_started = time.perf_counter()
             for variant in variants:
                 for layer in layers:
                     for position in positions:
@@ -652,9 +774,12 @@ def main() -> int:
                                     has_target=has_round_side_answer_label(instance),
                                 )
                             )
+            timing.add("online_scoring_s", time.perf_counter() - scoring_started)
 
             processed_instances += 1
+            flush_started = time.perf_counter()
             writer.flush_chunk()
+            timing.add("writer_flush_s", time.perf_counter() - flush_started)
             if clear_metal_on_instance:
                 clear_mlx_memory(clear_metal_cache=True)
     finally:
@@ -670,13 +795,16 @@ def main() -> int:
         )
         for config_key, predictions in predictions_by_config.items()
     }
+    total_runtime_s = time.monotonic() - start_time
 
     payload = {
         "stage": "stage3_prompt_sweep",
         "config": {
             "model_path": str(model_path),
             "data": args.data,
+            "subset_start": args.subset_start,
             "subset": args.subset,
+            "selected_instance_indices": [index for index, _instance in indexed_instances],
             "variants": variants,
             "layers": layers,
             "positions": positions,
@@ -688,7 +816,9 @@ def main() -> int:
             "metal_cache_limit_gb": args.metal_cache_limit_gb,
             "clear_cache_every": args.clear_cache_every,
             "store_topk_logits": args.store_topk_logits,
+            "profile_timing": args.profile_timing,
         },
+        "profile_timing": timing.summary(total_runtime_s),
         "skipped_candidates": skipped_candidates,
         "skipped_candidate_count": len(skipped_candidates),
         "metrics_by_config": metrics_by_config,
@@ -710,6 +840,16 @@ def main() -> int:
     print(f"instances: {processed_instances}")
     print(f"vector_dir: {vector_dir}")
     print(f"result file: {output_path}")
+    if args.profile_timing:
+        summary = timing.summary(total_runtime_s)
+        print("timing summary:")
+        for name, seconds in summary["seconds"].items():
+            count = summary["counts"].get(name, 0)
+            average = summary["average_seconds"].get(name)
+            if average is None:
+                print(f"  {name}: {format_duration(seconds)}")
+            else:
+                print(f"  {name}: {format_duration(seconds)} total / {average:.3f}s avg over {count}")
     print("top configs by Recall@5:")
     for recall5, ndcg5, config_key in top_rows[:10]:
         print(f"  {recall5:.3f} R@5 / {ndcg5:.3f} NDCG@5 :: {config_key}")
