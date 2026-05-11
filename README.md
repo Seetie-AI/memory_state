@@ -264,6 +264,7 @@ run can be scaled to the planned 30-instance probe before committing to it.
 | `scripts/stage2_offline_analyze.py` | Stage 2 offline analyzer over saved vectors. |
 | `scripts/select_stage2_layers.py` | Copies selected Stage 2 layers into a smaller verified vector store. |
 | `scripts/stage3_prompt_sweep.py` | Stage 3 prompt-variant encoder/evaluator. |
+| `scripts/stage3_offline_analyze.py` | Stage 3 offline prompt-sweep leaderboard over merged vectors. |
 | `scripts/stage3_merge_stores.py` | Stage 3 multi-machine vector-store merge utility. |
 | `scripts/stage3_merged_store_check.py` | Stage 3 merged-store self-consistency checker. |
 | `scripts/stage3_embedding_eval.py` | Stage 3 embedding-model counterpart evaluator. |
@@ -311,6 +312,9 @@ human approval; the logged results remain in `notes/results_log.md` and
 - LongMemEval mostly tests explicit long-term memory retrieval: facts,
   multi-session aggregation, temporal reasoning, and knowledge updates. It is
   not primarily a preference-reasoning or recommender benchmark.
+- Stage 3 prompt-sweep scores should be read with that chatbot-memory caveat:
+  persona/preference-style prompts can be useful even when this evidence-heavy
+  benchmark ranks them below fact/topic prompts.
 - The final best R@5 uses BM25 fusion. The best 9B hidden-only result is
   Recall@5 = 0.755.
 - NDCG@5 still trails Qwen3-Embedding-0.6B: final Stage 2 is 0.791 vs 0.809.
