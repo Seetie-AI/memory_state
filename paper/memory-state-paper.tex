@@ -42,23 +42,11 @@
 \makeatother
 \setlength{\parindent}{1em}
 \setlength{\parskip}{2pt plus 1pt minus 1pt}
-\usepackage{longtable,booktabs,array,tabularx}
-\usepackage{caption}
-\captionsetup[table]{skip=6pt}
-\newcounter{none} % for unnumbered tables
-\usepackage{calc} % for calculating minipage widths
-% Correct order of tables after \paragraph or \subparagraph
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
-\makeatother
-% Allow footnotes in longtable head/foot
-\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
-\makesavenoteenv{longtable}
+\usepackage{booktabs,array,tabularx}
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\usepackage{bookmark}
+\usepackage{hyperref}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 % fallback for those not using the hyperref driver hyperxmp:
@@ -489,52 +477,47 @@ agent\textquotesingle s memory index may not require a second model at
 all, and that the memory an agent needs may already be present in the
 act of understanding, waiting to be read out rather than rebuilt.
 
+\begingroup
+\small
 \begin{thebibliography}{9}
+\setlength{\itemsep}{0pt}
+\setlength{\parskip}{0pt}
 
 \bibitem{jiang2024}
-Jiang et al.
-\newblock Scaling Sentence Embeddings with Large Language Models.
-\newblock \emph{Findings of EMNLP}, 2024.
-\newblock \url{https://aclanthology.org/2024.findings-emnlp.181/}
+Jiang et al. Scaling Sentence Embeddings with Large Language Models.
+\emph{Findings of EMNLP}, 2024.
+\href{https://aclanthology.org/2024.findings-emnlp.181/}{ACL Anthology}.
 
 \bibitem{lei2024}
-Lei et al.
-\newblock Meta-Task Prompting Elicits Embeddings from Large Language Models.
-\newblock \emph{ACL}, 2024.
-\newblock \url{https://aclanthology.org/2024.acl-long.546/}
+Lei et al. Meta-Task Prompting Elicits Embeddings from Large Language Models.
+\emph{ACL}, 2024. \href{https://aclanthology.org/2024.acl-long.546/}{ACL Anthology}.
 
 \bibitem{zhuang2024}
-Zhuang et al.
-\newblock PromptReps: Prompting Large Language Models to Generate Dense and
+Zhuang et al. PromptReps: Prompting Large Language Models to Generate Dense and
 Sparse Representations for Zero-Shot Document Retrieval.
-\newblock \emph{EMNLP}, 2024.
-\newblock \url{https://aclanthology.org/2024.emnlp-main.250/}
+\emph{EMNLP}, 2024. \href{https://aclanthology.org/2024.emnlp-main.250/}{ACL Anthology}.
 
 \bibitem{mu2018}
-Mu and Viswanath.
-\newblock All-but-the-Top: Simple and Effective Postprocessing for Word
+Mu and Viswanath. All-but-the-Top: Simple and Effective Postprocessing for Word
 Representations.
-\newblock \emph{ICLR}, 2018.
-\newblock \url{https://openreview.net/forum?id=HkuGJ3kCb}
+\emph{ICLR}, 2018. \href{https://openreview.net/forum?id=HkuGJ3kCb}{OpenReview}.
 
 \bibitem{wu2024}
-Wu et al.
-\newblock LongMemEval: Benchmarking Chat Assistants on Long-Term Interactive
+Wu et al. LongMemEval: Benchmarking Chat Assistants on Long-Term Interactive
 Memory.
-\newblock 2024. \url{https://arxiv.org/abs/2410.10813}
+2024. \href{https://arxiv.org/abs/2410.10813}{arXiv:2410.10813}.
 
 \bibitem{zhao2025}
-Zhao, Hong, Liu, Hazarika, and Lin.
-\newblock Do LLMs Recognize Your Preferences? Evaluating Personalized
+Zhao, Hong, Liu, Hazarika, and Lin. Do LLMs Recognize Your Preferences? Evaluating Personalized
 Preference Following in LLMs.
-\newblock 2025. \url{https://arxiv.org/abs/2502.09597}
+2025. \href{https://arxiv.org/abs/2502.09597}{arXiv:2502.09597}.
 
 \bibitem{zhang2025}
-Zhang et al.
-\newblock Qwen3 Embedding: Advancing Text Embedding and Reranking Through
+Zhang et al. Qwen3 Embedding: Advancing Text Embedding and Reranking Through
 Foundation Models.
-\newblock 2025. \url{https://arxiv.org/abs/2506.05176}
+2025. \href{https://arxiv.org/abs/2506.05176}{arXiv:2506.05176}.
 
 \end{thebibliography}
+\endgroup
 
 \end{document}
