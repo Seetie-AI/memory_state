@@ -465,6 +465,16 @@ percentage points. Differences of one or two questions between the
 reported systems and the embedding baselines should be read as parity,
 not as ordering.
 
+The PrefEval-derived global pool labels only each paired preference
+statement and 10 exact textual duplicates as gold. In a manual audit of
+100 sampled misses, 58 were plausible same-topic candidates, including
+some semantically equivalent false negatives; 28 shared the topic but
+carried the wrong constraint, such as an allergy confused with a
+stylistic dislike; and 14 were unrelated. Recall@5 here therefore
+measures paired-memory recovery rather than utility. It may understate
+useful retrieval, but simply crediting same-topic hits would hide real
+and sometimes safety-critical errors.
+
 Prompt and fusion choices were selected on explored benchmark subsets.
 The LongMemEval-derived results are therefore exploratory rather than a
 clean held-out evaluation. The PrefEval-derived result in Section 5.2 is
