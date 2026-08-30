@@ -456,18 +456,21 @@ the three-view hybrid at 8 KB.
 
 \section{Limitations}\label{limitations}
 
-The reported numbers are for retrieval tasks derived from LongMemEval
-and PrefEval data, not their official end-to-end protocols. In
-particular, we do not measure LongMemEval answer accuracy or PrefEval
-generation/classification accuracy. The LongMemEval slice is also
-strongly composition-biased because the source file is ordered by
-question type. It contains every single-session-user item and 30
-multi-session items, but no temporal-reasoning, knowledge-update,
-single-session-assistant, or single-session-preference items. It cannot
-represent LongMemEval as a whole. The 94 scored questions also mean that
-one question moves the metric by about 1.1 percentage points.
-Differences of one or two questions between the reported systems and the
-embedding baselines should be read as parity, not as ordering.
+The main limitation of our LongMemEval result is a biased evaluation
+slice. We evaluated only turn retrieval on the first 100 entries of a
+file ordered by question type: 70 single-session-user and 30
+multi-session questions, with six abstention cases removed. The
+resulting 94 questions contain no temporal-reasoning, knowledge-update,
+single-session-assistant, or single-session-preference items and do not
+test final answer accuracy, so they cannot represent LongMemEval as a
+whole.
+
+The PrefEval result likewise uses our derived retrieval task rather than
+the official generation or classification protocols. With 94 scored
+LongMemEval questions, one question moves the metric by about 1.1
+percentage points. Differences of one or two questions between the
+reported systems and the embedding baselines should be read as parity,
+not as ordering.
 
 That derived task has imperfect labels. Only the paired preference
 statement and 10 exact duplicates count as correct. In a manual review
