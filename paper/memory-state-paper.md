@@ -19,7 +19,8 @@ at 8 KB per page, against 0.755 for a Qwen3-Embedding-8B-4bit-DWQ baseline on
 the same 94 scored questions. The margin is two questions on this subset, so we
 report it as parity-level evidence and make no significance claim.
 
-To test whether the recipe transfers rather than fits one benchmark, we carry
+To test whether prompt semantics carry across benchmarks rather than fitting
+one of them, we carry
 the three prompt identities selected on LongMemEval over to PrefEval
 implicit-persona, a preference and persona memory task, and evaluate them over
 all 1,000 examples. Per-view layer and geometry settings were assigned on the
@@ -28,9 +29,9 @@ configuration. As pure dense hidden-state retrieval with no lexical or
 embedding signal it reaches Recall@5 of 0.299 against 0.281 for the same 8B
 embedding baseline, while ranking last among the four K3 candidates evaluated
 there. A model-size check under matched conditions gives 0.596 for
-Qwen3.5-2B-MLX-4bit and 0.691 for Qwen3.5-9B-MLX-4bit, so the memory
-representation improves with the reasoning model rather than being capped by a
-smaller retriever.
+Qwen3.5-2B-MLX-4bit and 0.691 for Qwen3.5-9B-MLX-4bit, so in this matched
+comparison the memory representation improves with the reasoning model rather
+than being capped by a smaller retriever.
 
 ## 1. Introduction
 
@@ -41,8 +42,8 @@ may share none of the words in the current query. This is the unknown unknown
 problem.
 
 Semantic retrieval addresses it, but it adds a second model. That retriever is
-usually smaller than the reasoning model, and it was trained for some general
-retrieval objective rather than for the agent that will read the result. If it
+usually smaller than the reasoning model, and it was trained for a retrieval
+objective that may not match the agent-memory domain it is deployed in. If it
 misses, the more capable model never sees the memory.
 
 This work tests a third arrangement. The model that reads and reasons over a
@@ -117,9 +118,16 @@ reproduced, but it is not part of the reported systems.
 ### 3.1 Prompt views
 
 Suffixes are written in Chinese and ask the model to emit a single token. One
-of the PrefEval views, translated, reads: *Use one emoji to mark the emotion of
-the conversation above. The emoji is: "*. The other two ask for one keyword the
-conversation should recall and one token for the association it creates. The
+of the PrefEval views, translated, reads:
+
+```
+Use one emoji to mark the emotion of the conversation above. The emoji is: "
+```
+
+The trailing quotation mark is part of the suffix. It opens the model's answer,
+so the next decoded token is the key itself. The other two views ask for one
+keyword the conversation should recall and one token for the association it
+creates. The
 originals and the full configuration are in the repository.
 
 ### 3.2 Geometry
@@ -132,8 +140,8 @@ won Recall@5 for 13, query-only removal for 3, and plain centered cosine for 1.
 
 Hidden-state extraction uses `Qwen3.5-9B-MLX-4bit`, with `Qwen3.5-2B-MLX-4bit`
 for the model-size check. Embedding baselines are
-`Qwen3-Embedding-8B-4bit-DWQ` and `Qwen3-Embedding-0.6B-4bit-DWQ`. All models
-are local 4-bit conversions. Embedding scores are never concatenated
+`Qwen3-Embedding-8B-4bit-DWQ` and `Qwen3-Embedding-0.6B-4bit-DWQ`, from the
+Qwen3 Embedding series [7]. All models are local 4-bit conversions. Embedding scores are never concatenated
 into the hidden vectors; they appear only as baselines or as score-level
 signals.
 
@@ -216,8 +224,8 @@ reported for prompted representations at larger model scale [3].
 
 **There is no universal best layer.** Across the prompt sweep, layers 29, 30,
 and 31 each won for 6, 6, and 5 variants respectively. The useful region is a
-band below the output layer whose exact position depends on prompt semantics,
-not a single layer.
+late-layer band whose exact position depends on prompt semantics, not a single
+layer.
 
 **Prompt wording matters more than expected.** Changing one word in an
 otherwise identical suffix, from a neutral term for the other party to the
@@ -232,8 +240,7 @@ a single-variable comparison. Cross-language prompting worked here; we make no
 general multilingual claim.
 
 **Not every retrieval-shaped prompt works.** An answer-strategy prompt
-collapsed to Recall@5 of 0.574, well below the lexical baseline's neighbours in
-the sweep.
+fell to Recall@5 of 0.574.
 
 **Lexical fusion helps only as a small vote inside a shortlist.** Fusing BM25
 inside the vector top 20 or top 50 beat full-corpus fusion for ranking, and
@@ -276,8 +283,9 @@ Section 5.1 reaches the same strict recall as the three-view hybrid at 8 KB.
 ## 8. Limitations
 
 The LongMemEval numbers rest on 94 scored questions, where one question moves
-the metric by about 1.1 percentage points, and confidence intervals between the
-reported systems and the embedding baselines overlap.
+the metric by about 1.1 percentage points. Differences of one or two questions
+between the reported systems and the embedding baselines should be read as
+parity, not as ordering.
 
 Prompt and fusion choices were selected on explored benchmark subsets. The
 LongMemEval results are therefore exploratory rather than a clean held-out
@@ -340,3 +348,6 @@ Interactive Memory. https://arxiv.org/abs/2410.10813
 [6] Zhao, Hong, Liu, Hazarika, and Lin. Do LLMs Recognize Your Preferences?
 Evaluating Personalized Preference Following in LLMs. 2025.
 https://arxiv.org/abs/2502.09597
+
+[7] Zhang et al. Qwen3 Embedding: Advancing Text Embedding and Reranking
+Through Foundation Models. 2025. https://arxiv.org/abs/2506.05176
