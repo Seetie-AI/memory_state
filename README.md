@@ -4,6 +4,21 @@ This repository tests whether an LLM's own inference-time hidden states can act
 as long-term memory retrieval vectors, without training a separate embedding
 model.
 
+## Start here
+
+- [docs/memory-state-article.md](docs/memory-state-article.md): short write-up
+  for a general reader.
+- [paper/memory-state-paper.md](paper/memory-state-paper.md): the academic
+  write-up, with related work, negative results, and limitations.
+- [docs/DATA.md](docs/DATA.md): which benchmark data is not redistributed here,
+  and how to obtain it.
+
+Those two write-ups carry the current headline numbers. The Stage 2 summary
+below and the rest of this README are the May 2026 working state, kept as a
+log. Where they disagree with the write-ups above, the write-ups are current.
+
+---
+
 The final Stage 2 result is:
 
 > Qwen3.5-9B-4bit, using the prompt-final hidden state from layer 30, anti-PCA
