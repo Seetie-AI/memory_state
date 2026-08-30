@@ -73,34 +73,28 @@ Memory}
 
 \begin{abstract}
 
-Agent memory systems typically pair a reasoning model with a separate,
-smaller embedding model that indexes what the agent should remember. We
-ask whether the reasoning model can supply its own retrieval keys.
-Memory State prompts a generative LLM to compress a memory page into a
-short key, then stores the hidden state at the final key token, taken
-from a late-layer band near the output, as the retrieval vector. No
-retriever is trained, distilled, or adapted.
+Prior work has already shown that prompts can elicit useful text
+embeddings from generative language-model hidden states. We study a
+different question: whether those representations are useful as
+persistent retrieval keys for long-term conversational and preference
+memory. Memory State captures a suffix-final hidden state from the
+reasoning model itself, using small memory-specific prompt facets and no
+trained, distilled, or adapted retriever. The contribution is this
+agent-memory use and evaluation, not the underlying prompting mechanism.
 
-On LongMemEval-S at round granularity, a compact two-view configuration
-using Qwen3.5-9B-MLX-4bit reaches strict Recall@5 of 0.777 using hidden
-states alone, at 8 KB per page, against 0.755 for a
-Qwen3-Embedding-8B-4bit-DWQ baseline on the same 94 scored questions.
-The margin is two questions on this subset, so we report it as
-parity-level evidence and make no significance claim.
-
-To test whether prompt semantics carry across benchmarks rather than
-fitting one of them, we carry the three prompt identities selected on
-LongMemEval over to PrefEval implicit-persona, a preference and persona
-memory task, and evaluate them over all 1,000 examples. Per-view layer
-and geometry settings were assigned on the PrefEval side, so this is
-prompt-identity transfer rather than a frozen configuration. As pure
-dense hidden-state retrieval with no lexical or embedding signal it
-reaches Recall@5 of 0.299 against 0.281 for the same 8B embedding
-baseline, while ranking last among the four K3 candidates evaluated
-there. A model-size check under matched conditions gives 0.596 for
-Qwen3.5-2B-MLX-4bit and 0.691 for Qwen3.5-9B-MLX-4bit, so in this
-matched comparison the memory representation improves with the reasoning
-model rather than being capped by a smaller retriever.
+We construct two retrieval tasks from LongMemEval-S and PrefEval rather
+than reproduce either benchmark's official end-to-end protocol. On a
+100-instance LongMemEval-S-derived turn-retrieval subset, a compact
+two-view Qwen3.5-9B-MLX-4bit configuration reaches strict Recall@5 of
+0.777 using hidden states alone, at 8 KB per page, against 0.755 for a
+Qwen3-Embedding-8B-4bit-DWQ baseline on the same 94 scored questions. On
+a PrefEval-derived task that retrieves each question's associated
+preference from a global pool of 1,000 preference statements, a
+three-facet hidden-state configuration reaches 0.299 against 0.281 for
+the same embedding baseline. The results are parity-level evidence that
+the reasoning model's own memory state can approach a dedicated
+embedding model on these derived retrieval tasks. A matched 2B-to-9B
+comparison further moves Recall@5 from 0.596 to 0.691.
 
 \end{abstract}
 
@@ -125,7 +119,8 @@ semantic space with downstream reasoning, and it needs no separately
 trained component.
 
 The question came from an anomaly. While sweeping prompt suffixes on
-PrefEval, a generic prompt asking the model for a single emoji reached
+the PrefEval-derived retrieval task, a generic prompt asking the model
+for a single emoji reached
 Recall@5 of about 0.285, next to 0.281 for an 8B embedding model on the
 same 1,000 examples. That prompt was not the best in the sweep and it is
 not part of any system reported here. We record it as the observation
@@ -133,42 +128,49 @@ that motivated the work: a reasoning model appears to carry a usable
 memory representation in places we do not normally treat as an index.
 
 We report three things. First, hidden-state keys reach
-embedding-baseline scale on evidence retrieval. Second, a prompt
-combination selected on one memory benchmark carries over to a different
-memory task. Third, the representation improves with model size under
-matched conditions.
+embedding-baseline scale on two benchmark-derived memory retrieval
+tasks. Second, three simple memory facets selected on conversational
+memory remain useful on preference retrieval. Third, the representation
+improves with model size under matched conditions.
 
 \section{Related Work}\label{related-work}
 
-\textbf{PromptEOL}~\cite{jiang2024} showed that a one-word prompt can turn the
-hidden state of the final prompt token into a sentence embedding without
-fine-tuning.
+\textbf{PromptEOL}~\cite{jiang2024} adds an explicit one-word constraint to a
+causal language-model prompt and uses the hidden state at the
+suffix-final input position, which predicts the next token, as a
+sentence embedding without fine-tuning.
 
-\textbf{MetaEOL}~\cite{lei2024} extended this with multiple meta-task prompt
-views over the same text, and reported that the final layer is not
-always the best choice, with a proportional layer-selection strategy
-giving improvements.
+\textbf{MetaEOL}~\cite{lei2024} extracts multiple one-word-limited views for
+meta-tasks such as classification and sentiment, then averages their
+embeddings. It also reports that the final layer is not always best and
+that a proportional layer-selection strategy improves its largest-model
+result.
 
-\textbf{PromptReps}~\cite{zhuang2024} brought prompted LLM representations to
-training-free full-corpus document retrieval, combining the last
-layer\textquotesingle s last-token hidden state with next-token logits
-into a dense and sparse hybrid, and reported stronger retrieval with
-larger LLMs.
+\textbf{PromptReps}~\cite{zhuang2024} applies the one-word prompt to
+training-free full-corpus document retrieval. It combines the last
+layer's suffix-final hidden state with logits for the next token to form
+a dense and sparse hybrid, processes queries with a corresponding query
+prompt, and reports stronger retrieval with a larger LLM.
 
-\textbf{All-but-the-Top}~\cite{mu2018} established that removing the common
-mean and the top principal components from a set of embeddings exposes
-semantic differences that a shared dominant direction otherwise masks.
+\textbf{All-but-the-Top}~\cite{mu2018} showed that subtracting the common mean
+and projecting word vectors away from a small number of dominant
+principal directions can improve their quality across several tasks.
 
-Memory State does not claim the mechanism. Prompted final-token hidden
-states, multiple prompt views, layer selection below the output layer,
-and dominant-direction removal all come from this line of work. Our
-contribution is the application: treating these representations as
-persistent retrieval keys for long-term agent memory, designing
-memory-specific prompt suffixes, and evaluating the result on two memory
-benchmarks.
+Memory State does not claim these mechanisms. Prompted suffix-final
+hidden states, multiple prompt views, layer selection below the output
+layer, and dominant-direction removal all precede this work. We combine
+them for a different use: persistent retrieval keys inside an agent's
+own inference path, with small prompt facets aimed at user, conversation,
+and association memory.
 
-We evaluate on \textbf{LongMemEval}~\cite{wu2024} and
-\textbf{PrefEval}~\cite{zhao2025}.
+\textbf{LongMemEval}~\cite{wu2024} evaluates final question answering over
+long multi-session histories and provides answer-location annotations
+for intermediate retrieval analysis. \textbf{PrefEval}~\cite{zhao2025}
+evaluates preference following through long-form generation or
+four-option classification; its retrieval-augmented setting retrieves
+conversation exchanges before answer generation. Our experiments below
+derive retrieval-only tasks from their data. They are not official
+LongMemEval or PrefEval leaderboard evaluations.
 
 \section{Method}\label{method}
 
@@ -210,18 +212,26 @@ reported systems.
 
 \subsection{Prompt views}\label{prompt-views}
 
-Suffixes are written in Chinese and ask the model to emit a single
-token. One of the PrefEval views, translated, reads:
+Suffixes are written in Chinese, ask for one word, and decode one token.
+The three semantic facets in the transferred K3 configuration are,
+translated:
 
 \begin{verbatim}
-Use one emoji to mark the emotion of the conversation above. The emoji is: "
+Use one word to represent the user in the conversation above. The word is: "
+Use one word to mark the conversation above. The word is: "
+Use one word to represent the association this conversation creates for me.
+The word is: "
 \end{verbatim}
 
 The trailing quotation mark is part of the suffix. It opens the
 model\textquotesingle s answer, so the next decoded token is the key
-itself. The other two views ask for one keyword the conversation should
-recall and one token for the association it creates. The originals and
-the full configuration are in the repository.
+itself. These are deliberately small semantic tweaks, not new prompting
+machinery. When the facets were evaluated on the PrefEval-derived task,
+the Chinese verb for ``represent'' in the user and association views was
+changed to ``mark'' to match that sweep's prompt family. Thus the
+transferred unit is the three semantic facets, not byte-identical prompt
+text. The exact Chinese suffixes and full configurations are in the
+repository.
 
 \subsection{Geometry}\label{geometry}
 
@@ -240,24 +250,35 @@ series~\cite{zhang2025}. All models are local 4-bit conversions. Embedding score
 never concatenated into the hidden vectors; they appear only as
 baselines or as score-level signals.
 
-LongMemEval-S is evaluated at round granularity on a 100-instance
-subset, of which 94 questions score after the official abstention
-filter. Recall@5 is strict: a question scores 1 only if every gold turn
-appears in the top 5. One question moves the metric by about 1.1
-percentage points. PrefEval implicit-persona is evaluated over all 1,000
-examples.
+We do not report either benchmark's official end-to-end score. For the
+LongMemEval-S-derived task, each question ranks only the user turns from
+its own haystack sessions; candidates from different questions are
+never mixed. We evaluate a 100-instance subset, of which 94 questions
+remain after abstention and missing-user-label filtering. Recall@5 is
+stricter than a first-hit measure: a question scores 1 only if every
+gold user turn appears in the top 5. We do not run the benchmark's final
+answer-generation stage.
+
+For the PrefEval-derived task, we take 1,000 implicit-persona rows,
+place their ground-truth preference statements in one global candidate
+pool, and ask each row's final question to retrieve its paired
+preference statement. Unlike LongMemEval, candidates from different
+rows are intentionally mixed. This does not reproduce PrefEval's full
+context, long-form generation, or four-option classification. It
+isolates preference-memory indexing.
 
 Benchmark data is not redistributed with the repository. Sources and
 download instructions are documented there.
 
 \section{Results}\label{results}
 
-\subsection{LongMemEval}\label{longmemeval}
+\subsection{LongMemEval-derived turn retrieval}\label{longmemeval}
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{Retrieval results on LongMemEval-S.}
+\caption{Retrieval results on a 100-instance LongMemEval-S-derived
+turn-retrieval subset.}
 \label{tab:longmemeval}
 \begin{tabularx}{\linewidth}{@{}Xrrr@{}}
 \toprule
@@ -288,20 +309,22 @@ questions in this sample. At that resolution we make no significance
 claim. This is parity-level evidence at embedding-baseline scale without
 training an embedding model, not a decisive held-out win.
 
-\subsection{Cross-task transfer to
-PrefEval}\label{cross-task-transfer-to-prefeval}
+\subsection{PrefEval-derived preference
+retrieval}\label{cross-task-transfer-to-prefeval}
 
-The three prompt identities were selected on LongMemEval. They were then
-evaluated on PrefEval as pure dense hidden-state retrieval over all
-1,000 examples. Per-view layer and dominant-direction settings were
-assigned when the PrefEval K3 candidates were constructed, so what
-transfers is the prompt combination, not a frozen extraction
-configuration.
+The three semantic prompt facets were selected on the LongMemEval-derived
+task. They were then evaluated on the PrefEval-derived global retrieval
+task over all 1,000 preference statements. Prompt wording followed the
+PrefEval sweep's ``mark'' family, and per-view layer and
+dominant-direction settings were assigned there. What transfers is the
+user, conversation-tag, and association decomposition, not exact prompt
+text or a frozen extraction configuration.
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{Cross-task retrieval results on PrefEval implicit-persona.}
+\caption{Retrieval results on a PrefEval-derived global
+preference-retrieval task.}
 \label{tab:prefeval}
 \begin{tabularx}{\linewidth}{@{}Xrrrrr@{}}
 \toprule
@@ -315,25 +338,27 @@ Memory State, LongMem prompt transfer, hidden only & 0.093 & 0.212 &
 \end{tabularx}
 \end{table}
 
-The transferred combination exceeds the 8B embedding baseline on strict
+The transferred facet combination exceeds the 8B embedding baseline on
 Recall@5 using no lexical signal and no embedding score. It is slightly
-lower on R@3 and MRR. The LongMemEval shortlist and fusion weights were
-not carried over.
+lower on R@3 and MRR. This is a comparison within our derived retrieval
+task, not a PrefEval benchmark score. The LongMemEval shortlist and
+fusion weights were not carried over.
 
 Two things make this the most informative PrefEval row we have. It was
 not selected to win here: of the four K3 candidates evaluated on
 PrefEval it placed last, below combinations whose prompts were chosen on
-PrefEval itself. And its prompt identities were fixed by a different
-benchmark. So it is the weakest candidate in its own sweep and still
+the PrefEval-derived task itself. And its semantic facets were fixed by
+a different benchmark-derived task. So it is the weakest candidate in
+its own sweep and still
 clears the 8B embedding baseline on strict recall. This supports the
 claim that a prompt combination can cross memory domains, not that every
 low-level parameter is universal.
 
-A separate configuration tuned directly on PrefEval, fusing the
-hidden-state score with an embedding score and BM25, reaches Recall@5 of
-0.332. Because its prompts and fusion weights were selected on the same
-data it is reported on, we treat it as a domain-tuned exploratory result
-and not as the headline.
+A separate configuration tuned directly on the PrefEval-derived task,
+fusing the hidden-state score with an embedding score and BM25, reaches
+Recall@5 of 0.332. Because its prompts and fusion weights were selected
+on the same data it is reported on, we treat it as a domain-tuned
+exploratory result and not as the headline.
 
 \subsection{Model size}\label{model-size}
 
@@ -431,19 +456,23 @@ the three-view hybrid at 8 KB.
 
 \section{Limitations}\label{limitations}
 
-The LongMemEval numbers rest on 94 scored questions, where one question
-moves the metric by about 1.1 percentage points. Differences of one or
-two questions between the reported systems and the embedding baselines
-should be read as parity, not as ordering.
+The reported numbers are for retrieval tasks derived from LongMemEval
+and PrefEval data, not their official end-to-end protocols. In
+particular, we do not measure LongMemEval answer accuracy or PrefEval
+generation/classification accuracy. The LongMemEval-derived numbers rest
+on 94 scored questions, where one question moves the metric by about 1.1
+percentage points. Differences of one or two questions between the
+reported systems and the embedding baselines should be read as parity,
+not as ordering.
 
 Prompt and fusion choices were selected on explored benchmark subsets.
-The LongMemEval results are therefore exploratory rather than a clean
-held-out evaluation. The PrefEval result in Section 5.2 is the closest
-we come to an independent estimate, because its prompt identities were
-fixed by a different benchmark and it was not the configuration selected
-to perform best there. Its per-view layer and geometry settings were
-still assigned on the PrefEval side, so it is not a held-out evaluation
-either.
+The LongMemEval-derived results are therefore exploratory rather than a
+clean held-out evaluation. The PrefEval-derived result in Section 5.2 is
+the closest we come to an independent estimate, because its semantic
+facets were fixed by a different task and it was not the configuration
+selected to perform best there. Its prompt wording, per-view layer, and
+geometry settings were still assigned on the PrefEval side, so it is not
+a held-out evaluation either.
 
 The geometry is tied to \texttt{Qwen3.5-9B-MLX-4bit} and may change
 under another model, another quantization, another language, or another
@@ -467,10 +496,10 @@ them under the original terms.
 \section{Conclusion}\label{conclusion}
 
 A generative model, in the course of reading a page, leaves behind a
-representation that can be used to find that page again. On two
-different memory benchmarks this representation performed at the scale
-of embedding models built for the job, without training a retriever, and
-it improved with model size under matched conditions.
+representation that can be used to find that page again. On retrieval
+tasks derived from two different memory benchmarks, this representation
+performed at the scale of a dedicated embedding model without training
+a retriever, and it improved with model size under matched conditions.
 
 The claim is not that hidden states beat embedding models. It is that an
 agent\textquotesingle s memory index may not require a second model at
