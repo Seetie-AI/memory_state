@@ -259,13 +259,13 @@ stricter than a first-hit measure: a question scores 1 only if every
 gold user turn appears in the top 5. We do not run the benchmark's final
 answer-generation stage.
 
-For the PrefEval-derived task, we take 1,000 implicit-persona rows,
-place their ground-truth preference statements in one global candidate
-pool, and ask each row's final question to retrieve its paired
-preference statement. Unlike LongMemEval, candidates from different
-rows are intentionally mixed. This does not reproduce PrefEval's full
-context, long-form generation, or four-option classification. It
-isolates preference-memory indexing.
+We use PrefEval's data, but not its official evaluation protocol.
+PrefEval asks a model to read the full conversation and then generate an
+answer or choose one of four options. We instead put the 1,000
+ground-truth preference statements in a shared pool and ask each final
+question to retrieve its paired statement. Candidates from different
+rows are mixed. This tests preference-memory retrieval, not end-to-end
+preference following.
 
 Benchmark data is not redistributed with the repository. Sources and
 download instructions are documented there.
@@ -465,15 +465,14 @@ percentage points. Differences of one or two questions between the
 reported systems and the embedding baselines should be read as parity,
 not as ordering.
 
-The PrefEval-derived global pool labels only each paired preference
-statement and 10 exact textual duplicates as gold. In a manual audit of
-100 sampled misses, 58 were plausible same-topic candidates, including
-some semantically equivalent false negatives; 28 shared the topic but
-carried the wrong constraint, such as an allergy confused with a
-stylistic dislike; and 14 were unrelated. Recall@5 here therefore
-measures paired-memory recovery rather than utility. It may understate
-useful retrieval, but simply crediting same-topic hits would hide real
-and sometimes safety-critical errors.
+That derived task has imperfect labels. Only the paired preference
+statement and 10 exact duplicates count as correct. In a manual review
+of 100 misses, 58 were plausible same-topic matches, some semantically
+equivalent to the gold; 28 found the topic but the wrong constraint; and
+14 were unrelated. Recall@5 therefore measures whether the paired
+statement was recovered, not whether any retrieved memory would be
+useful. It can miss useful alternatives, but counting every same-topic
+result as correct would hide real and sometimes safety-critical errors.
 
 Prompt and fusion choices were selected on explored benchmark subsets.
 The LongMemEval-derived results are therefore exploratory rather than a
