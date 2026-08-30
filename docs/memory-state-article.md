@@ -46,6 +46,12 @@ We first used [LongMemEval-S](https://arxiv.org/abs/2410.10813) at round granula
 | Qwen3-Embedding-8B-4bit-DWQ | 0.755 | 0.789 | 0.826 |
 | Qwen3.5-9B-MLX-4bit K2, hidden only | 0.777 | 0.788 | 0.820 |
 
+*Metric guide, for this and every table below. R@k (Recall@k) measures how much
+relevant memory evidence appears within the first k results; LongMemEval uses a
+strict version requiring every gold turn in the top five. NDCG@5 rewards
+relevant evidence appearing nearer the top. MRR measures how early the first
+relevant result appears. Higher is better throughout.*
+
 The hidden state path scores higher on strict recall and is roughly tied on ranking quality. Its 0.022 recall margin over the 8B baseline equals two questions in this sample.
 
 An earlier model-size check used the same P0 suffix, last-centered transformation, 4-bit precision, and 100 instances for both models:

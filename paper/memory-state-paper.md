@@ -165,6 +165,12 @@ instructions are documented there.
 | Memory State, compact K2, hidden only, 8 KB/page | 0.777 | 0.788 | 0.820 |
 | Memory State, K3 concat plus BM25 top 20, 24 KB/page | 0.777 | 0.822 | 0.851 |
 
+*Metric guide, for this and every table below. R@k (Recall@k) measures how much
+relevant memory evidence appears within the first k results; LongMemEval uses a
+strict version requiring every gold turn in the top five. NDCG@5 rewards
+relevant evidence appearing nearer the top. MRR measures how early the first
+relevant result appears. Higher is better throughout.*
+
 The compact two-view configuration matches the three-view hybrid on strict
 recall while using no lexical signal and one third of the storage. Its 0.022
 margin over the 8B embedding baseline equals two questions in this sample. At
