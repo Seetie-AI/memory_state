@@ -1,0 +1,808 @@
+{
+  "created_utc": "2026-05-12T00:54:22.352220+00:00",
+  "analysis": "prefeval_automatic_retrieval",
+  "inputs": {
+    "task": "implicit_persona",
+    "dataset_id": "siyanzhao/prefeval_implicit_persona",
+    "split": "train",
+    "limit": 30,
+    "shuffle_seed": 0,
+    "retrievers": [
+      "bm25",
+      "single_1-3",
+      "persona_2-7",
+      "persona_2-8",
+      "k3_concat_selected",
+      "k3_concat_uniform_l31_both_k15"
+    ],
+    "top_k": 50,
+    "gold_policy": "same_preference_text",
+    "hidden_model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-9B-MLX-4bit",
+    "embedding_model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3-Embedding-8B-4bit-DWQ",
+    "embedding_alpha": 0.75,
+    "synthetic_smoke": false
+  },
+  "task_summary": {
+    "items": 30,
+    "candidate_count": 30,
+    "query_count": 30,
+    "duplicate_preference_strings": 0,
+    "topics": [
+      "education_learning_styles",
+      "education_resources",
+      "entertain_music_book",
+      "entertain_shows",
+      "entertain_sports",
+      "lifestyle_beauty",
+      "lifestyle_dietary",
+      "lifestyle_fit",
+      "lifestyle_health",
+      "pet_ownership",
+      "professional_work_location_style",
+      "shop_home",
+      "shop_motors",
+      "travel_activities",
+      "travel_hotel",
+      "travel_restaurant",
+      "travel_transportation"
+    ],
+    "preference_types": [
+      "implicit_persona"
+    ]
+  },
+  "prompt_notes": {
+    "2-7": "\n用一个词标记上面这段对话的互动模式，这个词是：“",
+    "2-8": "\n用一个词标记回答上面这段对话中的对方时最该采用的策略，这个词是：“",
+    "note": "2-7 and 2-8 use 标记 in this benchmark; Stage 3 historical scripts are unchanged."
+  },
+  "rows": [
+    {
+      "name": "k3_concat_selected",
+      "description": "best Stage 3 K3 concat: selected layers/transforms, vertical_concat_norm_weighted",
+      "metrics": {
+        "n_total": 30,
+        "n_scored": 30,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.36666666666666664,
+            "ci95": {
+              "low": 0.2,
+              "high": 0.5333333333333333
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.36666666666666664,
+            "ci95": {
+              "low": 0.2,
+              "high": 0.5333333333333333
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.6666666666666666,
+            "ci95": {
+              "low": 0.5325,
+              "high": 0.8
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.5384882922619096,
+            "ci95": {
+              "low": 0.4007012915267897,
+              "high": 0.6841239671428611
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.8,
+            "ci95": {
+              "low": 0.6666666666666666,
+              "high": 0.9333333333333333
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.5929902499491052,
+            "ci95": {
+              "low": 0.48013839715433937,
+              "high": 0.7146949481856548
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.9,
+            "ci95": {
+              "low": 0.8,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.6233723494814088,
+            "ci95": {
+              "low": 0.5203211958116774,
+              "high": 0.7313014561878817
+            }
+          },
+          "recall_all@20": {
+            "mean": 1.0,
+            "ci95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.6487163881084385,
+            "ci95": {
+              "low": 0.5544342136296463,
+              "high": 0.7452984610968764
+            }
+          },
+          "recall_all@50": {
+            "mean": 1.0,
+            "ci95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.6487163881084385,
+            "ci95": {
+              "low": 0.5544342136296463,
+              "high": 0.7452984610968764
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.36666666666666664,
+        "ndcg_any@1": 0.36666666666666664,
+        "recall_all@3": 0.6666666666666666,
+        "ndcg_any@3": 0.5384882922619096,
+        "recall_all@5": 0.8,
+        "ndcg_any@5": 0.5929902499491052,
+        "recall_all@10": 0.9,
+        "ndcg_any@10": 0.6233723494814088,
+        "recall_all@20": 1.0,
+        "ndcg_any@20": 0.6487163881084385,
+        "recall_all@50": 1.0,
+        "ndcg_any@50": 0.6487163881084385,
+        "mrr": 0.5428799270904535
+      },
+      "cells": [
+        {
+          "variant": "2-4-1_user_word",
+          "layer": 30,
+          "transform": "anti_pca_both_k15",
+          "family": "user"
+        },
+        {
+          "variant": "1-3",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "tag"
+        },
+        {
+          "variant": "2-5",
+          "layer": 29,
+          "transform": "query_only_anti_pca_k2",
+          "family": "association"
+        }
+      ],
+      "scorer": "vertical_concat_norm_weighted"
+    },
+    {
+      "name": "k3_concat_uniform_l31_both_k15",
+      "description": "same three prompts, all L31, all anti_pca_both_k15; overfit check",
+      "metrics": {
+        "n_total": 30,
+        "n_scored": 30,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.23333333333333334,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.36750000000000016
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.23333333333333334,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.36750000000000016
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.3333333333333333,
+            "ci95": {
+              "low": 0.16666666666666666,
+              "high": 0.5333333333333333
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.28769765845238193,
+            "ci95": {
+              "low": 0.15,
+              "high": 0.4547809917857154
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.4666666666666667,
+            "ci95": {
+              "low": 0.2991666666666667,
+              "high": 0.6333333333333333
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3421996161395776,
+            "ci95": {
+              "low": 0.2043829778031143,
+              "high": 0.4975593486692395
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.6,
+            "ci95": {
+              "low": 0.43333333333333335,
+              "high": 0.7666666666666667
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.385452830147515,
+            "ci95": {
+              "low": 0.2583071222097034,
+              "high": 0.5192123671997019
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.8333333333333334,
+            "ci95": {
+              "low": 0.7,
+              "high": 0.9666666666666667
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.44701807968379875,
+            "ci95": {
+              "low": 0.32910285635136344,
+              "high": 0.5682691048510587
+            }
+          },
+          "recall_all@50": {
+            "mean": 1.0,
+            "ci95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4821640125010738,
+            "ci95": {
+              "low": 0.38383866527889077,
+              "high": 0.5911391100009528
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.23333333333333334,
+        "ndcg_any@1": 0.23333333333333334,
+        "recall_all@3": 0.3333333333333333,
+        "ndcg_any@3": 0.28769765845238193,
+        "recall_all@5": 0.4666666666666667,
+        "ndcg_any@5": 0.3421996161395776,
+        "recall_all@10": 0.6,
+        "ndcg_any@10": 0.385452830147515,
+        "recall_all@20": 0.8333333333333334,
+        "ndcg_any@20": 0.44701807968379875,
+        "recall_all@50": 1.0,
+        "ndcg_any@50": 0.4821640125010738,
+        "mrr": 0.3448005735218379
+      },
+      "cells": [
+        {
+          "variant": "2-4-1_user_word",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "user"
+        },
+        {
+          "variant": "1-3",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "tag"
+        },
+        {
+          "variant": "2-5",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "association"
+        }
+      ],
+      "scorer": "vertical_concat_norm_weighted"
+    },
+    {
+      "name": "persona_2-7",
+      "description": "single persona/interaction-pattern prompt 2-7, L31, anti_pca_both_k15, verb=标记",
+      "metrics": {
+        "n_total": 30,
+        "n_scored": 30,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.16666666666666666,
+            "ci95": {
+              "low": 0.06583333333333335,
+              "high": 0.3
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.16666666666666666,
+            "ci95": {
+              "low": 0.06583333333333335,
+              "high": 0.3
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.4,
+            "ci95": {
+              "low": 0.26666666666666666,
+              "high": 0.5666666666666667
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.3007906338095277,
+            "ci95": {
+              "low": 0.1796702997410744,
+              "high": 0.4306593839613164
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.4666666666666667,
+            "ci95": {
+              "low": 0.3325,
+              "high": 0.6008333333333336
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3280416126531255,
+            "ci95": {
+              "low": 0.2197867345578136,
+              "high": 0.444713123903235
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.5333333333333333,
+            "ci95": {
+              "low": 0.36666666666666664,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3499495187455256,
+            "ci95": {
+              "low": 0.2406047456035401,
+              "high": 0.46764646694196793
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.7666666666666667,
+            "ci95": {
+              "low": 0.6325,
+              "high": 0.9
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.40569663391566807,
+            "ci95": {
+              "low": 0.3061359646403448,
+              "high": 0.5064114887063963
+            }
+          },
+          "recall_all@50": {
+            "mean": 1.0,
+            "ci95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.45451682609782057,
+            "ci95": {
+              "low": 0.3688667383954962,
+              "high": 0.5541192083185127
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.16666666666666666,
+        "ndcg_any@1": 0.16666666666666666,
+        "recall_all@3": 0.4,
+        "ndcg_any@3": 0.3007906338095277,
+        "recall_all@5": 0.4666666666666667,
+        "ndcg_any@5": 0.3280416126531255,
+        "recall_all@10": 0.5333333333333333,
+        "ndcg_any@10": 0.3499495187455256,
+        "recall_all@20": 0.7666666666666667,
+        "ndcg_any@20": 0.40569663391566807,
+        "recall_all@50": 1.0,
+        "ndcg_any@50": 0.45451682609782057,
+        "mrr": 0.3133700738608482
+      },
+      "cells": [
+        {
+          "variant": "2-7",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "interaction-pattern"
+        }
+      ],
+      "scorer": "single_vector"
+    },
+    {
+      "name": "single_1-3",
+      "description": "single hidden-state prompt 1-3, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 30,
+        "n_scored": 30,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.13333333333333333,
+            "ci95": {
+              "low": 0.032500000000000015,
+              "high": 0.3
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.13333333333333333,
+            "ci95": {
+              "low": 0.032500000000000015,
+              "high": 0.3
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.26666666666666666,
+            "ci95": {
+              "low": 0.13333333333333333,
+              "high": 0.43416666666666687
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.2043643251190486,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.37103099178571525
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.36666666666666664,
+            "ci95": {
+              "low": 0.2,
+              "high": 0.5333333333333333
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.24451039753713114,
+            "ci95": {
+              "low": 0.13527776892685214,
+              "high": 0.3906701654234998
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.5666666666666667,
+            "ci95": {
+              "low": 0.36666666666666664,
+              "high": 0.7333333333333333
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.30848028720096177,
+            "ci95": {
+              "low": 0.18643097648887763,
+              "high": 0.4456692057847783
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.8333333333333334,
+            "ci95": {
+              "low": 0.6991666666666666,
+              "high": 0.9333333333333333
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3744244678407408,
+            "ci95": {
+              "low": 0.27188905142046954,
+              "high": 0.491721315613464
+            }
+          },
+          "recall_all@50": {
+            "mean": 1.0,
+            "ci95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.409762848979152,
+            "ci95": {
+              "low": 0.32841843260336134,
+              "high": 0.5184273199513441
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.13333333333333333,
+        "ndcg_any@1": 0.13333333333333333,
+        "recall_all@3": 0.26666666666666666,
+        "ndcg_any@3": 0.2043643251190486,
+        "recall_all@5": 0.36666666666666664,
+        "ndcg_any@5": 0.24451039753713114,
+        "recall_all@10": 0.5666666666666667,
+        "ndcg_any@10": 0.30848028720096177,
+        "recall_all@20": 0.8333333333333334,
+        "ndcg_any@20": 0.3744244678407408,
+        "recall_all@50": 1.0,
+        "ndcg_any@50": 0.409762848979152,
+        "mrr": 0.25485927633130345
+      },
+      "cells": [
+        {
+          "variant": "1-3",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "tag"
+        }
+      ],
+      "scorer": "single_vector"
+    },
+    {
+      "name": "bm25",
+      "description": "BM25 over preference memory strings",
+      "metrics": {
+        "n_total": 30,
+        "n_scored": 30,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.03333333333333333,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.13333333333333333
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.03333333333333333,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.13333333333333333
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.16666666666666666,
+            "ci95": {
+              "low": 0.06583333333333335,
+              "high": 0.3333333333333333
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.11309297535714574,
+            "ci95": {
+              "low": 0.03333333333333333,
+              "high": 0.21767551673214683
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.3,
+            "ci95": {
+              "low": 0.13333333333333333,
+              "high": 0.4666666666666667
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.16759493304434142,
+            "ci95": {
+              "low": 0.07925813101662199,
+              "high": 0.2842916885614723
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.5,
+            "ci95": {
+              "low": 0.36583333333333334,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.23099604978015623,
+            "ci95": {
+              "low": 0.15239362783799265,
+              "high": 0.32646105855892305
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.8666666666666667,
+            "ci95": {
+              "low": 0.7333333333333333,
+              "high": 0.9666666666666667
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3212767209003146,
+            "ci95": {
+              "low": 0.2607421080913954,
+              "high": 0.4019811827305407
+            }
+          },
+          "recall_all@50": {
+            "mean": 1.0,
+            "ci95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3496637541259402,
+            "ci95": {
+              "low": 0.2992763058867433,
+              "high": 0.42339410614907985
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.03333333333333333,
+        "ndcg_any@1": 0.03333333333333333,
+        "recall_all@3": 0.16666666666666666,
+        "ndcg_any@3": 0.11309297535714574,
+        "recall_all@5": 0.3,
+        "ndcg_any@5": 0.16759493304434142,
+        "recall_all@10": 0.5,
+        "ndcg_any@10": 0.23099604978015623,
+        "recall_all@20": 0.8666666666666667,
+        "ndcg_any@20": 0.3212767209003146,
+        "recall_all@50": 1.0,
+        "ndcg_any@50": 0.3496637541259402,
+        "mrr": 0.1787139193965707
+      }
+    },
+    {
+      "name": "persona_2-8",
+      "description": "single answer-strategy prompt 2-8, L31, anti_pca_both_k15, verb=标记",
+      "metrics": {
+        "n_total": 30,
+        "n_scored": 30,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.1,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.20083333333333353
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.1,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.20083333333333353
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.06666666666666667,
+              "high": 0.36666666666666664
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.1543643251190486,
+            "ci95": {
+              "low": 0.049801549589285767,
+              "high": 0.292280199827383
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.26666666666666666,
+            "ci95": {
+              "low": 0.13333333333333333,
+              "high": 0.40083333333333354
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.1816153039626464,
+            "ci95": {
+              "low": 0.07998763460510298,
+              "high": 0.3009200764107954
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.4666666666666667,
+            "ci95": {
+              "low": 0.3,
+              "high": 0.6333333333333333
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2435408037979464,
+            "ci95": {
+              "low": 0.14726448949781884,
+              "high": 0.3596607513828742
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.8333333333333334,
+            "ci95": {
+              "low": 0.7,
+              "high": 0.9666666666666667
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3368910076772074,
+            "ci95": {
+              "low": 0.2573210717578074,
+              "high": 0.4263774278634568
+            }
+          },
+          "recall_all@50": {
+            "mean": 1.0,
+            "ci95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3715493957488338,
+            "ci95": {
+              "low": 0.30278687947704347,
+              "high": 0.45909909905021973
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.1,
+        "ndcg_any@1": 0.1,
+        "recall_all@3": 0.2,
+        "ndcg_any@3": 0.1543643251190486,
+        "recall_all@5": 0.26666666666666666,
+        "ndcg_any@5": 0.1816153039626464,
+        "recall_all@10": 0.4666666666666667,
+        "ndcg_any@10": 0.2435408037979464,
+        "recall_all@20": 0.8333333333333334,
+        "ndcg_any@20": 0.3368910076772074,
+        "recall_all@50": 1.0,
+        "ndcg_any@50": 0.3715493957488338,
+        "mrr": 0.21009627746434262
+      },
+      "cells": [
+        {
+          "variant": "2-8",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "answer-strategy"
+        }
+      ],
+      "scorer": "single_vector"
+    }
+  ],
+  "elapsed_seconds": 161.1707467920205
+}

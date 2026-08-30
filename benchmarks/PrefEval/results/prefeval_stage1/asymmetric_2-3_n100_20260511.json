@@ -1,0 +1,394 @@
+{
+  "created_utc": "2026-05-12T02:24:33.737636+00:00",
+  "analysis": "prefeval_asymmetric_2-3_probe",
+  "inputs": {
+    "cache_dir": "/Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/tensors/hidden_implicit_persona_n100_1e3ae57584_258ec3b832_67bb5ad6af",
+    "data_jsonl": "/Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/data/implicit_persona_n100_20260511_210950.jsonl",
+    "manifest_expected": {
+      "kind": "prefeval_hidden_vectors",
+      "task": "implicit_persona",
+      "dataset_id": "siyanzhao/prefeval_implicit_persona",
+      "item_ids": [
+        "implicit_persona:0000",
+        "implicit_persona:0001",
+        "implicit_persona:0002",
+        "implicit_persona:0003",
+        "implicit_persona:0004",
+        "implicit_persona:0005",
+        "implicit_persona:0006",
+        "implicit_persona:0007",
+        "implicit_persona:0008",
+        "implicit_persona:0009",
+        "implicit_persona:0010",
+        "implicit_persona:0011",
+        "implicit_persona:0012",
+        "implicit_persona:0013",
+        "implicit_persona:0014",
+        "implicit_persona:0015",
+        "implicit_persona:0016",
+        "implicit_persona:0017",
+        "implicit_persona:0018",
+        "implicit_persona:0019",
+        "implicit_persona:0020",
+        "implicit_persona:0021",
+        "implicit_persona:0022",
+        "implicit_persona:0023",
+        "implicit_persona:0024",
+        "implicit_persona:0025",
+        "implicit_persona:0026",
+        "implicit_persona:0027",
+        "implicit_persona:0028",
+        "implicit_persona:0029",
+        "implicit_persona:0030",
+        "implicit_persona:0031",
+        "implicit_persona:0032",
+        "implicit_persona:0033",
+        "implicit_persona:0034",
+        "implicit_persona:0035",
+        "implicit_persona:0036",
+        "implicit_persona:0037",
+        "implicit_persona:0038",
+        "implicit_persona:0039",
+        "implicit_persona:0040",
+        "implicit_persona:0041",
+        "implicit_persona:0042",
+        "implicit_persona:0043",
+        "implicit_persona:0044",
+        "implicit_persona:0045",
+        "implicit_persona:0046",
+        "implicit_persona:0047",
+        "implicit_persona:0048",
+        "implicit_persona:0049",
+        "implicit_persona:0050",
+        "implicit_persona:0051",
+        "implicit_persona:0052",
+        "implicit_persona:0053",
+        "implicit_persona:0054",
+        "implicit_persona:0055",
+        "implicit_persona:0056",
+        "implicit_persona:0057",
+        "implicit_persona:0058",
+        "implicit_persona:0059",
+        "implicit_persona:0060",
+        "implicit_persona:0061",
+        "implicit_persona:0062",
+        "implicit_persona:0063",
+        "implicit_persona:0064",
+        "implicit_persona:0065",
+        "implicit_persona:0066",
+        "implicit_persona:0067",
+        "implicit_persona:0068",
+        "implicit_persona:0069",
+        "implicit_persona:0070",
+        "implicit_persona:0071",
+        "implicit_persona:0072",
+        "implicit_persona:0073",
+        "implicit_persona:0074",
+        "implicit_persona:0075",
+        "implicit_persona:0076",
+        "implicit_persona:0077",
+        "implicit_persona:0078",
+        "implicit_persona:0079",
+        "implicit_persona:0080",
+        "implicit_persona:0081",
+        "implicit_persona:0082",
+        "implicit_persona:0083",
+        "implicit_persona:0084",
+        "implicit_persona:0085",
+        "implicit_persona:0086",
+        "implicit_persona:0087",
+        "implicit_persona:0088",
+        "implicit_persona:0089",
+        "implicit_persona:0090",
+        "implicit_persona:0091",
+        "implicit_persona:0092",
+        "implicit_persona:0093",
+        "implicit_persona:0094",
+        "implicit_persona:0095",
+        "implicit_persona:0096",
+        "implicit_persona:0097",
+        "implicit_persona:0098",
+        "implicit_persona:0099"
+      ],
+      "model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-9B-MLX-4bit",
+      "cells": [
+        {
+          "variant": "P0",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "1-1_CN",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "1-1_CN_ASCII",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "1-1_EN",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "1-2",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "1-3",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-1",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-3-1",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-3-2_mem",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-3-2_query",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-4-1",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-4-1_user_word",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-4-2",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-5",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-6",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-7",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-8",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-4-1_user_word_represent",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-5_represent",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-7_represent",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-8_represent",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        },
+        {
+          "variant": "2-4-1_user_word",
+          "layer": 30,
+          "transform": "anti_pca_both_k15",
+          "family": "user"
+        },
+        {
+          "variant": "2-5",
+          "layer": 29,
+          "transform": "query_only_anti_pca_k2",
+          "family": "association"
+        },
+        {
+          "variant": "2-4-1_user_word_represent",
+          "layer": 30,
+          "transform": "anti_pca_both_k15",
+          "family": "user"
+        },
+        {
+          "variant": "2-5_represent",
+          "layer": 29,
+          "transform": "query_only_anti_pca_k2",
+          "family": "association"
+        }
+      ],
+      "prompt_variants": {
+        "P0": "\n请用一个词来summarize上面这段文字，这个词是：“",
+        "1-1_CN": "\n用一个词标记上面这段对话，这个词是：“",
+        "1-1_CN_ASCII": "\n用一个词标记上面这段对话，这个词是:\"",
+        "1-1_EN": "\nIn one word, tag the conversation above. The word is:\"",
+        "1-2": "\n用一个词概括上面这段对话，这个词是：“",
+        "1-3": "\n用一个词标记上面这段对话，这个词是：“",
+        "2-1": "\n用一个词标记上面这段对话中的话题，这个词是：“",
+        "2-3-1": "\n用一个词标记上面这段对话最该让我想起的关键词，这个词是：“",
+        "2-3-2_mem": "\n用一个词标记上面这段对话最该让我下次聊到相关话题时想起的关键词，这个词是：“",
+        "2-3-2_query": "\n用一个词标记当前这段对话最该让我回忆起的关键词，这个词是：“",
+        "2-4-1": "\n用一个词标记上面这段对话中的对方，这个词是：“",
+        "2-4-1_user_word": "\n用一个词标记上面这段对话中的用户，这个词是：“",
+        "2-4-2": "\n用一个词标记上面这段对话中的对方的需求，这个词是：“",
+        "2-5": "\n用一个词标记上面这段对话让我产生的联想，这个词是：“",
+        "2-6": "\n用一个词标记上面这段对话给我的印象，这个词是：“",
+        "2-7": "\n用一个词标记上面这段对话的互动模式，这个词是：“",
+        "2-8": "\n用一个词标记回答上面这段对话中的对方时最该采用的策略，这个词是：“",
+        "2-4-1_user_word_represent": "\n用一个词代表上面这段对话中的用户，这个词是：“",
+        "2-5_represent": "\n用一个词代表上面这段对话让我产生的联想，这个词是：“",
+        "2-7_represent": "\n用一个词代表上面这段对话的互动模式，这个词是：“",
+        "2-8_represent": "\n用一个词代表回答上面这段对话中的对方时最该采用的策略，这个词是：“"
+      }
+    }
+  },
+  "rows": [
+    {
+      "name": "2-3-1 symmetric",
+      "candidate_cell": "2-3-1|L31|anti_pca_both_k15",
+      "query_cell": "2-3-1|L31|anti_pca_both_k15",
+      "summary": {
+        "recall@1": 0.31,
+        "ndcg@1": 0.31,
+        "recall@3": 0.42,
+        "ndcg@3": 0.3767836778214312,
+        "recall@5": 0.51,
+        "ndcg@5": 0.41466809303125957,
+        "recall@10": 0.64,
+        "ndcg@10": 0.45499917139864676,
+        "recall@20": 0.72,
+        "ndcg@20": 0.4746958437044447,
+        "recall@50": 0.85,
+        "ndcg@50": 0.5001778371131806,
+        "mrr": 0.40785895006442546
+      }
+    },
+    {
+      "name": "2-3-2_query symmetric",
+      "candidate_cell": "2-3-2_query|L31|anti_pca_both_k15",
+      "query_cell": "2-3-2_query|L31|anti_pca_both_k15",
+      "summary": {
+        "recall@1": 0.26,
+        "ndcg@1": 0.26,
+        "recall@3": 0.43,
+        "ndcg@3": 0.3567836778214312,
+        "recall@5": 0.49,
+        "ndcg@5": 0.38174779628905775,
+        "recall@10": 0.62,
+        "ndcg@10": 0.4228250493543737,
+        "recall@20": 0.73,
+        "ndcg@20": 0.44984631727128593,
+        "recall@50": 0.85,
+        "ndcg@50": 0.474190498222789,
+        "mrr": 0.37320863162388823
+      }
+    },
+    {
+      "name": "2-3-2_mem symmetric",
+      "candidate_cell": "2-3-2_mem|L31|anti_pca_both_k15",
+      "query_cell": "2-3-2_mem|L31|anti_pca_both_k15",
+      "summary": {
+        "recall@1": 0.29,
+        "ndcg@1": 0.29,
+        "recall@3": 0.41,
+        "ndcg@3": 0.35785578521428746,
+        "recall@5": 0.46,
+        "ndcg@5": 0.3785131381011801,
+        "recall@10": 0.59,
+        "ndcg@10": 0.42095793550005534,
+        "recall@20": 0.7,
+        "ndcg@20": 0.447223288994826,
+        "recall@50": 0.85,
+        "ndcg@50": 0.4781587179938608,
+        "mrr": 0.38111213176117026
+      }
+    },
+    {
+      "name": "2-3-2_mem -> 2-3-2_query",
+      "candidate_cell": "2-3-2_mem|L31|anti_pca_both_k15",
+      "query_cell": "2-3-2_query|L31|anti_pca_both_k15",
+      "summary": {
+        "recall@1": 0.26,
+        "ndcg@1": 0.26,
+        "recall@3": 0.39,
+        "ndcg@3": 0.33940227289286035,
+        "recall@5": 0.43,
+        "ndcg@5": 0.3561910977074076,
+        "recall@10": 0.54,
+        "ndcg@10": 0.3909494146005069,
+        "recall@20": 0.67,
+        "ndcg@20": 0.4245020023747463,
+        "recall@50": 0.85,
+        "ndcg@50": 0.45982311621658106,
+        "mrr": 0.36015214964999254
+      }
+    },
+    {
+      "name": "2-3-2_query -> 2-3-2_mem",
+      "candidate_cell": "2-3-2_query|L31|anti_pca_both_k15",
+      "query_cell": "2-3-2_mem|L31|anti_pca_both_k15",
+      "summary": {
+        "recall@1": 0.27,
+        "ndcg@1": 0.27,
+        "recall@3": 0.38,
+        "ndcg@3": 0.33547438028571663,
+        "recall@5": 0.43,
+        "ndcg@5": 0.3556934956642207,
+        "recall@10": 0.53,
+        "ndcg@10": 0.3880635419730685,
+        "recall@20": 0.69,
+        "ndcg@20": 0.42886660121556924,
+        "recall@50": 0.89,
+        "ndcg@50": 0.46850898592925205,
+        "mrr": 0.3621288315380008
+      }
+    }
+  ],
+  "elapsed_seconds": 0.20255570899462327
+}

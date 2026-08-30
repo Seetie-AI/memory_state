@@ -1,0 +1,433 @@
+% Compile with XeLaTeX or LuaLaTeX. The report includes Chinese prompt suffixes.
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{fontspec}
+\IfFileExists{xeCJK.sty}{\usepackage{xeCJK}}{}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+
+\setlist[itemize]{leftmargin=1.5em}
+\setlist[enumerate]{leftmargin=1.5em}
+\renewcommand{\arraystretch}{1.15}
+
+\title{Inference-Native Memory State: Results Overview}
+\author{Internal Technical Report}
+\date{May 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report summarizes a training-free long-term memory retriever built from an
+LLM's own inference-time hidden states. LongMemEval-S/round establishes the
+method on evidence retrieval: Qwen3.5-9B-MLX-4bit hidden states, late-layer
+anti-PCA, a K3 prompt representation, and BM25 reranking inside vector top-20
+reach Recall@5 = 0.777 and NDCG@5 = 0.822 on the 94 scored questions used in
+the repository.
+
+PrefEval implicit-persona n=1000 adapts the same design pattern to
+preference/persona memory. The final companion-memory configuration uses three
+L30 prompt views: recall keyword, association token, and emotion emoji. The
+dense score is a component-normalized K3 vector average. Final full-corpus
+z-score fusion uses 0.60 K3 hidden-state score, 0.30
+Qwen3-Embedding-0.6B-4bit-DWQ score, and 0.10 BM25 score. This configuration
+reaches R@1 = 0.122, R@3 = 0.265, R@5 = 0.332, NDCG@5 = 0.232, and MRR =
+0.233 on PrefEval all1000. It is above BM25 and the tested 4bit 8B embedding
+baseline, while deliberately retaining an emotion axis rather than maximizing
+R@5 only.
+\end{abstract}
+
+\section{Research Question}
+
+The project asks whether a generative LLM can act as its own memory encoder. In
+a conventional memory stack, a memory page is stored as text and encoded by a
+separate embedding model. Here, the memory vector is instead a hidden state
+from the same LLM that will later retrieve and reason over the memory.
+
+The working hypothesis is:
+
+\begin{quote}
+When a model is prompted to compress a memory page or query into a short
+retrieval key, the hidden state at the suffix-final key-generation position
+contains a usable retrieval representation.
+\end{quote}
+
+\section{Motivation and Systems Thesis}
+
+The purpose is not to claim that hidden states always beat embedding models.
+The purpose is to test a system design: the same LLM that reads memory and
+performs downstream reasoning may also provide the memory key. If this works,
+memory construction can use the same inference path, tokenizer, and semantic
+space as downstream reasoning, rather than depending entirely on a separate
+embedding stack.
+
+This is useful for companion memory because the representation is model-native,
+requires no contrastive retriever training for the reported configs, and can
+still accept external lexical or embedding scores as score-level signals when a
+domain benefits from them.
+
+\section{Models}
+
+Hidden-state extraction uses \path{models/Qwen3.5-9B-MLX-4bit}. The PrefEval
+final fusion uses \path{models/Qwen3-Embedding-0.6B-4bit-DWQ} as an external
+score source. LongMemEval also reports a local
+\path{Qwen3-Embedding-8B-4bit-DWQ} baseline. All model references here are
+4bit local models. Embedding scores are not concatenated with the 9B hidden
+vectors; they are used only in score-level fusion or as baselines.
+
+\section{Term Definitions}
+
+\begin{description}
+  \item[suffix-final] The hidden state at the final token position of a
+  retrieval suffix, after the model has been asked to compress a page or query
+  into a key.
+  \item[anti\_pca\_both\_k15] Remove the top 15 shared principal directions
+  from both query and candidate vectors before cosine scoring.
+  \item[component-normalized vector average] Normalize prompt components before
+  averaging, so one prompt view does not dominate only by scale.
+  \item[z-score fusion] Row-wise score normalization followed by weighted
+  fusion.
+  \item[oracle union] Label-aware union of hits from multiple prompt rankings.
+  It is used only for prompt-complementarity diagnosis.
+  \item[source\_ge3] A source-count agreement filter. It is useful as a tuning
+  ceiling but not part of the final default.
+\end{description}
+
+\section{Method Pattern}
+
+For each memory candidate and query, the model is run over the text plus a
+retrieval suffix. The retrieval vector is the late-layer hidden state at the
+suffix endpoint. The effective pattern is:
+
+\begin{enumerate}
+  \item choose prompt views that match the memory domain;
+  \item extract late suffix-final hidden states;
+  \item apply anti-PCA or centering to remove shared prompt/corpus directions;
+  \item combine prompt views by vector concatenation or component-normalized
+    vector averaging;
+  \item optionally add lexical or embedding scores as rerank signals.
+\end{enumerate}
+
+\section{LongMemEval: Evidence Retrieval}
+
+LongMemEval-S/round is used to verify that hidden-state memory vectors can
+retrieve factual evidence turns. The main subset has 94 scored questions after
+the official abstention filter.
+
+\begin{table}[h]
+\centering
+\caption{LongMemEval-S/round subset 0--100, 94 scored questions.}
+\small
+\begin{tabular}{p{0.44\linewidth}cccp{0.20\linewidth}}
+\toprule
+Method & R@5 & NDCG@5 & MRR & Role \\
+\midrule
+BM25 & 0.585 & 0.547 & 0.559 & lexical baseline \\
+Qwen3-Embedding-0.6B local baseline & 0.766 & 0.809 & -- & embedding reference \\
+Qwen3-Embedding-8B-4bit-DWQ & 0.755 & 0.789 & 0.826 & local 4bit embedding baseline \\
+Stage 3 compact K2 hidden-only (\path{2-4-1_user_word + 1-3}) & 0.777 & 0.788 & 0.820 & no BM25, compact 8 KB/page path \\
+\textbf{Stage 3 LongMem K3 + BM25 top20} & \textbf{0.777} & \textbf{0.822} & \textbf{0.851} & method result \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{LongMem K3}
+
+\begin{table}[h]
+\centering
+\caption{LongMem prompt views.}
+\small
+\begin{tabular}{llcl}
+\toprule
+Prompt id & Role & Layer & Transform \\
+\midrule
+\path{2-4-1_user_word} & user/product wording & 31 & \path{anti_pca_both_k15} \\
+\path{1-3} & generic tag / marker & 31 & \path{anti_pca_both_k15} \\
+\path{2-5} & association & 31 & \path{anti_pca_both_k15} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The three 4096-dimensional vectors are concatenated into one 12288-dimensional
+vector. Candidates are ranked by normalized cosine, vector top-20 is retained,
+and the shortlist is reranked by:
+
+\[
+0.75 \cdot z(\mathrm{vector}) + 0.25 \cdot z(\mathrm{BM25}).
+\]
+
+This result should be interpreted as embedding-baseline-scale feasibility on a
+small evidence-retrieval subset, not as a decisive held-out embedding-model win.
+
+\section{PrefEval: Final Companion-Memory Configuration}
+
+PrefEval implicit-persona n=1000 evaluates preference/persona memory. The
+final retriever is a single K3 configuration: recall keyword, association
+token, and emotion emoji. The suffix text is canonical; implementation ids can
+differ between scripts.
+
+\begin{table}[h]
+\centering
+\caption{Final PrefEval K3 prompt views.}
+\small
+\begin{tabular}{p{0.18\linewidth}p{0.20\linewidth}p{0.38\linewidth}cl}
+\toprule
+Role & Implementation id & Suffix & Layer & Transform \\
+\midrule
+Recall-keyword marker & PrefEval \path{2-3-1}; replay \path{2-3-1_mark} & 用一个词标记上面这段对话最该让我想起的关键词，这个词是：“ & 30 & \path{anti_pca_both_k15} \\
+Association token & \path{2-5_token} & 用一个token标记上面这段对话让我产生的联想，这个token是：“ & 30 & \path{anti_pca_both_k15} \\
+Emotion emoji & \path{2-8_emoji} & 用一个emoji标记上面这段对话的情绪，这个emoji是：“ & 30 & \path{anti_pca_both_k15} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The dense scorer is \path{vector_average_component_norm}. Final full-corpus
+z-score fusion is:
+
+\[
+\mathrm{score} =
+0.60 \cdot z(\mathrm{K3}) +
+0.30 \cdot z(\mathrm{Qwen3Embedding0.6B4bit}) +
+0.10 \cdot z(\mathrm{BM25}).
+\]
+
+\begin{table}[h]
+\centering
+\caption{PrefEval all1000 final config with baselines.}
+\small
+\begin{tabular}{p{0.38\linewidth}cccccp{0.18\linewidth}}
+\toprule
+Config & R@1 & R@3 & R@5 & NDCG@5 & MRR & Role \\
+\midrule
+BM25 & 0.035 & 0.074 & 0.094 & 0.066 & 0.067 & lexical floor \\
+Qwen3-Embedding-8B-4bit-DWQ & 0.093 & 0.216 & 0.281 & 0.191 & 0.200 & 4bit embedding baseline \\
+\textbf{Final companion K3 + 0.6B embedding + BM25} & \textbf{0.122} & \textbf{0.265} & \textbf{0.332} & \textbf{0.232} & \textbf{0.233} & final config \\
+Topic metric ceiling control & 0.119 & 0.265 & 0.355 & 0.240 & 0.235 & higher R@5, less aligned with companion objective \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Holdout300 sanity split for the final config reaches R@1 = 0.127, R@3 =
+0.263, R@5 = 0.320, NDCG@5 = 0.228, and MRR = 0.228. The split was created
+after prompt/fusion exploration, so it is a robustness check rather than blind
+validation.
+
+\section{Prompt Sweep and Negative Results}
+
+PrefEval tested 25 prompt variants across several axes: object
+(generic tag, topic, recall keyword, association, user/counterparty, need,
+interaction pattern, emotion), verb (represent, tag, summarize), output form
+(word, token, emoji), language (Chinese, English, Russian, Japanese), and
+deictic wording (with or without ``上面''). The table below lists
+representative non-winners that explain the final design.
+
+\begin{table}[h]
+\centering
+\caption{Representative PrefEval prompt-sweep takeaways.}
+\small
+\begin{tabular}{p{0.28\linewidth}p{0.22\linewidth}p{0.40\linewidth}}
+\toprule
+Prompt / treatment & Observation & Interpretation \\
+\midrule
+\path{2-1-2}, topic without ``上面'' & single-prompt R@5 = 0.321 & strong topic single prompt, but the gain does not compose linearly in final K3 \\
+\path{2-5-2}, association without ``上面'' & weaker than \path{2-5} & removing ``上面'' is not a general prompt improvement \\
+\path{2-3-3} / \path{2-5-3}, direct-token wording & do not beat originals & unreadable-token pressure does not improve retrieval geometry \\
+\path{1-1_RU_explicit} & R@5 = 0.107 & language mismatch collapses \\
+\path{1-1_EMOJI} & about R@5 = 0.285 & surprising generic emoji signal, but not the final K3 emoji \\
+\path{2-7}, interaction-pattern word prompt & R@5 = 0.229 & weak as a single retriever; dynamics remains a product hypothesis \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The final emoji prompt is \path{2-8_emoji}, which explicitly asks for
+conversation emotion. It should not be conflated with the generic
+\path{1-1_EMOJI} prompt.
+
+\section{Prompt Complementarity}
+
+Prompt overlap was evaluated with oracle union hit@k and pairwise Jaccard@k.
+Oracle union is label-aware and is used only to generate hypotheses.
+
+\begin{table}[h]
+\centering
+\caption{Oracle union with fixed base pair \path{2-3-1 + 2-5}.}
+\small
+\begin{tabular}{p{0.40\linewidth}ccp{0.32\linewidth}}
+\toprule
+Prompt set & union@3 & union@5 & Takeaway \\
+\midrule
+\path{2-3-1 + 2-5} & 0.300 & 0.369 & base pair \\
+\path{+ 2-1_token} & 0.339 & 0.415 & best union@3 third \\
+\path{+ 2-1-2} & 0.332 & 0.417 & best union@5 among top thirds \\
+\path{+ 1-1_EMOJI} & 0.322 & 0.399 & useful but not exceptional \\
+\path{+ 2-1} & 0.326 & 0.410 & strong topic control after fusion \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Single-prompt strength and oracle complementarity do not directly determine
+the final product configuration. Final selection also requires an interpretable
+memory axis.
+
+\section{Why the Final K3 Is Not Benchmark Maxxing}
+
+If the goal is only PrefEval retrieval score, a topic K3 control is stronger.
+The final companion-memory K3 instead preserves an emotion anchor.
+
+\begin{table}[h]
+\centering
+\caption{Metric ceiling control versus final companion config.}
+\small
+\begin{tabular}{p{0.24\linewidth}p{0.30\linewidth}ccccc}
+\toprule
+Config & K3 prompts & R@1 & R@3 & R@5 & NDCG@5 & MRR \\
+\midrule
+Topic metric ceiling control & \path{2-3-1 + 2-5 + 2-1} & 0.119 & 0.265 & 0.355 & 0.240 & 0.235 \\
+\textbf{Final companion config} & \path{2-3-1 + 2-5_token + 2-8_emoji} & \textbf{0.122} & 0.265 & 0.332 & 0.232 & 0.233 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This is not a clean single-factor ablation because both the association prompt
+and the third prompt differ. The clean third-slot comparison fixes the first
+two slots as \path{2-3-1 + 2-5_token}:
+
+\begin{table}[h]
+\centering
+\caption{Clean third-slot comparison.}
+\small
+\begin{tabular}{p{0.22\linewidth}p{0.32\linewidth}ccccc}
+\toprule
+Third slot & K3 prompts & R@1 & R@3 & R@5 & NDCG@5 & MRR \\
+\midrule
+Dynamics emoji & \path{2-3-1 + 2-5_token + 2-7_emoji} & 0.125 & 0.259 & 0.341 & 0.236 & 0.234 \\
+\textbf{Emotion emoji} & \path{2-3-1 + 2-5_token + 2-8_emoji} & 0.122 & \textbf{0.265} & 0.332 & 0.232 & 0.233 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The final choice is therefore a product-objective tradeoff, not an accidental
+benchmark maximum: emotion is slightly worse on R@5 than the dynamics variant,
+but it preserves R@3 and directly represents affective interaction state.
+
+\section{Shortlist and Embedding Policy}
+
+There are two different shortlist questions. Source-count agreement shortlist
+is not part of the final default on either benchmark because it adds a tuned
+candidate-selection stage. BM25 fusion scope is benchmark-specific: LongMemEval
+uses BM25 only inside vector top-20, while PrefEval final uses full-corpus
+z-score fusion.
+
+Embedding is a score-level signal, not the primary representation. On PrefEval,
+\path{Qwen3-Embedding-0.6B-4bit-DWQ} receives weight 0.30 because it improves
+early-rank quality and MRR. On LongMemEval, the clean product result is the K3
+hidden-state retriever with BM25 top20 rerank; embedding remains a baseline or
+research reranker.
+
+\section{Deployment Cost}
+
+Qwen3.5-9B hidden size is 4096. With bf16 storage, one prompt view costs
+\[
+4096 \times 2\ \mathrm{bytes} = 8\ \mathrm{KB/page}.
+\]
+K3 storage therefore costs 24 KB/page. Around 20k memory pages require roughly
+500 MB for K3 bf16 vectors before metadata and index overhead. This is a
+plausible local companion-memory footprint, especially because the primary
+representation does not require a separately trained retriever.
+
+\section{PrefEval Final K3 Replayed on LongMemEval}
+
+The final PrefEval K3 was replayed on LongMemEval-S/round. It transfers well,
+but remains below the LongMem-specific K3.
+
+\begin{table}[h]
+\centering
+\caption{PrefEval final K3 replayed on LongMemEval-S/round.}
+\small
+\begin{tabular}{p{0.43\linewidth}ccccc}
+\toprule
+Config & R@1 & R@3 & R@5 & NDCG@5 & MRR \\
+\midrule
+PrefEval final-style 0.60 K3 + 0.30 embedding + 0.10 BM25 & 0.532 & 0.745 & 0.766 & 0.805 & 0.831 \\
+K3 hidden-only vector average & 0.468 & 0.723 & 0.745 & 0.752 & 0.767 \\
+Embedding-only & 0.511 & 0.681 & 0.755 & 0.789 & 0.826 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The LongMem-specific K3 remains stronger on LongMemEval at R@5 = 0.777 and
+NDCG@5 = 0.822. The conclusion is domain-specific prompt selection, not one
+universal prompt ensemble.
+
+\section{What Works}
+
+\begin{itemize}
+  \item Late suffix-final hidden states.
+  \item Anti-PCA / centering to remove shared prompt and corpus directions.
+  \item Multi-prompt views chosen for the memory domain.
+  \item Component-normalized vector averaging for PrefEval K3.
+  \item BM25 and 4bit Qwen embedding as score-level rerank signals when they
+    improve the domain objective.
+\end{itemize}
+
+\section{What Does Not Work}
+
+\begin{itemize}
+  \item Final post-norm cosine.
+  \item Early/mid-layer hidden vectors.
+  \item Sequence mean/max pooling.
+  \item Direct-token wording as a general fix.
+  \item Removing ``上面'' as a general prompt improvement.
+  \item Russian explicit prompt for this dataset/model setup.
+  \item Source-count screening as the final clean default.
+  \item Assuming the LongMem K3 prompt set transfers unchanged to PrefEval.
+\end{itemize}
+
+\section{Limitations}
+
+\begin{itemize}
+  \item LongMemEval main numbers are on 94 scored questions; one question moves
+  the metric by about 1.1 percentage points.
+  \item Prompt and fusion choices were tuned on explored benchmark subsets.
+  \item PrefEval holdout300 is a sanity check created after exploration, not a
+  blind benchmark.
+  \item The geometry is tied to Qwen3.5-9B-MLX-4bit and may change under another
+  model, quantization, or prompt template.
+  \item The final PrefEval config still uses an external 4bit embedding score
+  because it improves early-rank quality.
+\end{itemize}
+
+\section{Primary Sources}
+
+\begin{itemize}
+  \item \path{notes/stage_3_prompt_sweep_findings.md}
+  \item \path{benchmarks/PrefEval/prefeval_benchmark.py}
+  \item \path{scripts/stage3_prompt_sweep.py}
+  \item \path{scripts/stage3_longmem_prefeval_final_fusion.py}
+  \item \path{benchmarks/PrefEval/results/prefeval_stage1_1_more_prompts/findings.md}
+  \item \path{benchmarks/PrefEval/results/prefeval_stage1_1_more_prompts/k3_231_25token_28emoji_sameL30_fixed_all1000_20260514.md}
+  \item K3 dynamics/emotion third-slot comparison output under
+  \path{benchmarks/PrefEval/results/prefeval_stage1_1_more_prompts/}
+  \item K3 topic-control comparison output under
+  \path{benchmarks/PrefEval/results/prefeval_stage1_1_more_prompts/}
+  \item \path{results/stage3/prompt_fusion_prefeval_replay/prefeval_l30_k3_longmemeval100.md}
+\end{itemize}
+
+\paragraph{Memory policy.}
+This report required no model execution. Any future rerun must follow the
+repository 16 GB Mac policy: target peak memory at or below 8 GB, hard stop
+around 10 GB, and no concurrent memory-sensitive jobs.
+
+\end{document}

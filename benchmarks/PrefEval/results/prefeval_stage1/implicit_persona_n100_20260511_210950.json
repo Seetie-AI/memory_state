@@ -1,0 +1,3033 @@
+{
+  "created_utc": "2026-05-12T01:41:09.061063+00:00",
+  "analysis": "prefeval_automatic_retrieval",
+  "inputs": {
+    "task": "implicit_persona",
+    "dataset_id": "siyanzhao/prefeval_implicit_persona",
+    "split": "train",
+    "limit": 100,
+    "shuffle_seed": 0,
+    "retrievers": [
+      "bm25",
+      "prompt_sweep_l31_both_k15",
+      "k3_concat_selected",
+      "k3_concat_selected_represent_control"
+    ],
+    "top_k": 50,
+    "gold_policy": "same_preference_text",
+    "hidden_model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-9B-MLX-4bit",
+    "embedding_model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3-Embedding-8B-4bit-DWQ",
+    "embedding_alpha": 0.75,
+    "synthetic_smoke": false
+  },
+  "task_summary": {
+    "items": 100,
+    "candidate_count": 100,
+    "query_count": 100,
+    "duplicate_preference_strings": 0,
+    "topics": [
+      "education_learning_styles",
+      "education_resources",
+      "entertain_games",
+      "entertain_music_book",
+      "entertain_shows",
+      "entertain_sports",
+      "lifestyle_beauty",
+      "lifestyle_dietary",
+      "lifestyle_fit",
+      "lifestyle_health",
+      "pet_ownership",
+      "professional_work_location_style",
+      "shop_fashion",
+      "shop_home",
+      "shop_motors",
+      "shop_technology",
+      "travel_activities",
+      "travel_hotel",
+      "travel_restaurant",
+      "travel_transportation"
+    ],
+    "preference_types": [
+      "implicit_persona"
+    ]
+  },
+  "prompt_notes": {
+    "2-7": "\n用一个词标记上面这段对话的互动模式，这个词是：“",
+    "2-8": "\n用一个词标记回答上面这段对话中的对方时最该采用的策略，这个词是：“",
+    "prompt_sweep": "prompt_sweep_l31_both_k15",
+    "represent_controls": [
+      "2-4-1_user_word_represent",
+      "2-5_represent",
+      "2-7_represent",
+      "2-8_represent"
+    ],
+    "note": "PrefEval uses 标记 as the default for prompts that previously used 代表; Stage 3 historical scripts are unchanged."
+  },
+  "rows": [
+    {
+      "name": "k3_concat_selected",
+      "description": "Stage 3 selected K3 concat layers/transforms, mark-default prompt wording",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.3,
+            "ci95": {
+              "low": 0.21975000000000003,
+              "high": 0.4
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.3,
+            "ci95": {
+              "low": 0.21975000000000003,
+              "high": 0.4
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.48,
+            "ci95": {
+              "low": 0.38,
+              "high": 0.58
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.4057115704285749,
+            "ci95": {
+              "low": 0.3196335332821472,
+              "high": 0.4994082026464318
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.58,
+            "ci95": {
+              "low": 0.48,
+              "high": 0.67
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.4483409887275257,
+            "ci95": {
+              "low": 0.3659679187426344,
+              "high": 0.5337059134982375
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.76,
+            "ci95": {
+              "low": 0.67,
+              "high": 0.84
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.5060400078560748,
+            "ci95": {
+              "low": 0.4328461265661561,
+              "high": 0.5828716261307585
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.86,
+            "ci95": {
+              "low": 0.79,
+              "high": 0.93
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.5316818998061726,
+            "ci95": {
+              "low": 0.4659077059821137,
+              "high": 0.602142115188616
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.97,
+            "ci95": {
+              "low": 0.93,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.5540459454402472,
+            "ci95": {
+              "low": 0.4909823905365656,
+              "high": 0.6197016087476522
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.3,
+        "ndcg_any@1": 0.3,
+        "recall_all@3": 0.48,
+        "ndcg_any@3": 0.4057115704285749,
+        "recall_all@5": 0.58,
+        "ndcg_any@5": 0.4483409887275257,
+        "recall_all@10": 0.76,
+        "ndcg_any@10": 0.5060400078560748,
+        "recall_all@20": 0.86,
+        "ndcg_any@20": 0.5316818998061726,
+        "recall_all@50": 0.97,
+        "ndcg_any@50": 0.5540459454402472,
+        "mrr": 0.4390565857145586
+      },
+      "cells": [
+        {
+          "variant": "2-4-1_user_word",
+          "layer": 30,
+          "transform": "anti_pca_both_k15",
+          "family": "user"
+        },
+        {
+          "variant": "1-3",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "tag"
+        },
+        {
+          "variant": "2-5",
+          "layer": 29,
+          "transform": "query_only_anti_pca_k2",
+          "family": "association"
+        }
+      ],
+      "scorer": "vertical_concat_norm_weighted"
+    },
+    {
+      "name": "k3_concat_selected_represent_control",
+      "description": "Stage 3 selected K3 concat with old represent wording for user/association controls",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.29,
+            "ci95": {
+              "low": 0.20975000000000002,
+              "high": 0.39
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.29,
+            "ci95": {
+              "low": 0.20975000000000002,
+              "high": 0.39
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.47,
+            "ci95": {
+              "low": 0.37,
+              "high": 0.57
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.3957115704285749,
+            "ci95": {
+              "low": 0.30939634313928893,
+              "high": 0.48861503125893374
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.57,
+            "ci95": {
+              "low": 0.47,
+              "high": 0.66
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.43790275121913713,
+            "ci95": {
+              "low": 0.35544638190810884,
+              "high": 0.5254939739846635
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.77,
+            "ci95": {
+              "low": 0.68,
+              "high": 0.8502499999999997
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.5038397562919874,
+            "ci95": {
+              "low": 0.429560524386722,
+              "high": 0.5765622285760247
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.86,
+            "ci95": {
+              "low": 0.79,
+              "high": 0.93
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.5271908327400598,
+            "ci95": {
+              "low": 0.4610763480684265,
+              "high": 0.5967299538506416
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.97,
+            "ci95": {
+              "low": 0.93,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.5494919243688415,
+            "ci95": {
+              "low": 0.4867397343179198,
+              "high": 0.615332344571432
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.29,
+        "ndcg_any@1": 0.29,
+        "recall_all@3": 0.47,
+        "ndcg_any@3": 0.3957115704285749,
+        "recall_all@5": 0.57,
+        "ndcg_any@5": 0.43790275121913713,
+        "recall_all@10": 0.77,
+        "ndcg_any@10": 0.5038397562919874,
+        "recall_all@20": 0.86,
+        "ndcg_any@20": 0.5271908327400598,
+        "recall_all@50": 0.97,
+        "ndcg_any@50": 0.5494919243688415,
+        "mrr": 0.4324697343075934
+      },
+      "cells": [
+        {
+          "variant": "2-4-1_user_word_represent",
+          "layer": 30,
+          "transform": "anti_pca_both_k15",
+          "family": "user"
+        },
+        {
+          "variant": "1-3",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "tag"
+        },
+        {
+          "variant": "2-5_represent",
+          "layer": 29,
+          "transform": "query_only_anti_pca_k2",
+          "family": "association"
+        }
+      ],
+      "scorer": "vertical_concat_norm_weighted"
+    },
+    {
+      "name": "sweep_2-1_L31_both_k15",
+      "description": "prompt sweep single cell: 2-1, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.32,
+            "ci95": {
+              "low": 0.23,
+              "high": 0.41
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.32,
+            "ci95": {
+              "low": 0.23,
+              "high": 0.41
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.51,
+            "ci95": {
+              "low": 0.41,
+              "high": 0.61
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.43071157042857494,
+            "ci95": {
+              "low": 0.3443695404544675,
+              "high": 0.5194082026464318
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.55,
+            "ci95": {
+              "low": 0.45,
+              "high": 0.65
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.4479386327515107,
+            "ci95": {
+              "low": 0.36254790027077755,
+              "high": 0.5349411647064913
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.68,
+            "ci95": {
+              "low": 0.59,
+              "high": 0.7702499999999998
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.49137696092230776,
+            "ci95": {
+              "low": 0.41792997817255617,
+              "high": 0.5724965399353167
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.76,
+            "ci95": {
+              "low": 0.68,
+              "high": 0.85
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.5119648816037325,
+            "ci95": {
+              "low": 0.4422432380407995,
+              "high": 0.5888959054818064
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.85,
+            "ci95": {
+              "low": 0.78,
+              "high": 0.92
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.5305244393299922,
+            "ci95": {
+              "low": 0.4619000085109759,
+              "high": 0.6009536182236483
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.32,
+        "ndcg_any@1": 0.32,
+        "recall_all@3": 0.51,
+        "ndcg_any@3": 0.43071157042857494,
+        "recall_all@5": 0.55,
+        "ndcg_any@5": 0.4479386327515107,
+        "recall_all@10": 0.68,
+        "ndcg_any@10": 0.49137696092230776,
+        "recall_all@20": 0.76,
+        "ndcg_any@20": 0.5119648816037325,
+        "recall_all@50": 0.85,
+        "ndcg_any@50": 0.5305244393299922,
+        "mrr": 0.44117764105316293
+      },
+      "cells": [
+        {
+          "variant": "2-1",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-3-1_L31_both_k15",
+      "description": "prompt sweep single cell: 2-3-1, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.31,
+            "ci95": {
+              "low": 0.22,
+              "high": 0.41
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.31,
+            "ci95": {
+              "low": 0.22,
+              "high": 0.41
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.42,
+            "ci95": {
+              "low": 0.33,
+              "high": 0.52
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.3767836778214312,
+            "ci95": {
+              "low": 0.2917836778214312,
+              "high": 0.470501182970538
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.51,
+            "ci95": {
+              "low": 0.42,
+              "high": 0.61
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.41466809303125957,
+            "ci95": {
+              "low": 0.3318003340319753,
+              "high": 0.5035844214754248
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.64,
+            "ci95": {
+              "low": 0.55,
+              "high": 0.74
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.45499917139864676,
+            "ci95": {
+              "low": 0.3832592661537071,
+              "high": 0.5404430083585461
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.72,
+            "ci95": {
+              "low": 0.63,
+              "high": 0.81
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.4746958437044447,
+            "ci95": {
+              "low": 0.4025779987758348,
+              "high": 0.5555695560225928
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.85,
+            "ci95": {
+              "low": 0.78,
+              "high": 0.92
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.5001778371131806,
+            "ci95": {
+              "low": 0.43103737028803807,
+              "high": 0.5759484762678015
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.31,
+        "ndcg_any@1": 0.31,
+        "recall_all@3": 0.42,
+        "ndcg_any@3": 0.3767836778214312,
+        "recall_all@5": 0.51,
+        "ndcg_any@5": 0.41466809303125957,
+        "recall_all@10": 0.64,
+        "ndcg_any@10": 0.45499917139864676,
+        "recall_all@20": 0.72,
+        "ndcg_any@20": 0.4746958437044447,
+        "recall_all@50": 0.85,
+        "ndcg_any@50": 0.5001778371131806,
+        "mrr": 0.40785895006442546
+      },
+      "cells": [
+        {
+          "variant": "2-3-1",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_1-2_L31_both_k15",
+      "description": "prompt sweep single cell: 1-2, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.27,
+            "ci95": {
+              "low": 0.19,
+              "high": 0.36
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.27,
+            "ci95": {
+              "low": 0.19,
+              "high": 0.36
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.46,
+            "ci95": {
+              "low": 0.36975,
+              "high": 0.56
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.37809297535714576,
+            "ci95": {
+              "low": 0.29571157042857493,
+              "high": 0.4728617149678589
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.5,
+            "ci95": {
+              "low": 0.41,
+              "high": 0.6
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.39400532515491593,
+            "ci95": {
+              "low": 0.31590136676462655,
+              "high": 0.48590302146641245
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.6,
+            "ci95": {
+              "low": 0.50975,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.426205665798032,
+            "ci95": {
+              "low": 0.34975207938537833,
+              "high": 0.5106134788469818
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.67,
+            "ci95": {
+              "low": 0.58,
+              "high": 0.76
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.4448753633980711,
+            "ci95": {
+              "low": 0.3712719463294054,
+              "high": 0.5253261635943343
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.82,
+            "ci95": {
+              "low": 0.74,
+              "high": 0.89
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.474430267344771,
+            "ci95": {
+              "low": 0.40719556357101105,
+              "high": 0.5512437808195516
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.27,
+        "ndcg_any@1": 0.27,
+        "recall_all@3": 0.46,
+        "ndcg_any@3": 0.37809297535714576,
+        "recall_all@5": 0.5,
+        "ndcg_any@5": 0.39400532515491593,
+        "recall_all@10": 0.6,
+        "ndcg_any@10": 0.426205665798032,
+        "recall_all@20": 0.67,
+        "ndcg_any@20": 0.4448753633980711,
+        "recall_all@50": 0.82,
+        "ndcg_any@50": 0.474430267344771,
+        "mrr": 0.38201831550369414
+      },
+      "cells": [
+        {
+          "variant": "1-2",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-4-2_L31_both_k15",
+      "description": "prompt sweep single cell: 2-4-2, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.22,
+            "ci95": {
+              "low": 0.15,
+              "high": 0.3
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.22,
+            "ci95": {
+              "low": 0.15,
+              "high": 0.3
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.41,
+            "ci95": {
+              "low": 0.31,
+              "high": 0.51
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.3307115704285749,
+            "ci95": {
+              "low": 0.2517836778214312,
+              "high": 0.41575023262053923
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.5,
+            "ci95": {
+              "low": 0.41,
+              "high": 0.6
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3677195106216262,
+            "ci95": {
+              "low": 0.29221844699018273,
+              "high": 0.4479053937043605
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.57,
+            "ci95": {
+              "low": 0.47,
+              "high": 0.68
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.38995511323167376,
+            "ci95": {
+              "low": 0.3188027169869621,
+              "high": 0.47145297796049557
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.69,
+            "ci95": {
+              "low": 0.6,
+              "high": 0.78
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.4200581580672002,
+            "ci95": {
+              "low": 0.35092799182054685,
+              "high": 0.4945406511491601
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.85,
+            "ci95": {
+              "low": 0.78,
+              "high": 0.92
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4522086901957381,
+            "ci95": {
+              "low": 0.38806213117775834,
+              "high": 0.520480899660954
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.22,
+        "ndcg_any@1": 0.22,
+        "recall_all@3": 0.41,
+        "ndcg_any@3": 0.3307115704285749,
+        "recall_all@5": 0.5,
+        "ndcg_any@5": 0.3677195106216262,
+        "recall_all@10": 0.57,
+        "ndcg_any@10": 0.38995511323167376,
+        "recall_all@20": 0.69,
+        "ndcg_any@20": 0.4200581580672002,
+        "recall_all@50": 0.85,
+        "ndcg_any@50": 0.4522086901957381,
+        "mrr": 0.3462226761777256
+      },
+      "cells": [
+        {
+          "variant": "2-4-2",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-3-2_query_L31_both_k15",
+      "description": "prompt sweep single cell: 2-3-2_query, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.26,
+            "ci95": {
+              "low": 0.18,
+              "high": 0.35
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.26,
+            "ci95": {
+              "low": 0.18,
+              "high": 0.35
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.43,
+            "ci95": {
+              "low": 0.34,
+              "high": 0.53
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.3567836778214312,
+            "ci95": {
+              "low": 0.2806729082366106,
+              "high": 0.4391710125035735
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.49,
+            "ci95": {
+              "low": 0.4,
+              "high": 0.59
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.38174779628905775,
+            "ci95": {
+              "low": 0.3086706713219269,
+              "high": 0.46130969415540546
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.62,
+            "ci95": {
+              "low": 0.53,
+              "high": 0.72
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.4228250493543737,
+            "ci95": {
+              "low": 0.3517184048296012,
+              "high": 0.5022411210361416
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.73,
+            "ci95": {
+              "low": 0.65,
+              "high": 0.82
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.44984631727128593,
+            "ci95": {
+              "low": 0.3817067601060003,
+              "high": 0.5240282737068673
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.85,
+            "ci95": {
+              "low": 0.78,
+              "high": 0.92
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.474190498222789,
+            "ci95": {
+              "low": 0.4075728636591507,
+              "high": 0.5438625936566635
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.26,
+        "ndcg_any@1": 0.26,
+        "recall_all@3": 0.43,
+        "ndcg_any@3": 0.3567836778214312,
+        "recall_all@5": 0.49,
+        "ndcg_any@5": 0.38174779628905775,
+        "recall_all@10": 0.62,
+        "ndcg_any@10": 0.4228250493543737,
+        "recall_all@20": 0.73,
+        "ndcg_any@20": 0.44984631727128593,
+        "recall_all@50": 0.85,
+        "ndcg_any@50": 0.474190498222789,
+        "mrr": 0.37320863162388823
+      },
+      "cells": [
+        {
+          "variant": "2-3-2_query",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_1-1_CN_L31_both_k15",
+      "description": "prompt sweep single cell: 1-1_CN, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.24,
+            "ci95": {
+              "low": 0.16,
+              "high": 0.33
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.24,
+            "ci95": {
+              "low": 0.16,
+              "high": 0.33
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.45,
+            "ci95": {
+              "low": 0.35,
+              "high": 0.55
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.36463946303571865,
+            "ci95": {
+              "low": 0.28069069749732495,
+              "high": 0.45336289793839696
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.49,
+            "ci95": {
+              "low": 0.39975000000000005,
+              "high": 0.59
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3805518128334888,
+            "ci95": {
+              "low": 0.3007851300142323,
+              "high": 0.46625214462532366
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.59,
+            "ci95": {
+              "low": 0.49975,
+              "high": 0.69
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.4131499379433258,
+            "ci95": {
+              "low": 0.3391590424591103,
+              "high": 0.4973977337774987
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.68,
+            "ci95": {
+              "low": 0.58975,
+              "high": 0.77
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.43601528905989434,
+            "ci95": {
+              "low": 0.36485659570096834,
+              "high": 0.5163144904221166
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.85,
+            "ci95": {
+              "low": 0.78,
+              "high": 0.92
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4690158401286218,
+            "ci95": {
+              "low": 0.40059046706121837,
+              "high": 0.5399701480427848
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.24,
+        "ndcg_any@1": 0.24,
+        "recall_all@3": 0.45,
+        "ndcg_any@3": 0.36463946303571865,
+        "recall_all@5": 0.49,
+        "ndcg_any@5": 0.3805518128334888,
+        "recall_all@10": 0.59,
+        "ndcg_any@10": 0.4131499379433258,
+        "recall_all@20": 0.68,
+        "ndcg_any@20": 0.43601528905989434,
+        "recall_all@50": 0.85,
+        "ndcg_any@50": 0.4690158401286218,
+        "mrr": 0.3684332103621281
+      },
+      "cells": [
+        {
+          "variant": "1-1_CN",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_1-3_L31_both_k15",
+      "description": "prompt sweep single cell: 1-3, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.24,
+            "ci95": {
+              "low": 0.16,
+              "high": 0.33
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.24,
+            "ci95": {
+              "low": 0.16,
+              "high": 0.33
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.45,
+            "ci95": {
+              "low": 0.35,
+              "high": 0.55
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.36463946303571865,
+            "ci95": {
+              "low": 0.28069069749732495,
+              "high": 0.45336289793839696
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.49,
+            "ci95": {
+              "low": 0.39975000000000005,
+              "high": 0.59
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3805518128334888,
+            "ci95": {
+              "low": 0.3007851300142323,
+              "high": 0.46625214462532366
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.59,
+            "ci95": {
+              "low": 0.49975,
+              "high": 0.69
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.4131499379433258,
+            "ci95": {
+              "low": 0.3391590424591103,
+              "high": 0.4973977337774987
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.68,
+            "ci95": {
+              "low": 0.58975,
+              "high": 0.77
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.43601528905989434,
+            "ci95": {
+              "low": 0.36485659570096834,
+              "high": 0.5163144904221166
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.85,
+            "ci95": {
+              "low": 0.78,
+              "high": 0.92
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4690158401286218,
+            "ci95": {
+              "low": 0.40059046706121837,
+              "high": 0.5399701480427848
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.24,
+        "ndcg_any@1": 0.24,
+        "recall_all@3": 0.45,
+        "ndcg_any@3": 0.36463946303571865,
+        "recall_all@5": 0.49,
+        "ndcg_any@5": 0.3805518128334888,
+        "recall_all@10": 0.59,
+        "ndcg_any@10": 0.4131499379433258,
+        "recall_all@20": 0.68,
+        "ndcg_any@20": 0.43601528905989434,
+        "recall_all@50": 0.85,
+        "ndcg_any@50": 0.4690158401286218,
+        "mrr": 0.3684332103621281
+      },
+      "cells": [
+        {
+          "variant": "1-3",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-3-2_mem_L31_both_k15",
+      "description": "prompt sweep single cell: 2-3-2_mem, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.29,
+            "ci95": {
+              "low": 0.21,
+              "high": 0.38
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.29,
+            "ci95": {
+              "low": 0.21,
+              "high": 0.38
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.41,
+            "ci95": {
+              "low": 0.32,
+              "high": 0.51
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.35785578521428746,
+            "ci95": {
+              "low": 0.2704416478473238,
+              "high": 0.44681048050625255
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.46,
+            "ci95": {
+              "low": 0.37,
+              "high": 0.56
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3785131381011801,
+            "ci95": {
+              "low": 0.29628632890495327,
+              "high": 0.4686815965212995
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.59,
+            "ci95": {
+              "low": 0.49,
+              "high": 0.6802499999999998
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.42095793550005534,
+            "ci95": {
+              "low": 0.3440153709248488,
+              "high": 0.5020824529359033
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.7,
+            "ci95": {
+              "low": 0.61975,
+              "high": 0.79
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.447223288994826,
+            "ci95": {
+              "low": 0.37511699907924334,
+              "high": 0.5259788929629517
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.85,
+            "ci95": {
+              "low": 0.78,
+              "high": 0.92
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4781587179938608,
+            "ci95": {
+              "low": 0.410551508183304,
+              "high": 0.5495856117421437
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.29,
+        "ndcg_any@1": 0.29,
+        "recall_all@3": 0.41,
+        "ndcg_any@3": 0.35785578521428746,
+        "recall_all@5": 0.46,
+        "ndcg_any@5": 0.3785131381011801,
+        "recall_all@10": 0.59,
+        "ndcg_any@10": 0.42095793550005534,
+        "recall_all@20": 0.7,
+        "ndcg_any@20": 0.447223288994826,
+        "recall_all@50": 0.85,
+        "ndcg_any@50": 0.4781587179938608,
+        "mrr": 0.38111213176117026
+      },
+      "cells": [
+        {
+          "variant": "2-3-2_mem",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_1-1_CN_ASCII_L31_both_k15",
+      "description": "prompt sweep single cell: 1-1_CN_ASCII, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.25,
+            "ci95": {
+              "low": 0.17,
+              "high": 0.34
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.25,
+            "ci95": {
+              "low": 0.17,
+              "high": 0.34
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.41,
+            "ci95": {
+              "low": 0.32,
+              "high": 0.51
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.34440227289286035,
+            "ci95": {
+              "low": 0.26325877086964694,
+              "high": 0.43309297535714575
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.46,
+            "ci95": {
+              "low": 0.37,
+              "high": 0.56
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3654978632881415,
+            "ci95": {
+              "low": 0.2871586922298805,
+              "high": 0.4541722994616654
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.57,
+            "ci95": {
+              "low": 0.47,
+              "high": 0.67
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.40128497292009435,
+            "ci95": {
+              "low": 0.32399866270885685,
+              "high": 0.4857794332389076
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.7,
+            "ci95": {
+              "low": 0.6,
+              "high": 0.79
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.43423541801904797,
+            "ci95": {
+              "low": 0.357829440721074,
+              "high": 0.51314138305201
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.87,
+            "ci95": {
+              "low": 0.8,
+              "high": 0.93
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4679841982315089,
+            "ci95": {
+              "low": 0.4023882638554521,
+              "high": 0.5392137473640658
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.25,
+        "ndcg_any@1": 0.25,
+        "recall_all@3": 0.41,
+        "ndcg_any@3": 0.34440227289286035,
+        "recall_all@5": 0.46,
+        "ndcg_any@5": 0.3654978632881415,
+        "recall_all@10": 0.57,
+        "ndcg_any@10": 0.40128497292009435,
+        "recall_all@20": 0.7,
+        "ndcg_any@20": 0.43423541801904797,
+        "recall_all@50": 0.87,
+        "ndcg_any@50": 0.4679841982315089,
+        "mrr": 0.3630912242281218
+      },
+      "cells": [
+        {
+          "variant": "1-1_CN_ASCII",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-5_L31_both_k15",
+      "description": "prompt sweep single cell: 2-5, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.23,
+            "ci95": {
+              "low": 0.15975000000000003,
+              "high": 0.32
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.23,
+            "ci95": {
+              "low": 0.15975000000000003,
+              "high": 0.32
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.35,
+            "ci95": {
+              "low": 0.26,
+              "high": 0.44024999999999975
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.29916508275000203,
+            "ci95": {
+              "low": 0.22285578521428748,
+              "high": 0.38526992258125115
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.46,
+            "ci95": {
+              "low": 0.37,
+              "high": 0.56
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.34347184157935573,
+            "ci95": {
+              "low": 0.26942580408945527,
+              "high": 0.42856189810245343
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.56,
+            "ci95": {
+              "low": 0.47,
+              "high": 0.66
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.37519516139805875,
+            "ci95": {
+              "low": 0.3035960538263542,
+              "high": 0.4560976484435756
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.69,
+            "ci95": {
+              "low": 0.6,
+              "high": 0.78
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.40803858693522743,
+            "ci95": {
+              "low": 0.33770825043448055,
+              "high": 0.48351489790598456
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.84,
+            "ci95": {
+              "low": 0.77,
+              "high": 0.91
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4369761987418868,
+            "ci95": {
+              "low": 0.3725419172371713,
+              "high": 0.5079280250495386
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.23,
+        "ndcg_any@1": 0.23,
+        "recall_all@3": 0.35,
+        "ndcg_any@3": 0.29916508275000203,
+        "recall_all@5": 0.46,
+        "ndcg_any@5": 0.34347184157935573,
+        "recall_all@10": 0.56,
+        "ndcg_any@10": 0.37519516139805875,
+        "recall_all@20": 0.69,
+        "ndcg_any@20": 0.40803858693522743,
+        "recall_all@50": 0.84,
+        "ndcg_any@50": 0.4369761987418868,
+        "mrr": 0.3316992512937379
+      },
+      "cells": [
+        {
+          "variant": "2-5",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-5_represent_L31_both_k15",
+      "description": "prompt sweep single cell: 2-5_represent, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.13,
+              "high": 0.28
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.13,
+              "high": 0.28
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.37,
+            "ci95": {
+              "low": 0.28,
+              "high": 0.47
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.29940227289286037,
+            "ci95": {
+              "low": 0.22440227289286035,
+              "high": 0.38071157042857495
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.45,
+            "ci95": {
+              "low": 0.35,
+              "high": 0.55
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3316652099967892,
+            "ci95": {
+              "low": 0.25858553793369016,
+              "high": 0.4099866159482233
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.52,
+            "ci95": {
+              "low": 0.43,
+              "high": 0.62
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3547050939641076,
+            "ci95": {
+              "low": 0.2849253191029767,
+              "high": 0.43165345407234174
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.65,
+            "ci95": {
+              "low": 0.55,
+              "high": 0.74
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3874889770274386,
+            "ci95": {
+              "low": 0.32139483795643087,
+              "high": 0.4607161996575606
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.84,
+            "ci95": {
+              "low": 0.77,
+              "high": 0.91
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4260356666371212,
+            "ci95": {
+              "low": 0.364031672876145,
+              "high": 0.49352970529947776
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.2,
+        "ndcg_any@1": 0.2,
+        "recall_all@3": 0.37,
+        "ndcg_any@3": 0.29940227289286037,
+        "recall_all@5": 0.45,
+        "ndcg_any@5": 0.3316652099967892,
+        "recall_all@10": 0.52,
+        "ndcg_any@10": 0.3547050939641076,
+        "recall_all@20": 0.65,
+        "ndcg_any@20": 0.3874889770274386,
+        "recall_all@50": 0.84,
+        "ndcg_any@50": 0.4260356666371212,
+        "mrr": 0.3177710297122242
+      },
+      "cells": [
+        {
+          "variant": "2-5_represent",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-7_L31_both_k15",
+      "description": "prompt sweep single cell: 2-7, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.18,
+            "ci95": {
+              "low": 0.11,
+              "high": 0.26
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.18,
+            "ci95": {
+              "low": 0.11,
+              "high": 0.26
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.37,
+            "ci95": {
+              "low": 0.27975000000000005,
+              "high": 0.47
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.28940227289286036,
+            "ci95": {
+              "low": 0.2154743802857166,
+              "high": 0.37071157042857494
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.45,
+            "ci95": {
+              "low": 0.36,
+              "high": 0.55
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3216652099967892,
+            "ci95": {
+              "low": 0.2506110272927093,
+              "high": 0.40489365297892754
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.53,
+            "ci95": {
+              "low": 0.43975000000000003,
+              "high": 0.63
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3464668415438914,
+            "ci95": {
+              "low": 0.27791951125442405,
+              "high": 0.4225067675273111
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.67,
+            "ci95": {
+              "low": 0.57975,
+              "high": 0.76
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.38251895234094613,
+            "ci95": {
+              "low": 0.3157030789877582,
+              "high": 0.4549926504089402
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.88,
+            "ci95": {
+              "low": 0.81975,
+              "high": 0.94
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4226667998747291,
+            "ci95": {
+              "low": 0.36651015132362147,
+              "high": 0.48773444783604974
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.18,
+        "ndcg_any@1": 0.18,
+        "recall_all@3": 0.37,
+        "ndcg_any@3": 0.28940227289286036,
+        "recall_all@5": 0.45,
+        "ndcg_any@5": 0.3216652099967892,
+        "recall_all@10": 0.53,
+        "ndcg_any@10": 0.3464668415438914,
+        "recall_all@20": 0.67,
+        "ndcg_any@20": 0.38251895234094613,
+        "recall_all@50": 0.88,
+        "ndcg_any@50": 0.4226667998747291,
+        "mrr": 0.30486429565760015
+      },
+      "cells": [
+        {
+          "variant": "2-7",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_P0_L31_both_k15",
+      "description": "prompt sweep single cell: P0, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.13,
+              "high": 0.29
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.13,
+              "high": 0.29
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.36,
+            "ci95": {
+              "low": 0.27,
+              "high": 0.46
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.2904743802857166,
+            "ci95": {
+              "low": 0.2154743802857166,
+              "high": 0.3767836778214312
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.43,
+            "ci95": {
+              "low": 0.33975000000000005,
+              "high": 0.53
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.32018350184246563,
+            "ci95": {
+              "low": 0.24509881873621586,
+              "high": 0.4026016300923013
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.53,
+            "ci95": {
+              "low": 0.43,
+              "high": 0.64
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.35147377522751627,
+            "ci95": {
+              "low": 0.27671650188175506,
+              "high": 0.4359251121573478
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.65,
+            "ci95": {
+              "low": 0.5597500000000001,
+              "high": 0.75
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.38074219442628743,
+            "ci95": {
+              "low": 0.31153858333464113,
+              "high": 0.4552251527437379
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.84,
+            "ci95": {
+              "low": 0.77,
+              "high": 0.91
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.41807232938073335,
+            "ci95": {
+              "low": 0.35384562402081804,
+              "high": 0.4871173474434727
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.2,
+        "ndcg_any@1": 0.2,
+        "recall_all@3": 0.36,
+        "ndcg_any@3": 0.2904743802857166,
+        "recall_all@5": 0.43,
+        "ndcg_any@5": 0.32018350184246563,
+        "recall_all@10": 0.53,
+        "ndcg_any@10": 0.35147377522751627,
+        "recall_all@20": 0.65,
+        "ndcg_any@20": 0.38074219442628743,
+        "recall_all@50": 0.84,
+        "ndcg_any@50": 0.41807232938073335,
+        "mrr": 0.30928374082042803
+      },
+      "cells": [
+        {
+          "variant": "P0",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-7_represent_L31_both_k15",
+      "description": "prompt sweep single cell: 2-7_represent, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.13,
+              "high": 0.29
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.13,
+              "high": 0.29
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.29,
+            "ci95": {
+              "low": 0.2,
+              "high": 0.38024999999999975
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.2528557852142875,
+            "ci95": {
+              "low": 0.17416508275000203,
+              "high": 0.34049525321696655
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.41,
+            "ci95": {
+              "low": 0.31,
+              "high": 0.51
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3032222596579291,
+            "ci95": {
+              "low": 0.2244507326525348,
+              "high": 0.3853331238346577
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.56,
+            "ci95": {
+              "low": 0.46,
+              "high": 0.66
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3511342991062128,
+            "ci95": {
+              "low": 0.2783774115036003,
+              "high": 0.42819901606973876
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.66,
+            "ci95": {
+              "low": 0.57,
+              "high": 0.75
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3764534412130861,
+            "ci95": {
+              "low": 0.30858315692465405,
+              "high": 0.44906797324663433
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.8,
+            "ci95": {
+              "low": 0.72,
+              "high": 0.88
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4041378557788438,
+            "ci95": {
+              "low": 0.3400027347103279,
+              "high": 0.4760873469920223
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.2,
+        "ndcg_any@1": 0.2,
+        "recall_all@3": 0.29,
+        "ndcg_any@3": 0.2528557852142875,
+        "recall_all@5": 0.41,
+        "ndcg_any@5": 0.3032222596579291,
+        "recall_all@10": 0.56,
+        "ndcg_any@10": 0.3511342991062128,
+        "recall_all@20": 0.66,
+        "ndcg_any@20": 0.3764534412130861,
+        "recall_all@50": 0.8,
+        "ndcg_any@50": 0.4041378557788438,
+        "mrr": 0.2992921660122987
+      },
+      "cells": [
+        {
+          "variant": "2-7_represent",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_1-1_EN_L31_both_k15",
+      "description": "prompt sweep single cell: 1-1_EN, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.23,
+            "ci95": {
+              "low": 0.15975000000000003,
+              "high": 0.32
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.23,
+            "ci95": {
+              "low": 0.15975000000000003,
+              "high": 0.32
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.36,
+            "ci95": {
+              "low": 0.27,
+              "high": 0.45024999999999976
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.3015464876785729,
+            "ci95": {
+              "low": 0.22761859507142915,
+              "high": 0.385501182970538
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.4,
+            "ci95": {
+              "low": 0.31,
+              "high": 0.5
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3178970749847316,
+            "ci95": {
+              "low": 0.24315290587012234,
+              "high": 0.4030883421497952
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.54,
+            "ci95": {
+              "low": 0.44,
+              "high": 0.64
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3625020641668692,
+            "ci95": {
+              "low": 0.2924016730809793,
+              "high": 0.4404572488716333
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.66,
+            "ci95": {
+              "low": 0.57,
+              "high": 0.76
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3931723401709792,
+            "ci95": {
+              "low": 0.32443903120127954,
+              "high": 0.4689225271277805
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.8,
+            "ci95": {
+              "low": 0.71,
+              "high": 0.88
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4199268827629703,
+            "ci95": {
+              "low": 0.35358275939142303,
+              "high": 0.4902991835950703
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.23,
+        "ndcg_any@1": 0.23,
+        "recall_all@3": 0.36,
+        "ndcg_any@3": 0.3015464876785729,
+        "recall_all@5": 0.4,
+        "ndcg_any@5": 0.3178970749847316,
+        "recall_all@10": 0.54,
+        "ndcg_any@10": 0.3625020641668692,
+        "recall_all@20": 0.66,
+        "ndcg_any@20": 0.3931723401709792,
+        "recall_all@50": 0.8,
+        "ndcg_any@50": 0.4199268827629703,
+        "mrr": 0.3211340798298597
+      },
+      "cells": [
+        {
+          "variant": "1-1_EN",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-4-1_L31_both_k15",
+      "description": "prompt sweep single cell: 2-4-1, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.21,
+            "ci95": {
+              "low": 0.13,
+              "high": 0.3
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.21,
+            "ci95": {
+              "low": 0.13,
+              "high": 0.3
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.38,
+            "ci95": {
+              "low": 0.28,
+              "high": 0.48
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.3094022728928604,
+            "ci95": {
+              "low": 0.22940227289286036,
+              "high": 0.39178960757500264
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.39,
+            "ci95": {
+              "low": 0.3,
+              "high": 0.49
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.31327080096520576,
+            "ci95": {
+              "low": 0.23283638969649909,
+              "high": 0.3949017104536018
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.47,
+            "ci95": {
+              "low": 0.38,
+              "high": 0.57
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3386453341250983,
+            "ci95": {
+              "low": 0.26131356621747204,
+              "high": 0.42155921854000983
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.6,
+            "ci95": {
+              "low": 0.5,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.37074351138770356,
+            "ci95": {
+              "low": 0.29833321695284226,
+              "high": 0.44918529799166074
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.83,
+            "ci95": {
+              "low": 0.75,
+              "high": 0.9
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4152629171032687,
+            "ci95": {
+              "low": 0.34999819915335467,
+              "high": 0.48488647684620656
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.21,
+        "ndcg_any@1": 0.21,
+        "recall_all@3": 0.38,
+        "ndcg_any@3": 0.3094022728928604,
+        "recall_all@5": 0.39,
+        "ndcg_any@5": 0.31327080096520576,
+        "recall_all@10": 0.47,
+        "ndcg_any@10": 0.3386453341250983,
+        "recall_all@20": 0.6,
+        "ndcg_any@20": 0.37074351138770356,
+        "recall_all@50": 0.83,
+        "ndcg_any@50": 0.4152629171032687,
+        "mrr": 0.3122134267903241
+      },
+      "cells": [
+        {
+          "variant": "2-4-1",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-4-1_user_word_represent_L31_both_k15",
+      "description": "prompt sweep single cell: 2-4-1_user_word_represent, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.12,
+              "high": 0.28
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.12,
+              "high": 0.28
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.32,
+            "ci95": {
+              "low": 0.23,
+              "high": 0.42
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.2652371901428583,
+            "ci95": {
+              "low": 0.18628842460446463,
+              "high": 0.3478825878991088
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.39,
+            "ci95": {
+              "low": 0.29,
+              "high": 0.49
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.29450807419121877,
+            "ci95": {
+              "low": 0.21493535576189757,
+              "high": 0.3771380703695581
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.52,
+            "ci95": {
+              "low": 0.42,
+              "high": 0.62
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3378521075230693,
+            "ci95": {
+              "low": 0.2624612181179224,
+              "high": 0.4184706364322412
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.64,
+            "ci95": {
+              "low": 0.54,
+              "high": 0.73
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3682215932564615,
+            "ci95": {
+              "low": 0.2952765472112356,
+              "high": 0.44423940198088613
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.88,
+            "ci95": {
+              "low": 0.82,
+              "high": 0.94
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.41593512025544455,
+            "ci95": {
+              "low": 0.35292093022861276,
+              "high": 0.4829193420229561
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.2,
+        "ndcg_any@1": 0.2,
+        "recall_all@3": 0.32,
+        "ndcg_any@3": 0.2652371901428583,
+        "recall_all@5": 0.39,
+        "ndcg_any@5": 0.29450807419121877,
+        "recall_all@10": 0.52,
+        "ndcg_any@10": 0.3378521075230693,
+        "recall_all@20": 0.64,
+        "ndcg_any@20": 0.3682215932564615,
+        "recall_all@50": 0.88,
+        "ndcg_any@50": 0.41593512025544455,
+        "mrr": 0.2978943994731822
+      },
+      "cells": [
+        {
+          "variant": "2-4-1_user_word_represent",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-6_L31_both_k15",
+      "description": "prompt sweep single cell: 2-6, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.19,
+            "ci95": {
+              "low": 0.12,
+              "high": 0.27
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.19,
+            "ci95": {
+              "low": 0.12,
+              "high": 0.27
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.32,
+            "ci95": {
+              "low": 0.23,
+              "high": 0.4102499999999997
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.2667836778214312,
+            "ci95": {
+              "low": 0.19152561474732294,
+              "high": 0.3483569681848254
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.38,
+            "ci95": {
+              "low": 0.29,
+              "high": 0.48
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2913095587806692,
+            "ci95": {
+              "low": 0.21666582127906306,
+              "high": 0.3728892240668354
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.48,
+            "ci95": {
+              "low": 0.38,
+              "high": 0.58
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.32312717343831887,
+            "ci95": {
+              "low": 0.25189205078771254,
+              "high": 0.402659173006866
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.62,
+            "ci95": {
+              "low": 0.53,
+              "high": 0.72
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3574966848126159,
+            "ci95": {
+              "low": 0.2894496775234957,
+              "high": 0.4349081460835764
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.83,
+            "ci95": {
+              "low": 0.75,
+              "high": 0.9
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.39957139302198685,
+            "ci95": {
+              "low": 0.33599584778539193,
+              "high": 0.4700608435319021
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.19,
+        "ndcg_any@1": 0.19,
+        "recall_all@3": 0.32,
+        "ndcg_any@3": 0.2667836778214312,
+        "recall_all@5": 0.38,
+        "ndcg_any@5": 0.2913095587806692,
+        "recall_all@10": 0.48,
+        "ndcg_any@10": 0.32312717343831887,
+        "recall_all@20": 0.62,
+        "ndcg_any@20": 0.3574966848126159,
+        "recall_all@50": 0.83,
+        "ndcg_any@50": 0.39957139302198685,
+        "mrr": 0.29044726852500363
+      },
+      "cells": [
+        {
+          "variant": "2-6",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-4-1_user_word_L31_both_k15",
+      "description": "prompt sweep single cell: 2-4-1_user_word, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.19,
+            "ci95": {
+              "low": 0.12,
+              "high": 0.27
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.19,
+            "ci95": {
+              "low": 0.12,
+              "high": 0.27
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.31,
+            "ci95": {
+              "low": 0.22,
+              "high": 0.4
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.2617836778214312,
+            "ci95": {
+              "low": 0.18546845053214514,
+              "high": 0.34311977804196714
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.38,
+            "ci95": {
+              "low": 0.29,
+              "high": 0.4702499999999997
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.29061632436140317,
+            "ci95": {
+              "low": 0.22051846099457634,
+              "high": 0.370270764201358
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.52,
+            "ci95": {
+              "low": 0.42,
+              "high": 0.62
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.33688138103044196,
+            "ci95": {
+              "low": 0.2665928508572023,
+              "high": 0.41530080106255124
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.66,
+            "ci95": {
+              "low": 0.56,
+              "high": 0.75
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3721232128957604,
+            "ci95": {
+              "low": 0.3062650465146548,
+              "high": 0.4452546222519274
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.86,
+            "ci95": {
+              "low": 0.79,
+              "high": 0.92
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.41201423412979843,
+            "ci95": {
+              "low": 0.3512833995924045,
+              "high": 0.4747460329862116
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.19,
+        "ndcg_any@1": 0.19,
+        "recall_all@3": 0.31,
+        "ndcg_any@3": 0.2617836778214312,
+        "recall_all@5": 0.38,
+        "ndcg_any@5": 0.29061632436140317,
+        "recall_all@10": 0.52,
+        "ndcg_any@10": 0.33688138103044196,
+        "recall_all@20": 0.66,
+        "ndcg_any@20": 0.3721232128957604,
+        "recall_all@50": 0.86,
+        "ndcg_any@50": 0.41201423412979843,
+        "mrr": 0.2966635936713135
+      },
+      "cells": [
+        {
+          "variant": "2-4-1_user_word",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-8_represent_L31_both_k15",
+      "description": "prompt sweep single cell: 2-8_represent, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.16,
+            "ci95": {
+              "low": 0.09,
+              "high": 0.23
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.16,
+            "ci95": {
+              "low": 0.09,
+              "high": 0.23
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.29,
+            "ci95": {
+              "low": 0.21,
+              "high": 0.38
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.23547438028571663,
+            "ci95": {
+              "low": 0.16154648767857288,
+              "high": 0.3157383731133963
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.36,
+            "ci95": {
+              "low": 0.27,
+              "high": 0.46
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2638687893173,
+            "ci95": {
+              "low": 0.19337897365832998,
+              "high": 0.3410226501586715
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.46,
+            "ci95": {
+              "low": 0.37,
+              "high": 0.56
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2965865661205979,
+            "ci95": {
+              "low": 0.22944332555867708,
+              "high": 0.3722590715281038
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.53,
+            "ci95": {
+              "low": 0.44,
+              "high": 0.63
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3139214390796448,
+            "ci95": {
+              "low": 0.24995724509949774,
+              "high": 0.38730388045987996
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.79,
+            "ci95": {
+              "low": 0.72,
+              "high": 0.87
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3650647175025585,
+            "ci95": {
+              "low": 0.3058799860131438,
+              "high": 0.4304693025548345
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.16,
+        "ndcg_any@1": 0.16,
+        "recall_all@3": 0.29,
+        "ndcg_any@3": 0.23547438028571663,
+        "recall_all@5": 0.36,
+        "ndcg_any@5": 0.2638687893173,
+        "recall_all@10": 0.46,
+        "ndcg_any@10": 0.2965865661205979,
+        "recall_all@20": 0.53,
+        "ndcg_any@20": 0.3139214390796448,
+        "recall_all@50": 0.79,
+        "ndcg_any@50": 0.3650647175025585,
+        "mrr": 0.2584959919118929
+      },
+      "cells": [
+        {
+          "variant": "2-8_represent",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "sweep_2-8_L31_both_k15",
+      "description": "prompt sweep single cell: 2-8, L31, anti_pca_both_k15",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.12975000000000003,
+              "high": 0.2802499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.12975000000000003,
+              "high": 0.2802499999999998
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.3,
+            "ci95": {
+              "low": 0.21,
+              "high": 0.39
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.2604743802857166,
+            "ci95": {
+              "low": 0.1841264205580377,
+              "high": 0.34704767064911085
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.31,
+            "ci95": {
+              "low": 0.22,
+              "high": 0.4
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.264342908358062,
+            "ci95": {
+              "low": 0.18689324761428988,
+              "high": 0.34982778618125565
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.44,
+            "ci95": {
+              "low": 0.34,
+              "high": 0.54
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3071598668932286,
+            "ci95": {
+              "low": 0.23037392842963794,
+              "high": 0.38805649747313603
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.55,
+            "ci95": {
+              "low": 0.46,
+              "high": 0.65
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.33547144661811423,
+            "ci95": {
+              "low": 0.2628116120437932,
+              "high": 0.4122197969353081
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.78,
+            "ci95": {
+              "low": 0.7,
+              "high": 0.8502499999999997
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.38077971688970974,
+            "ci95": {
+              "low": 0.3125653450907531,
+              "high": 0.449647050682492
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.2,
+        "ndcg_any@1": 0.2,
+        "recall_all@3": 0.3,
+        "ndcg_any@3": 0.2604743802857166,
+        "recall_all@5": 0.31,
+        "ndcg_any@5": 0.264342908358062,
+        "recall_all@10": 0.44,
+        "ndcg_any@10": 0.3071598668932286,
+        "recall_all@20": 0.55,
+        "ndcg_any@20": 0.33547144661811423,
+        "recall_all@50": 0.78,
+        "ndcg_any@50": 0.38077971688970974,
+        "mrr": 0.2820097591733904
+      },
+      "cells": [
+        {
+          "variant": "2-8",
+          "layer": 31,
+          "transform": "anti_pca_both_k15",
+          "family": "prompt-sweep"
+        }
+      ],
+      "scorer": "single_vector",
+      "sweep": "prompt_sweep_l31_both_k15"
+    },
+    {
+      "name": "bm25",
+      "description": "BM25 over preference memory strings",
+      "metrics": {
+        "n_total": 100,
+        "n_scored": 100,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.11,
+            "ci95": {
+              "low": 0.05,
+              "high": 0.18
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.11,
+            "ci95": {
+              "low": 0.05,
+              "high": 0.18
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.13,
+              "high": 0.28
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.16154648767857288,
+            "ci95": {
+              "low": 0.09892789260714373,
+              "high": 0.23023719014285832
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.25,
+            "ci95": {
+              "low": 0.17,
+              "high": 0.34
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.1813273655486885,
+            "ci95": {
+              "low": 0.11909372986444841,
+              "high": 0.2503757838864006
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.31,
+            "ci95": {
+              "low": 0.22,
+              "high": 0.4
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.20069701701331372,
+            "ci95": {
+              "low": 0.13850739810148602,
+              "high": 0.27187946664078805
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.45,
+            "ci95": {
+              "low": 0.36,
+              "high": 0.55
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.2354150574950739,
+            "ci95": {
+              "low": 0.17578083631952748,
+              "high": 0.30194803905467044
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.63,
+            "ci95": {
+              "low": 0.54,
+              "high": 0.72
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.271125599902364,
+            "ci95": {
+              "low": 0.21356461030510276,
+              "high": 0.334483906618154
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.11,
+        "ndcg_any@1": 0.11,
+        "recall_all@3": 0.2,
+        "ndcg_any@3": 0.16154648767857288,
+        "recall_all@5": 0.25,
+        "ndcg_any@5": 0.1813273655486885,
+        "recall_all@10": 0.31,
+        "ndcg_any@10": 0.20069701701331372,
+        "recall_all@20": 0.45,
+        "ndcg_any@20": 0.2354150574950739,
+        "recall_all@50": 0.63,
+        "ndcg_any@50": 0.271125599902364,
+        "mrr": 0.18168376080276263
+      }
+    }
+  ],
+  "elapsed_seconds": 1878.2702882079757
+}

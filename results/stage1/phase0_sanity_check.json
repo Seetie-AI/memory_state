@@ -1,0 +1,281 @@
+{
+  "summary": {
+    "mlx_model_id": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-2B-bf16",
+    "hf_model_id": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-2B-hf",
+    "precision_note": "MLX bf16 model compared with Transformers bfloat16.",
+    "threshold": 0.98,
+    "prompt_count": 12,
+    "next_token_match_rate": 0.9166666666666666,
+    "top5_overlap_mean": 1.0,
+    "top5_overlap_min": 1.0,
+    "hidden_cosine_mean": 0.9999238848686218,
+    "hidden_cosine_min": 0.9998805522918701,
+    "passed": true
+  },
+  "rows": [
+    {
+      "index": 1,
+      "next_token_match": true,
+      "mlx_next_token": "跑步",
+      "hf_next_token": "跑步",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9999171495437622,
+      "mlx_top5": [
+        "跑步",
+        "Sum",
+        "sum",
+        "\n",
+        "训练"
+      ],
+      "hf_top5": [
+        "跑步",
+        "sum",
+        "Sum",
+        "\n",
+        "训练"
+      ]
+    },
+    {
+      "index": 2,
+      "next_token_match": true,
+      "mlx_next_token": "summary",
+      "hf_next_token": "summary",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9999215006828308,
+      "mlx_top5": [
+        "summary",
+        "Summary",
+        "电池",
+        "battery",
+        "The"
+      ],
+      "hf_top5": [
+        "summary",
+        "Summary",
+        "电池",
+        "battery",
+        "The"
+      ]
+    },
+    {
+      "index": 3,
+      "next_token_match": true,
+      "mlx_next_token": "数据",
+      "hf_next_token": "数据",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9999184012413025,
+      "mlx_top5": [
+        "数据",
+        "总结",
+        "Sum",
+        "sum",
+        "\n"
+      ],
+      "hf_top5": [
+        "数据",
+        "总结",
+        "Sum",
+        "\n",
+        "sum"
+      ]
+    },
+    {
+      "index": 4,
+      "next_token_match": false,
+      "mlx_next_token": "安静",
+      "hf_next_token": "quiet",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9999315738677979,
+      "mlx_top5": [
+        "安静",
+        "quiet",
+        "\n",
+        "travel",
+        "sum"
+      ],
+      "hf_top5": [
+        "quiet",
+        "安静",
+        "\n",
+        "travel",
+        "sum"
+      ]
+    },
+    {
+      "index": 5,
+      "next_token_match": true,
+      "mlx_next_token": "天",
+      "hf_next_token": "天",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9999433755874634,
+      "mlx_top5": [
+        "天",
+        "\n",
+        "天文",
+        "The",
+        "sum"
+      ],
+      "hf_top5": [
+        "天",
+        "\n",
+        "天文",
+        "The",
+        "sum"
+      ]
+    },
+    {
+      "index": 6,
+      "next_token_match": true,
+      "mlx_next_token": "debug",
+      "hf_next_token": "debug",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9999390244483948,
+      "mlx_top5": [
+        "debug",
+        "The",
+        "\n",
+        "cache",
+        "Cache"
+      ],
+      "hf_top5": [
+        "debug",
+        "The",
+        "\n",
+        "cache",
+        "Cache"
+      ]
+    },
+    {
+      "index": 7,
+      "next_token_match": true,
+      "mlx_next_token": "简洁",
+      "hf_next_token": "简洁",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9999338984489441,
+      "mlx_top5": [
+        "简洁",
+        "可",
+        "用户",
+        "总结",
+        "精简"
+      ],
+      "hf_top5": [
+        "简洁",
+        "可",
+        "用户",
+        "总结",
+        "精简"
+      ]
+    },
+    {
+      "index": 8,
+      "next_token_match": true,
+      "mlx_next_token": "memory",
+      "hf_next_token": "memory",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9999291896820068,
+      "mlx_top5": [
+        "memory",
+        "\n",
+        "summary",
+        "Memory",
+        "The"
+      ],
+      "hf_top5": [
+        "memory",
+        "\n",
+        "summary",
+        "The",
+        "Memory"
+      ]
+    },
+    {
+      "index": 9,
+      "next_token_match": true,
+      "mlx_next_token": "偏好",
+      "hf_next_token": "偏好",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9999393820762634,
+      "mlx_top5": [
+        "偏好",
+        "喜欢",
+        "\n",
+        "吃",
+        "微"
+      ],
+      "hf_top5": [
+        "偏好",
+        "喜欢",
+        "\n",
+        "微",
+        "吃"
+      ]
+    },
+    {
+      "index": 10,
+      "next_token_match": true,
+      "mlx_next_token": "dependency",
+      "hf_next_token": "dependency",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9998805522918701,
+      "mlx_top5": [
+        "dependency",
+        "本地",
+        "local",
+        "约束",
+        "依赖"
+      ],
+      "hf_top5": [
+        "dependency",
+        "local",
+        "本地",
+        "约束",
+        "依赖"
+      ]
+    },
+    {
+      "index": 11,
+      "next_token_match": true,
+      "mlx_next_token": "优化",
+      "hf_next_token": "优化",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9999216794967651,
+      "mlx_top5": [
+        "优化",
+        "精简",
+        "痛点",
+        "\n",
+        "总结"
+      ],
+      "hf_top5": [
+        "优化",
+        "痛点",
+        "精简",
+        "\n",
+        "总结"
+      ]
+    },
+    {
+      "index": 12,
+      "next_token_match": true,
+      "mlx_next_token": "w",
+      "hf_next_token": "w",
+      "top5_jaccard": 1.0,
+      "hidden_cosine": 0.9999108910560608,
+      "mlx_top5": [
+        "w",
+        "\n",
+        "sum",
+        "W",
+        "ex"
+      ],
+      "hf_top5": [
+        "w",
+        "\n",
+        "W",
+        "sum",
+        "ex"
+      ]
+    }
+  ]
+}

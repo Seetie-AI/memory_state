@@ -37,6 +37,7 @@ TopLogitMap = dict[PositionName, tuple[np.ndarray, np.ndarray]]
 class ForwardOutput:
     vectors: VectorMap
     top_logits: TopLogitMap
+    selected_logits: TopLogitMap
 
 
 @dataclass
@@ -140,6 +141,25 @@ class CachedSuffixExtractor:
         target_positions: list[str],
         topk_logits: int = 0,
     ) -> tuple[VectorMap, TopLogitMap]:
+        vectors, top_logits, _selected_logits = self.encode_suffix_with_logit_outputs(
+            prefix_state=prefix_state,
+            suffix_text=suffix_text,
+            target_layers=target_layers,
+            target_positions=target_positions,
+            topk_logits=topk_logits,
+            selected_logit_token_ids=None,
+        )
+        return vectors, top_logits
+
+    def encode_suffix_with_logit_outputs(
+        self,
+        prefix_state: PrefixState,
+        suffix_text: str,
+        target_layers: list[int],
+        target_positions: list[str],
+        topk_logits: int = 0,
+        selected_logit_token_ids: np.ndarray | None = None,
+    ) -> tuple[VectorMap, TopLogitMap, TopLogitMap]:
         """Run a suffix from a deep-copied prefix cache and return vectors.
 
         The tokenizer split is verified exactly. If `encode(text + suffix)` is
@@ -170,6 +190,7 @@ class CachedSuffixExtractor:
             target_positions=suffix_positions,
             position_context="suffix",
             topk_logits=topk_logits,
+            selected_logit_token_ids=selected_logit_token_ids,
         )
         vectors = output.vectors
 
@@ -186,7 +207,7 @@ class CachedSuffixExtractor:
         # every suffix or at a coarser row/instance boundary by the caller.
         if self.clear_metal_cache_after_suffix:
             clear_mlx_memory(clear_metal_cache=True)
-        return vectors, output.top_logits
+        return vectors, output.top_logits, output.selected_logits
 
     def encode_no_suffix(
         self,
@@ -221,6 +242,7 @@ class CachedSuffixExtractor:
         target_positions: list[str],
         position_context: str,
         topk_logits: int = 0,
+        selected_logit_token_ids: np.ndarray | None = None,
     ) -> ForwardOutput:
         if topk_logits < 0:
             raise ValueError(f"topk_logits must be >= 0, got {topk_logits}.")
@@ -272,35 +294,54 @@ class CachedSuffixExtractor:
             mx.eval(*selected.values())
 
         top_logits: TopLogitMap = {}
-        if topk_logits > 0 and resolved_top_logit_positions:
+        selected_logits: TopLogitMap = {}
+        selected_ids_np = (
+            np.asarray(selected_logit_token_ids, dtype=np.int32)
+            if selected_logit_token_ids is not None
+            else np.zeros((0,), dtype=np.int32)
+        )
+        need_logits = resolved_top_logit_positions and (topk_logits > 0 or selected_ids_np.size > 0)
+        if need_logits:
             final_hidden = self.base_model.norm(hidden_states)
             logits = self.extractor._project_logits(final_hidden)
             vocab_size = int(logits.shape[-1])
             if topk_logits > vocab_size:
                 raise ValueError(f"topk_logits={topk_logits} exceeds vocab_size={vocab_size}.")
+            if selected_ids_np.size > 0:
+                if selected_ids_np.min() < 0 or selected_ids_np.max() >= vocab_size:
+                    raise ValueError("selected_logit_token_ids contains ids outside the model vocabulary.")
+                selected_ids_mx = mx.array(selected_ids_np.reshape(1, -1), dtype=mx.int32)
             for position_name, resolved_position in resolved_top_logit_positions.items():
                 position_logits = logits[:, resolved_position, :]
-                top_ids = mx.argpartition(
-                    position_logits,
-                    kth=vocab_size - topk_logits,
-                    axis=-1,
-                )[:, -topk_logits:]
-                top_values = mx.take_along_axis(position_logits, top_ids, axis=-1)
-                order = mx.argsort(top_values, axis=-1)[:, ::-1]
-                top_ids = mx.take_along_axis(top_ids, order, axis=-1).astype(mx.int32)
-                top_values = mx.take_along_axis(top_values, order, axis=-1).astype(mx.float32)
-                mx.eval(top_ids, top_values)
-                top_logits[position_name] = (
-                    np.array(top_ids[0], dtype=np.int32),
-                    np.array(top_values[0], dtype=np.float32),
-                )
+                if topk_logits > 0:
+                    top_ids = mx.argpartition(
+                        position_logits,
+                        kth=vocab_size - topk_logits,
+                        axis=-1,
+                    )[:, -topk_logits:]
+                    top_values = mx.take_along_axis(position_logits, top_ids, axis=-1)
+                    order = mx.argsort(top_values, axis=-1)[:, ::-1]
+                    top_ids = mx.take_along_axis(top_ids, order, axis=-1).astype(mx.int32)
+                    top_values = mx.take_along_axis(top_values, order, axis=-1).astype(mx.float32)
+                    mx.eval(top_ids, top_values)
+                    top_logits[position_name] = (
+                        np.array(top_ids[0], dtype=np.int32),
+                        np.array(top_values[0], dtype=np.float32),
+                    )
+                if selected_ids_np.size > 0:
+                    selected_values = mx.take_along_axis(position_logits, selected_ids_mx, axis=-1).astype(mx.float32)
+                    mx.eval(selected_values)
+                    selected_logits[position_name] = (
+                        selected_ids_np,
+                        np.array(selected_values[0], dtype=np.float32),
+                    )
 
         output: VectorMap = {}
         for key, value in selected.items():
             output[key] = np.array(value[0], dtype=np.float32)
             if not np.all(np.isfinite(output[key])):
                 raise ValueError(f"Non-finite hidden vector for {key}.")
-        return ForwardOutput(vectors=output, top_logits=top_logits)
+        return ForwardOutput(vectors=output, top_logits=top_logits, selected_logits=selected_logits)
 
     def _resolve_layer(self, layer_index: int) -> int:
         resolved = layer_index if layer_index >= 0 else self.num_layers + layer_index

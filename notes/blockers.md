@@ -43,7 +43,7 @@ Run the same pip commands in an environment where this repo's shell has PyPI net
 When shell network access is available, resume from the repo root:
 
 ```bash
-cd /Users/gordonxiong/Desktop/Repos/memory_state
+cd /path/to/memory_state
 source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt

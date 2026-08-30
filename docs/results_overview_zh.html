@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inference-Native Memory State：内部技术报告</title>
+  <style>
+    :root {
+      --bg: #f5f5f1;
+      --paper: #ffffff;
+      --ink: #202124;
+      --muted: #5f6368;
+      --line: #d8d9d2;
+      --blue: #1f5ea8;
+      --green: #1f7a55;
+      --amber: #95621f;
+      --code: #f0f2f4;
+      --soft-blue: #f1f5fb;
+      --soft-green: #eef8f2;
+      --soft-amber: #fbf5ea;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.72 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 38px 22px 70px;
+    }
+
+    header, section {
+      background: var(--paper);
+      border: 1px solid var(--line);
+    }
+
+    header { padding: 38px 42px; }
+    section { margin: 18px 0; padding: 30px 34px; }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      font-size: 36px;
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 25px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 24px 0 10px;
+      font-size: 18px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    p { margin: 10px 0; }
+
+    .subtitle {
+      margin: 18px 0 0;
+      max-width: 920px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 0;
+      margin: 0 0 18px;
+      background: rgba(245, 245, 241, .94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+    }
+
+    nav a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      padding: 6px 10px;
+    }
+
+    .lead { font-size: 18px; color: #30343a; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      padding: 16px 18px;
+      background: #fcfcfb;
+    }
+
+    .panel h3 { margin-top: 0; }
+
+    .callout {
+      margin: 16px 0;
+      padding: 14px 16px;
+      border-left: 4px solid var(--blue);
+      background: var(--soft-blue);
+    }
+
+    .callout.good { border-left-color: var(--green); background: var(--soft-green); }
+    .callout.warn { border-left-color: var(--amber); background: var(--soft-amber); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 20px;
+      font-size: 14px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      background: #fafafa;
+      font-weight: 700;
+    }
+
+    .num {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    code, .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      background: var(--code);
+      padding: 0 4px;
+      border-radius: 4px;
+      font-size: .92em;
+    }
+
+    pre {
+      margin: 14px 0 18px;
+      padding: 16px;
+      overflow-x: auto;
+      background: #24272d;
+      color: #f6f8fa;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    ul, ol { padding-left: 1.35em; }
+    li { margin: 6px 0; }
+
+    .metric {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .muted { color: var(--muted); }
+
+    @media (max-width: 760px) {
+      .page { padding: 18px 12px 44px; }
+      header, section { padding: 22px 18px; }
+      h1 { font-size: 28px; }
+      nav { position: static; }
+      .grid { grid-template-columns: 1fr; }
+      table { display: block; overflow-x: auto; white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <p class="eyebrow">Internal Technical Report · May 2026</p>
+      <h1>Inference-Native Memory State：用 LLM 隐状态做长期记忆检索</h1>
+      <p class="subtitle">
+        这份报告整理最终技术叙事：LongMemEval 用来证明 late-layer suffix-final hidden state
+        可以做 evidence retrieval；PrefEval 用同一思路重选 prompt family，得到最终 companion-memory
+        配置 <code>2-3-1 + 2-5_token + 2-8_emoji</code>。
+      </p>
+    </header>
+
+    <nav>
+      <a href="#thesis">结论</a>
+      <a href="#motivation">动机</a>
+      <a href="#terms">术语</a>
+      <a href="#models">模型</a>
+      <a href="#longmem">LongMem</a>
+      <a href="#prefeval-final">PrefEval Final</a>
+      <a href="#prompts">Prompt Sweep</a>
+      <a href="#overlap">重合度</a>
+      <a href="#tradeoffs">取舍</a>
+      <a href="#cost">部署代价</a>
+      <a href="#transfer">迁移</a>
+      <a href="#limits">局限</a>
+      <a href="#sources">来源</a>
+    </nav>
+
+    <section id="thesis">
+      <h2>核心结论</h2>
+      <p class="lead">
+        隐状态可以作为长期记忆检索向量，但有效方案不是“任意层 hidden state + cosine”。
+        关键是 retrieval suffix 末端的 late layer、去掉共同方向的几何处理、以及与 memory domain
+        匹配的 prompt view。
+      </p>
+      <div class="grid">
+        <div class="panel">
+          <h3>LongMemEval：方法验证</h3>
+          <p>Qwen3.5-9B-MLX-4bit 的 K3 hidden-state retriever 加 BM25 top20 rerank：</p>
+          <p class="metric">R@5 = 0.777 · NDCG@5 = 0.822</p>
+          <p class="muted">这是 embedding-baseline scale 的可行性证据，不是 held-out 胜利声明。</p>
+        </div>
+        <div class="panel">
+          <h3>PrefEval：最终 companion 配置</h3>
+          <p>最终 K3 是 recall keyword、association token、emotion emoji 三个视角。</p>
+          <p class="metric">R@1 = 0.122 · R@3 = 0.265 · R@5 = 0.332</p>
+          <p class="muted">相对 BM25 和 4bit embedding baseline 有清楚提升，同时保留情绪轴。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="motivation">
+      <h2>为什么做这个项目</h2>
+      <p>
+        目标不是证明 hidden state 永远强于 embedding model，而是验证一个系统假设：
+        负责读 memory、理解用户、执行后续推理的同一个 LLM，能不能也提供 memory key。
+        如果可以，memory representation 就不必完全依赖一个外部 embedding stack。
+      </p>
+      <div class="grid">
+        <div class="panel">
+          <h3>模型原生表示</h3>
+          <p>query 和 memory page 都通过同一个 4bit LLM、同一套 tokenizer 和 prompt 进入表示空间。</p>
+        </div>
+        <div class="panel">
+          <h3>Training-free</h3>
+          <p>报告里的主配置没有做 contrastive retriever training；改的是 prompt、层、几何处理和 score fusion。</p>
+        </div>
+      </div>
+      <p>
+        Embedding model 仍然有价值，尤其是作为 score-level rerank signal。但在最终叙事里，
+        embedding 是辅助分数，不是把 memory representation 交回给外部模型。
+      </p>
+    </section>
+
+    <section id="terms">
+      <h2>关键术语</h2>
+      <table>
+        <thead><tr><th>术语</th><th>定义</th></tr></thead>
+        <tbody>
+          <tr><td><code>suffix-final</code></td><td>在 retrieval suffix 的最后一个 token 位置取 hidden state；此时模型刚被要求把页面或 query 压缩成一个检索 key。</td></tr>
+          <tr><td><code>anti_pca_both_k15</code></td><td>对 query 和 candidate 两边都去掉前 15 个共享主方向，减少 prompt/corpus common direction。</td></tr>
+          <tr><td><code>vector_average_component_norm</code></td><td>K 个 prompt 分量先做 component normalization，再平均，避免某个 prompt 只因尺度更大而主导。</td></tr>
+          <tr><td><code>z-score fusion</code></td><td>每个 query 内把不同分数源标准化后加权融合。</td></tr>
+          <tr><td><code>oracle union</code></td><td>用 label 观察多个 prompt 的 hit union，只用于诊断互补性，不是可部署 scorer。</td></tr>
+          <tr><td><code>source_ge3</code></td><td>source-count agreement filter；可以看 tuning ceiling，但不进最终默认。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="models">
+      <h2>使用的模型</h2>
+      <p>
+        隐状态提取使用 <code>models/Qwen3.5-9B-MLX-4bit</code>。PrefEval 最终配置里的外部 embedding
+        分数来自 <code>models/Qwen3-Embedding-0.6B-4bit-DWQ</code>。LongMemEval 的本地 embedding
+        baseline 包括 <code>Qwen3-Embedding-8B-4bit-DWQ</code>。
+      </p>
+      <div class="callout">
+        所有上述模型都是本地 4bit 模型。Embedding 在最终系统里是 score-level rerank source，
+        不是把 embedding vector 拼进 9B hidden vector。
+      </div>
+    </section>
+
+    <section id="longmem">
+      <h2>LongMemEval：方法原型</h2>
+      <p>
+        LongMemEval-S/round 是 evidence retrieval 任务。subset 0-100 经过官方 abstention filter 后有
+        94 个 scored questions。这个任务用来验证 hidden-state memory vector 是否能找到事实证据。
+      </p>
+      <table>
+        <thead>
+          <tr><th>方法</th><th class="num">R@5</th><th class="num">NDCG@5</th><th class="num">MRR</th><th>角色</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>BM25</td><td class="num">0.585</td><td class="num">0.547</td><td class="num">0.559</td><td>lexical baseline</td></tr>
+          <tr><td>Qwen3-Embedding-0.6B local baseline</td><td class="num">0.766</td><td class="num">0.809</td><td class="num">-</td><td>embedding reference</td></tr>
+          <tr><td>Qwen3-Embedding-8B-4bit-DWQ</td><td class="num">0.755</td><td class="num">0.789</td><td class="num">0.826</td><td>本地 4bit embedding baseline</td></tr>
+          <tr><td>Stage 3 compact K2 hidden-only：<code>2-4-1_user_word + 1-3</code></td><td class="num">0.777</td><td class="num">0.788</td><td class="num">0.820</td><td>无 BM25，compact 8 KB/page path</td></tr>
+          <tr><td><strong>Stage 3 LongMem K3 + BM25 top20</strong></td><td class="num"><strong>0.777</strong></td><td class="num"><strong>0.822</strong></td><td class="num"><strong>0.851</strong></td><td>方法验证结果</td></tr>
+        </tbody>
+      </table>
+
+      <h3>LongMem K3</h3>
+      <table>
+        <thead>
+          <tr><th>Prompt id</th><th>作用</th><th class="num">Layer</th><th>Transform</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>2-4-1_user_word</code></td><td>用户 / product wording</td><td class="num">31</td><td><code>anti_pca_both_k15</code></td></tr>
+          <tr><td><code>1-3</code></td><td>通用 tag / marker</td><td class="num">31</td><td><code>anti_pca_both_k15</code></td></tr>
+          <tr><td><code>2-5</code></td><td>联想 / association</td><td class="num">31</td><td><code>anti_pca_both_k15</code></td></tr>
+        </tbody>
+      </table>
+      <p>
+        三个 4096-d 向量 concat 成 12288-d 后做 cosine；再保留 vector top20，用
+        <code>0.75*z(vector) + 0.25*z(BM25)</code> 重排。
+      </p>
+    </section>
+
+    <section id="prefeval-final">
+      <h2>PrefEval 最终配置</h2>
+      <p>
+        PrefEval implicit-persona n=1000 测的是 preference/persona memory。最终配置只有一个：
+        回忆关键词、联想 token、情绪 emoji。表里优先写完整 suffix，因为同一含义在不同脚本里可能有不同 id。
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>角色</th><th>Implementation id</th><th>完整 suffix</th><th class="num">Layer</th><th>Transform</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Recall-keyword marker</td>
+            <td>PrefEval <code>2-3-1</code><br><span class="muted">LongMem replay <code>2-3-1_mark</code></span></td>
+            <td>用一个词标记上面这段对话最该让我想起的关键词，这个词是：“</td>
+            <td class="num">30</td>
+            <td><code>anti_pca_both_k15</code></td>
+          </tr>
+          <tr>
+            <td>Association token</td>
+            <td><code>2-5_token</code></td>
+            <td>用一个token标记上面这段对话让我产生的联想，这个token是：“</td>
+            <td class="num">30</td>
+            <td><code>anti_pca_both_k15</code></td>
+          </tr>
+          <tr>
+            <td>Emotion emoji</td>
+            <td><code>2-8_emoji</code></td>
+            <td>用一个emoji标记上面这段对话的情绪，这个emoji是：“</td>
+            <td class="num">30</td>
+            <td><code>anti_pca_both_k15</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Dense scorer 使用 <code>vector_average_component_norm</code>。最终 full-corpus 分数为：</p>
+      <pre><code>final_score =
+  0.60 * row_zscore(K3_vector_average_score)
++ 0.30 * row_zscore(Qwen3-Embedding-0.6B-4bit-DWQ_score)
++ 0.10 * row_zscore(BM25_score)</code></pre>
+
+      <table>
+        <thead>
+          <tr><th>配置</th><th class="num">R@1</th><th class="num">R@3</th><th class="num">R@5</th><th class="num">NDCG@5</th><th class="num">MRR</th><th>角色</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>BM25</td><td class="num">0.035</td><td class="num">0.074</td><td class="num">0.094</td><td class="num">0.066</td><td class="num">0.067</td><td>lexical floor</td></tr>
+          <tr><td>Qwen3-Embedding-8B-4bit-DWQ</td><td class="num">0.093</td><td class="num">0.216</td><td class="num">0.281</td><td class="num">0.191</td><td class="num">0.200</td><td>4bit embedding baseline</td></tr>
+          <tr><td><strong>Final companion K3 + 0.6B embedding + BM25</strong></td><td class="num"><strong>0.122</strong></td><td class="num"><strong>0.265</strong></td><td class="num"><strong>0.332</strong></td><td class="num"><strong>0.232</strong></td><td class="num"><strong>0.233</strong></td><td>最终配置</td></tr>
+          <tr><td>Topic metric ceiling control</td><td class="num">0.119</td><td class="num">0.265</td><td class="num">0.355</td><td class="num">0.240</td><td class="num">0.235</td><td>更高 R@5，但不作为 companion 默认</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">
+        Holdout300 sanity split：R@1 0.127 / R@3 0.263 / R@5 0.320 / NDCG@5 0.228 / MRR 0.228。
+        这个 split 是探索之后切出的 sanity check，不是 blind validation。
+      </p>
+    </section>
+
+    <section id="prompts">
+      <h2>PrefEval prompt sweep：试了什么，什么没用</h2>
+      <p>
+        PrefEval 共测试 25 个 prompt variants。它们覆盖 object（topic/keyword/association/user/emotion/interaction）、
+        verb（代表/标记/概括）、output form（word/token/emoji）、language（CN/EN/RU/JA）、
+        以及是否保留“上面”。这里不逐个列出，而是列几个最能解释设计选择的失败或非最终例子。
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Prompt / treatment</th><th>观察</th><th>解释</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>2-1-2</code>：topic prompt 去掉“上面”</td><td>single-prompt R@5 = 0.321</td><td>topic 单 prompt 很强，但优势没有线性叠到最终 K3。</td></tr>
+          <tr><td><code>2-5-2</code>：association prompt 去掉“上面”</td><td>弱于原始 <code>2-5</code></td><td>去掉“上面”不是通用改进。</td></tr>
+          <tr><td><code>2-3-3</code> / <code>2-5-3</code>：direct token，不要求可读</td><td>没有超过原 prompt</td><td>强迫不可读 token 没带来更好 retrieval geometry。</td></tr>
+          <tr><td><code>1-1_RU_explicit</code></td><td>R@5 = 0.107</td><td>语言 mismatch 明显 collapse。</td></tr>
+          <tr><td><code>1-1_EMOJI</code></td><td>约 R@5 = 0.285</td><td>generic emoji tag 有惊喜，但它不是最终 K3 的 emoji。</td></tr>
+          <tr><td><code>2-7</code> interaction-pattern word prompt</td><td>single-prompt R@5 = 0.229</td><td>单独检索弱；dynamics 轴可作为产品假设继续测。</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        Emoji 的发现不是“emoji 全都更好”。准确说法是：generic emoji prompt 暴露出一个有用但不稳定的
+        affect/style signal；最终配置选择 <code>2-8_emoji</code>，因为它明确要求对话情绪。
+      </div>
+    </section>
+
+    <section id="overlap">
+      <h2>Prompt 之间的重合度怎么判断</h2>
+      <p>
+        Prompt selection 不只看单 prompt 排名。我们用 oracle union hit@k 和 pairwise Jaccard@k
+        看 prompt 是否互补。Oracle union 用到了 label，因此只能用于生成假设，不能当无偏结果。
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>固定 base pair <code>2-3-1 + 2-5</code> 后加第三槽</th><th class="num">union@3</th><th class="num">union@5</th><th>结论</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>base pair</td><td class="num">0.300</td><td class="num">0.369</td><td>核心 pair</td></tr>
+          <tr><td><code>+ 2-1_token</code></td><td class="num">0.339</td><td class="num">0.415</td><td>union@3 最强</td></tr>
+          <tr><td><code>+ 2-1-2</code></td><td class="num">0.332</td><td class="num">0.417</td><td>top third prompts 里 union@5 最强</td></tr>
+          <tr><td><code>+ 1-1_EMOJI</code></td><td class="num">0.322</td><td class="num">0.399</td><td>有用，但不突出</td></tr>
+          <tr><td><code>+ 2-1</code></td><td class="num">0.326</td><td class="num">0.410</td><td>纯 topic control 在最终融合里更强</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        这解释了为什么不能简单地把 single-prompt winner 拼起来：prompt 的互补性、可解释 memory axis、
+        和最终 fusion 后的排序表现都要一起看。
+      </p>
+    </section>
+
+    <section id="tradeoffs">
+      <h2>为什么最终 K3 不是 benchmark maxxing</h2>
+      <p>
+        如果只追 PrefEval retrieval 指标，topic control 的 R@5 更高；如果追最尖的表格行，
+        source-screened rows 也可能更高。但最终配置保留 emotion anchor，是为了 companion memory，
+        不是只最大化这个 benchmark 的 R@5。
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>配置</th><th>K3 prompts</th><th class="num">R@1</th><th class="num">R@3</th><th class="num">R@5</th><th class="num">NDCG@5</th><th class="num">MRR</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Topic metric ceiling control</td><td><code>2-3-1 + 2-5 + 2-1</code></td><td class="num">0.119</td><td class="num">0.265</td><td class="num">0.355</td><td class="num">0.240</td><td class="num">0.235</td></tr>
+          <tr><td><strong>Final companion config</strong></td><td><code>2-3-1 + 2-5_token + 2-8_emoji</code></td><td class="num"><strong>0.122</strong></td><td class="num">0.265</td><td class="num">0.332</td><td class="num">0.232</td><td class="num">0.233</td></tr>
+        </tbody>
+      </table>
+
+      <p>
+        上表不是一个干净单因素 ablation，因为 association 槽和第三槽都变了。干净第三槽对照要固定
+        <code>2-3-1 + 2-5_token</code>：
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>第三槽</th><th>K3 prompts</th><th class="num">R@1</th><th class="num">R@3</th><th class="num">R@5</th><th class="num">NDCG@5</th><th class="num">MRR</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Dynamics emoji</td><td><code>2-3-1 + 2-5_token + 2-7_emoji</code></td><td class="num">0.125</td><td class="num">0.259</td><td class="num">0.341</td><td class="num">0.236</td><td class="num">0.234</td></tr>
+          <tr><td><strong>Emotion emoji</strong></td><td><code>2-3-1 + 2-5_token + 2-8_emoji</code></td><td class="num">0.122</td><td class="num"><strong>0.265</strong></td><td class="num">0.332</td><td class="num">0.232</td><td class="num">0.233</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Shortlist policy</h3>
+      <p>
+        Source-count shortlist 不进入最终默认配置，因为它把 candidate selection 也变成可调超参。
+        BM25 scope 是另一个问题：PrefEval 最终用 full-corpus z-score fusion；LongMemEval 使用 vector top20
+        内 BM25 rerank。两个 benchmark 的 lexical signal 作用不同。
+      </p>
+
+      <h3>Embedding 的角色</h3>
+      <p>
+        PrefEval 中的 <code>Qwen3-Embedding-0.6B-4bit-DWQ</code> 权重是 0.30。
+        它主要改善 early rank / MRR，是正交 rerank signal；它不是替代 hidden-state K3。
+      </p>
+    </section>
+
+    <section id="cost">
+      <h2>部署代价</h2>
+      <p>
+        Qwen3.5-9B 的 hidden size 是 4096。按 bf16 存储，一个 prompt view 约
+        <code>4096 * 2 bytes = 8 KB/page</code>。因此 K3 是 24 KB/page；
+        20k memory pages 约 500 MB，不含 metadata 和 index overhead。
+      </p>
+      <div class="callout good">
+        这个量级对本地 companion memory 是可接受的，尤其是主 representation 不需要额外训练出来的检索模型状态。
+      </div>
+    </section>
+
+    <section id="transfer">
+      <h2>PrefEval final K3 回放到 LongMemEval</h2>
+      <p>
+        最终 PrefEval K3 也被 replay 到 LongMemEval-S/round 上。结果说明它有跨 benchmark 迁移性，
+        但仍低于 LongMem-specific K3。
+      </p>
+      <table>
+        <thead>
+          <tr><th>LongMem replay config</th><th class="num">R@1</th><th class="num">R@3</th><th class="num">R@5</th><th class="num">NDCG@5</th><th class="num">MRR</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>PrefEval final-style 0.60 K3 + 0.30 embedding + 0.10 BM25</td><td class="num">0.532</td><td class="num">0.745</td><td class="num">0.766</td><td class="num">0.805</td><td class="num">0.831</td></tr>
+          <tr><td>K3 hidden-only vector average</td><td class="num">0.468</td><td class="num">0.723</td><td class="num">0.745</td><td class="num">0.752</td><td class="num">0.767</td></tr>
+          <tr><td>Embedding-only</td><td class="num">0.511</td><td class="num">0.681</td><td class="num">0.755</td><td class="num">0.789</td><td class="num">0.826</td></tr>
+        </tbody>
+      </table>
+      <p>
+        LongMem-specific K3 是 R@5=0.777 / NDCG@5=0.822；PrefEval final K3 回放后是
+        R@5=0.766 / NDCG@5=0.805。结论不是一套 prompt 通吃，而是同一方法形态可以跨 benchmark 重选 prompt。
+      </p>
+    </section>
+
+    <section id="lessons">
+      <h2>经验总结</h2>
+      <div class="grid">
+        <div class="panel">
+          <h3>有效</h3>
+          <ul>
+            <li>late suffix-final hidden state。</li>
+            <li>anti-PCA / centering 去掉共同方向。</li>
+            <li>多 prompt views，但 prompt 必须贴合 memory domain。</li>
+            <li>PrefEval 上用 component-normalized vector average。</li>
+            <li>BM25 和 4bit Qwen embedding 作为 score-level rerank signal。</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>无效或风险高</h3>
+          <ul>
+            <li>final post-norm cosine。</li>
+            <li>早中层 hidden vectors。</li>
+            <li>sequence mean/max pooling。</li>
+            <li>direct-token wording 作为通用修复。</li>
+            <li>去掉“上面”作为通用 prompt 改进。</li>
+            <li>Russian explicit prompt。</li>
+            <li>source-count screening 作为最终默认。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="limits">
+      <h2>局限</h2>
+      <ul>
+        <li>LongMemEval 主结果只有 94 个 scored questions；一个问题约 1.1 个百分点。</li>
+        <li>prompt 和 fusion 都是在已探索 benchmark subset 上调出来的。</li>
+        <li>PrefEval holdout300 是探索后 sanity check，不是 blind validation。</li>
+        <li>几何结论绑定 Qwen3.5-9B-MLX-4bit；换模型、量化或 prompt template 后需要复测。</li>
+        <li>PrefEval 最终配置仍使用外部 4bit embedding score，因为它改善 early-rank quality。</li>
+      </ul>
+    </section>
+
+    <section id="sources">
+      <h2>主要复现来源</h2>
+      <ul>
+        <li><code>notes/stage_3_prompt_sweep_findings.md</code></li>
+        <li><code>benchmarks/PrefEval/prefeval_benchmark.py</code></li>
+        <li><code>scripts/stage3_prompt_sweep.py</code></li>
+        <li><code>scripts/stage3_longmem_prefeval_final_fusion.py</code></li>
+        <li><code>benchmarks/PrefEval/results/prefeval_stage1_1_more_prompts/findings.md</code></li>
+        <li><code>benchmarks/PrefEval/results/prefeval_stage1_1_more_prompts/k3_231_25token_28emoji_sameL30_fixed_all1000_20260514.md</code></li>
+        <li>K3 dynamics/emotion 第三槽对照输出：<code>benchmarks/PrefEval/results/prefeval_stage1_1_more_prompts/</code></li>
+        <li>K3 topic-control 对照输出：<code>benchmarks/PrefEval/results/prefeval_stage1_1_more_prompts/</code></li>
+        <li><code>results/stage3/prompt_fusion_prefeval_replay/prefeval_l30_k3_longmemeval100.md</code></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

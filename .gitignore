@@ -1,12 +1,27 @@
+# Environments and caches
 .venv/
-models/
-data/
-results/
-tensors/
-notes/blockers.md.swp
 __pycache__/
 *.pyc
 .DS_Store
+notes/blockers.md.swp
+
+# Model weights and hidden-state dumps (large, regenerable)
+models/
+tensors/
+benchmarks/PrefEval/tensors/
+
+# Third-party benchmark data. Not redistributed here for licensing reasons.
+# See docs/DATA.md for the original sources and how to download them.
+data/
+benchmarks/PrefEval/data/
+.hf_home/
+**/.hf_home/
+
+# Machine-specific and internal tooling
 .claude/
+.claude/orchestrator-*.sh
+.orchestrator_logs/
+.orchestrator_flags/
 AGENTS.md
 airdrop_machineB/
+benchmarks/PrefEval/airdrop/

@@ -1,0 +1,342 @@
+loading siyanzhao/prefeval_implicit_persona split=train cache=/Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/.hf_home/datasets
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+task=implicit_persona dataset=siyanzhao/prefeval_implicit_persona items=1000 candidates=1000 queries=1000 duplicate_preferences=10 retrievers=['bm25', 'prompt_sweep_l28_l29_l30_l31_both_k15']
+scoring BM25
+  bm25 1/1000
+  bm25 50/1000
+  bm25 100/1000
+  bm25 150/1000
+  bm25 200/1000
+  bm25 250/1000
+  bm25 300/1000
+  bm25 350/1000
+  bm25 400/1000
+  bm25 450/1000
+  bm25 500/1000
+  bm25 550/1000
+  bm25 600/1000
+  bm25 650/1000
+  bm25 700/1000
+  bm25 750/1000
+  bm25 800/1000
+  bm25 850/1000
+  bm25 900/1000
+  bm25 950/1000
+  bm25 1000/1000
+bm25: R@1=0.035 R@3=0.074 R@5=0.094 NDCG@5=0.066 MRR=0.067
+encoding hidden vectors with /Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-9B-MLX-4bit
+  hidden encoded 1/2000 elapsed=7s eta=4h26m12s
+  hidden encoded 10/2000 elapsed=1m13s eta=4h03m52s
+  hidden encoded 20/2000 elapsed=2m26s eta=4h01m50s
+  hidden encoded 30/2000 elapsed=3m40s eta=4h00m51s
+  hidden encoded 40/2000 elapsed=4m55s eta=4h01m05s
+  hidden encoded 50/2000 elapsed=6m17s eta=4h05m26s
+  hidden encoded 60/2000 elapsed=7m39s eta=4h07m39s
+  hidden encoded 70/2000 elapsed=9m00s eta=4h08m23s
+  hidden encoded 80/2000 elapsed=10m21s eta=4h08m39s
+  hidden encoded 90/2000 elapsed=11m42s eta=4h08m31s
+  hidden encoded 100/2000 elapsed=13m03s eta=4h08m03s
+  hidden encoded 110/2000 elapsed=14m24s eta=4h07m30s
+  hidden encoded 120/2000 elapsed=15m45s eta=4h06m52s
+  hidden encoded 130/2000 elapsed=17m06s eta=4h05m59s
+  hidden encoded 140/2000 elapsed=18m27s eta=4h05m10s
+  hidden encoded 150/2000 elapsed=19m47s eta=4h04m08s
+  hidden encoded 160/2000 elapsed=21m08s eta=4h03m10s
+  hidden encoded 170/2000 elapsed=22m29s eta=4h02m06s
+  hidden encoded 180/2000 elapsed=23m50s eta=4h01m02s
+  hidden encoded 190/2000 elapsed=25m11s eta=3h59m56s
+  hidden encoded 200/2000 elapsed=26m32s eta=3h58m49s
+  hidden encoded 210/2000 elapsed=27m52s eta=3h57m39s
+  hidden encoded 220/2000 elapsed=29m13s eta=3h56m28s
+  hidden encoded 230/2000 elapsed=30m28s eta=3h54m29s
+  hidden encoded 240/2000 elapsed=31m35s eta=3h51m37s
+  hidden encoded 250/2000 elapsed=32m41s eta=3h48m53s
+  hidden encoded 260/2000 elapsed=33m48s eta=3h46m18s
+  hidden encoded 270/2000 elapsed=34m55s eta=3h43m46s
+  hidden encoded 280/2000 elapsed=36m01s eta=3h41m20s
+  hidden encoded 290/2000 elapsed=37m08s eta=3h39m03s
+  hidden encoded 300/2000 elapsed=38m15s eta=3h36m49s
+  hidden encoded 310/2000 elapsed=39m22s eta=3h34m38s
+  hidden encoded 320/2000 elapsed=40m29s eta=3h32m33s
+  hidden encoded 330/2000 elapsed=41m36s eta=3h30m32s
+  hidden encoded 340/2000 elapsed=42m43s eta=3h28m33s
+  hidden encoded 350/2000 elapsed=43m49s eta=3h26m36s
+  hidden encoded 360/2000 elapsed=44m56s eta=3h24m43s
+  hidden encoded 370/2000 elapsed=46m03s eta=3h22m52s
+  hidden encoded 380/2000 elapsed=47m10s eta=3h21m05s
+  hidden encoded 390/2000 elapsed=48m17s eta=3h19m21s
+  hidden encoded 400/2000 elapsed=49m24s eta=3h17m37s
+  hidden encoded 410/2000 elapsed=50m30s eta=3h15m54s
+  hidden encoded 420/2000 elapsed=51m38s eta=3h14m16s
+  hidden encoded 430/2000 elapsed=52m45s eta=3h12m38s
+  hidden encoded 440/2000 elapsed=53m52s eta=3h10m59s
+  hidden encoded 450/2000 elapsed=54m59s eta=3h09m25s
+  hidden encoded 460/2000 elapsed=56m06s eta=3h07m50s
+  hidden encoded 470/2000 elapsed=57m14s eta=3h06m19s
+  hidden encoded 480/2000 elapsed=58m21s eta=3h04m46s
+  hidden encoded 490/2000 elapsed=59m27s eta=3h03m14s
+  hidden encoded 500/2000 elapsed=1h00m34s eta=3h01m43s
+  hidden encoded 510/2000 elapsed=1h01m41s eta=3h00m13s
+  hidden encoded 520/2000 elapsed=1h02m47s eta=2h58m44s
+  hidden encoded 530/2000 elapsed=1h03m54s eta=2h57m15s
+  hidden encoded 540/2000 elapsed=1h05m01s eta=2h55m47s
+  hidden encoded 550/2000 elapsed=1h06m07s eta=2h54m20s
+  hidden encoded 560/2000 elapsed=1h07m14s eta=2h52m55s
+  hidden encoded 570/2000 elapsed=1h08m21s eta=2h51m30s
+  hidden encoded 580/2000 elapsed=1h09m28s eta=2h50m05s
+  hidden encoded 590/2000 elapsed=1h10m35s eta=2h48m41s
+  hidden encoded 600/2000 elapsed=1h11m42s eta=2h47m18s
+  hidden encoded 610/2000 elapsed=1h12m48s eta=2h45m54s
+  hidden encoded 620/2000 elapsed=1h13m55s eta=2h44m32s
+  hidden encoded 630/2000 elapsed=1h15m01s eta=2h43m09s
+  hidden encoded 640/2000 elapsed=1h16m08s eta=2h41m47s
+  hidden encoded 650/2000 elapsed=1h17m14s eta=2h40m26s
+  hidden encoded 660/2000 elapsed=1h18m21s eta=2h39m06s
+  hidden encoded 670/2000 elapsed=1h19m28s eta=2h37m45s
+  hidden encoded 680/2000 elapsed=1h20m35s eta=2h36m26s
+  hidden encoded 690/2000 elapsed=1h21m41s eta=2h35m06s
+  hidden encoded 700/2000 elapsed=1h22m48s eta=2h33m47s
+  hidden encoded 710/2000 elapsed=1h23m54s eta=2h32m28s
+  hidden encoded 720/2000 elapsed=1h25m01s eta=2h31m09s
+  hidden encoded 730/2000 elapsed=1h26m08s eta=2h29m51s
+  hidden encoded 740/2000 elapsed=1h27m14s eta=2h28m33s
+  hidden encoded 750/2000 elapsed=1h28m21s eta=2h27m16s
+  hidden encoded 760/2000 elapsed=1h29m27s eta=2h25m58s
+  hidden encoded 770/2000 elapsed=1h30m34s eta=2h24m41s
+  hidden encoded 780/2000 elapsed=1h31m41s eta=2h23m24s
+  hidden encoded 790/2000 elapsed=1h32m48s eta=2h22m08s
+  hidden encoded 800/2000 elapsed=1h33m54s eta=2h20m52s
+  hidden encoded 810/2000 elapsed=1h35m01s eta=2h19m36s
+  hidden encoded 820/2000 elapsed=1h36m08s eta=2h18m21s
+  hidden encoded 830/2000 elapsed=1h37m15s eta=2h17m05s
+  hidden encoded 840/2000 elapsed=1h38m22s eta=2h15m50s
+  hidden encoded 850/2000 elapsed=1h39m28s eta=2h14m35s
+  hidden encoded 860/2000 elapsed=1h40m35s eta=2h13m20s
+  hidden encoded 870/2000 elapsed=1h41m42s eta=2h12m05s
+  hidden encoded 880/2000 elapsed=1h42m48s eta=2h10m50s
+  hidden encoded 890/2000 elapsed=1h43m55s eta=2h09m36s
+  hidden encoded 900/2000 elapsed=1h45m02s eta=2h08m22s
+  hidden encoded 910/2000 elapsed=1h46m09s eta=2h07m09s
+  hidden encoded 920/2000 elapsed=1h47m15s eta=2h05m55s
+  hidden encoded 930/2000 elapsed=1h48m23s eta=2h04m42s
+  hidden encoded 940/2000 elapsed=1h49m29s eta=2h03m28s
+  hidden encoded 950/2000 elapsed=1h50m36s eta=2h02m15s
+  hidden encoded 960/2000 elapsed=1h51m43s eta=2h01m01s
+  hidden encoded 970/2000 elapsed=1h52m49s eta=1h59m48s
+  hidden encoded 980/2000 elapsed=1h53m56s eta=1h58m35s
+  hidden encoded 990/2000 elapsed=1h55m06s eta=1h57m25s
+  hidden encoded 1000/2000 elapsed=1h56m12s eta=1h56m12s
+  hidden encoded 1010/2000 elapsed=1h57m19s eta=1h55m00s
+  hidden encoded 1020/2000 elapsed=1h58m26s eta=1h53m47s
+  hidden encoded 1030/2000 elapsed=1h59m33s eta=1h52m35s
+  hidden encoded 1040/2000 elapsed=2h00m40s eta=1h51m23s
+  hidden encoded 1050/2000 elapsed=2h01m47s eta=1h50m11s
+  hidden encoded 1060/2000 elapsed=2h02m54s eta=1h48m59s
+  hidden encoded 1070/2000 elapsed=2h04m01s eta=1h47m47s
+  hidden encoded 1080/2000 elapsed=2h05m08s eta=1h46m35s
+  hidden encoded 1090/2000 elapsed=2h06m14s eta=1h45m24s
+  hidden encoded 1100/2000 elapsed=2h07m22s eta=1h44m12s
+  hidden encoded 1110/2000 elapsed=2h08m29s eta=1h43m01s
+  hidden encoded 1120/2000 elapsed=2h09m36s eta=1h41m49s
+  hidden encoded 1130/2000 elapsed=2h10m42s eta=1h40m38s
+  hidden encoded 1140/2000 elapsed=2h11m49s eta=1h39m26s
+  hidden encoded 1150/2000 elapsed=2h12m56s eta=1h38m15s
+  hidden encoded 1160/2000 elapsed=2h14m03s eta=1h37m04s
+  hidden encoded 1170/2000 elapsed=2h15m10s eta=1h35m53s
+  hidden encoded 1180/2000 elapsed=2h16m17s eta=1h34m42s
+  hidden encoded 1190/2000 elapsed=2h17m23s eta=1h33m31s
+  hidden encoded 1200/2000 elapsed=2h18m31s eta=1h32m20s
+  hidden encoded 1210/2000 elapsed=2h19m38s eta=1h31m09s
+  hidden encoded 1220/2000 elapsed=2h20m44s eta=1h29m59s
+  hidden encoded 1230/2000 elapsed=2h21m51s eta=1h28m48s
+  hidden encoded 1240/2000 elapsed=2h22m58s eta=1h27m37s
+  hidden encoded 1250/2000 elapsed=2h24m05s eta=1h26m27s
+  hidden encoded 1260/2000 elapsed=2h25m11s eta=1h25m16s
+  hidden encoded 1270/2000 elapsed=2h26m18s eta=1h24m06s
+  hidden encoded 1280/2000 elapsed=2h27m26s eta=1h22m56s
+  hidden encoded 1290/2000 elapsed=2h28m33s eta=1h21m46s
+  hidden encoded 1300/2000 elapsed=2h29m40s eta=1h20m35s
+  hidden encoded 1310/2000 elapsed=2h30m48s eta=1h19m25s
+  hidden encoded 1320/2000 elapsed=2h31m55s eta=1h18m15s
+  hidden encoded 1330/2000 elapsed=2h33m02s eta=1h17m06s
+  hidden encoded 1340/2000 elapsed=2h34m09s eta=1h15m55s
+  hidden encoded 1350/2000 elapsed=2h35m17s eta=1h14m46s
+  hidden encoded 1360/2000 elapsed=2h36m23s eta=1h13m35s
+  hidden encoded 1370/2000 elapsed=2h37m30s eta=1h12m25s
+  hidden encoded 1380/2000 elapsed=2h38m37s eta=1h11m15s
+  hidden encoded 1390/2000 elapsed=2h39m44s eta=1h10m05s
+  hidden encoded 1400/2000 elapsed=2h40m50s eta=1h08m56s
+  hidden encoded 1410/2000 elapsed=2h41m57s eta=1h07m46s
+  hidden encoded 1420/2000 elapsed=2h43m04s eta=1h06m36s
+  hidden encoded 1430/2000 elapsed=2h44m10s eta=1h05m26s
+  hidden encoded 1440/2000 elapsed=2h45m17s eta=1h04m16s
+  hidden encoded 1450/2000 elapsed=2h46m24s eta=1h03m07s
+  hidden encoded 1460/2000 elapsed=2h47m31s eta=1h01m57s
+  hidden encoded 1470/2000 elapsed=2h48m37s eta=1h00m47s
+  hidden encoded 1480/2000 elapsed=2h49m44s eta=59m38s
+  hidden encoded 1490/2000 elapsed=2h50m51s eta=58m28s
+  hidden encoded 1500/2000 elapsed=2h51m58s eta=57m19s
+  hidden encoded 1510/2000 elapsed=2h53m05s eta=56m09s
+  hidden encoded 1520/2000 elapsed=2h54m11s eta=55m00s
+  hidden encoded 1530/2000 elapsed=2h55m18s eta=53m51s
+  hidden encoded 1540/2000 elapsed=2h56m25s eta=52m41s
+  hidden encoded 1550/2000 elapsed=2h57m32s eta=51m32s
+  hidden encoded 1560/2000 elapsed=2h58m39s eta=50m23s
+  hidden encoded 1570/2000 elapsed=2h59m46s eta=49m14s
+  hidden encoded 1580/2000 elapsed=3h00m53s eta=48m04s
+  hidden encoded 1590/2000 elapsed=3h01m59s eta=46m55s
+  hidden encoded 1600/2000 elapsed=3h03m06s eta=45m46s
+  hidden encoded 1610/2000 elapsed=3h04m13s eta=44m37s
+  hidden encoded 1620/2000 elapsed=3h05m19s eta=43m28s
+  hidden encoded 1630/2000 elapsed=3h06m26s eta=42m19s
+  hidden encoded 1640/2000 elapsed=3h07m33s eta=41m10s
+  hidden encoded 1650/2000 elapsed=3h08m40s eta=40m01s
+  hidden encoded 1660/2000 elapsed=3h09m47s eta=38m52s
+  hidden encoded 1670/2000 elapsed=3h10m54s eta=37m43s
+  hidden encoded 1680/2000 elapsed=3h12m01s eta=36m34s
+  hidden encoded 1690/2000 elapsed=3h13m08s eta=35m25s
+  hidden encoded 1700/2000 elapsed=3h14m14s eta=34m16s
+  hidden encoded 1710/2000 elapsed=3h15m21s eta=33m07s
+  hidden encoded 1720/2000 elapsed=3h16m28s eta=31m59s
+  hidden encoded 1730/2000 elapsed=3h17m36s eta=30m50s
+  hidden encoded 1740/2000 elapsed=3h18m42s eta=29m41s
+  hidden encoded 1750/2000 elapsed=3h19m49s eta=28m32s
+  hidden encoded 1760/2000 elapsed=3h20m56s eta=27m24s
+  hidden encoded 1770/2000 elapsed=3h22m03s eta=26m15s
+  hidden encoded 1780/2000 elapsed=3h23m09s eta=25m06s
+  hidden encoded 1790/2000 elapsed=3h24m17s eta=23m58s
+  hidden encoded 1800/2000 elapsed=3h25m24s eta=22m49s
+  hidden encoded 1810/2000 elapsed=3h26m31s eta=21m40s
+  hidden encoded 1820/2000 elapsed=3h27m37s eta=20m32s
+  hidden encoded 1830/2000 elapsed=3h28m44s eta=19m23s
+  hidden encoded 1840/2000 elapsed=3h29m51s eta=18m14s
+  hidden encoded 1850/2000 elapsed=3h30m58s eta=17m06s
+  hidden encoded 1860/2000 elapsed=3h32m04s eta=15m57s
+  hidden encoded 1870/2000 elapsed=3h33m11s eta=14m49s
+  hidden encoded 1880/2000 elapsed=3h34m18s eta=13m40s
+  hidden encoded 1890/2000 elapsed=3h35m24s eta=12m32s
+  hidden encoded 1900/2000 elapsed=3h36m31s eta=11m23s
+  hidden encoded 1910/2000 elapsed=3h37m38s eta=10m15s
+  hidden encoded 1920/2000 elapsed=3h38m45s eta=9m06s
+  hidden encoded 1930/2000 elapsed=3h39m52s eta=7m58s
+  hidden encoded 1940/2000 elapsed=3h40m59s eta=6m50s
+  hidden encoded 1950/2000 elapsed=3h42m05s eta=5m41s
+  hidden encoded 1960/2000 elapsed=3h43m12s eta=4m33s
+  hidden encoded 1970/2000 elapsed=3h44m19s eta=3m24s
+  hidden encoded 1980/2000 elapsed=3h45m26s eta=2m16s
+  hidden encoded 1990/2000 elapsed=3h46m33s eta=1m08s
+  hidden encoded 2000/2000 elapsed=3h47m39s eta=0s
+scoring prompt sweep cell P0|L28|anti_pca_both_k15
+sweep_P0_L28_both_k15: R@1=0.082 R@3=0.178 R@5=0.246 NDCG@5=0.168 MRR=0.166
+scoring prompt sweep cell P0|L29|anti_pca_both_k15
+sweep_P0_L29_both_k15: R@1=0.097 R@3=0.203 R@5=0.260 NDCG@5=0.183 MRR=0.182
+scoring prompt sweep cell P0|L30|anti_pca_both_k15
+sweep_P0_L30_both_k15: R@1=0.093 R@3=0.197 R@5=0.271 NDCG@5=0.184 MRR=0.178
+scoring prompt sweep cell P0|L31|anti_pca_both_k15
+sweep_P0_L31_both_k15: R@1=0.079 R@3=0.172 R@5=0.235 NDCG@5=0.160 MRR=0.156
+scoring prompt sweep cell 1-2|L28|anti_pca_both_k15
+sweep_1-2_L28_both_k15: R@1=0.087 R@3=0.199 R@5=0.267 NDCG@5=0.179 MRR=0.176
+scoring prompt sweep cell 1-2|L29|anti_pca_both_k15
+sweep_1-2_L29_both_k15: R@1=0.095 R@3=0.201 R@5=0.278 NDCG@5=0.188 MRR=0.185
+scoring prompt sweep cell 1-2|L30|anti_pca_both_k15
+sweep_1-2_L30_both_k15: R@1=0.092 R@3=0.209 R@5=0.281 NDCG@5=0.189 MRR=0.185
+scoring prompt sweep cell 1-2|L31|anti_pca_both_k15
+sweep_1-2_L31_both_k15: R@1=0.080 R@3=0.185 R@5=0.249 NDCG@5=0.167 MRR=0.164
+scoring prompt sweep cell 1-3|L28|anti_pca_both_k15
+sweep_1-3_L28_both_k15: R@1=0.086 R@3=0.182 R@5=0.241 NDCG@5=0.167 MRR=0.168
+scoring prompt sweep cell 1-3|L29|anti_pca_both_k15
+sweep_1-3_L29_both_k15: R@1=0.087 R@3=0.191 R@5=0.259 NDCG@5=0.177 MRR=0.175
+scoring prompt sweep cell 1-3|L30|anti_pca_both_k15
+sweep_1-3_L30_both_k15: R@1=0.092 R@3=0.206 R@5=0.264 NDCG@5=0.182 MRR=0.180
+scoring prompt sweep cell 1-3|L31|anti_pca_both_k15
+sweep_1-3_L31_both_k15: R@1=0.081 R@3=0.183 R@5=0.229 NDCG@5=0.158 MRR=0.157
+scoring prompt sweep cell 2-1|L28|anti_pca_both_k15
+sweep_2-1_L28_both_k15: R@1=0.087 R@3=0.202 R@5=0.288 NDCG@5=0.190 MRR=0.185
+scoring prompt sweep cell 2-1|L29|anti_pca_both_k15
+sweep_2-1_L29_both_k15: R@1=0.092 R@3=0.204 R@5=0.291 NDCG@5=0.193 MRR=0.188
+scoring prompt sweep cell 2-1|L30|anti_pca_both_k15
+sweep_2-1_L30_both_k15: R@1=0.100 R@3=0.209 R@5=0.299 NDCG@5=0.201 MRR=0.195
+scoring prompt sweep cell 2-1|L31|anti_pca_both_k15
+sweep_2-1_L31_both_k15: R@1=0.090 R@3=0.202 R@5=0.280 NDCG@5=0.187 MRR=0.182
+scoring prompt sweep cell 2-1_token|L28|anti_pca_both_k15
+sweep_2-1_token_L28_both_k15: R@1=0.086 R@3=0.200 R@5=0.271 NDCG@5=0.182 MRR=0.180
+scoring prompt sweep cell 2-1_token|L29|anti_pca_both_k15
+sweep_2-1_token_L29_both_k15: R@1=0.083 R@3=0.215 R@5=0.277 NDCG@5=0.184 MRR=0.181
+scoring prompt sweep cell 2-1_token|L30|anti_pca_both_k15
+sweep_2-1_token_L30_both_k15: R@1=0.089 R@3=0.213 R@5=0.290 NDCG@5=0.193 MRR=0.187
+scoring prompt sweep cell 2-1_token|L31|anti_pca_both_k15
+sweep_2-1_token_L31_both_k15: R@1=0.086 R@3=0.191 R@5=0.285 NDCG@5=0.186 MRR=0.175
+scoring prompt sweep cell 2-3-1|L28|anti_pca_both_k15
+sweep_2-3-1_L28_both_k15: R@1=0.104 R@3=0.238 R@5=0.309 NDCG@5=0.211 MRR=0.206
+scoring prompt sweep cell 2-3-1|L29|anti_pca_both_k15
+sweep_2-3-1_L29_both_k15: R@1=0.108 R@3=0.242 R@5=0.310 NDCG@5=0.214 MRR=0.211
+scoring prompt sweep cell 2-3-1|L30|anti_pca_both_k15
+sweep_2-3-1_L30_both_k15: R@1=0.110 R@3=0.254 R@5=0.311 NDCG@5=0.218 MRR=0.214
+scoring prompt sweep cell 2-3-1|L31|anti_pca_both_k15
+sweep_2-3-1_L31_both_k15: R@1=0.096 R@3=0.233 R@5=0.300 NDCG@5=0.204 MRR=0.195
+scoring prompt sweep cell 2-3-2_query|L28|anti_pca_both_k15
+sweep_2-3-2_query_L28_both_k15: R@1=0.095 R@3=0.224 R@5=0.299 NDCG@5=0.201 MRR=0.194
+scoring prompt sweep cell 2-3-2_query|L29|anti_pca_both_k15
+sweep_2-3-2_query_L29_both_k15: R@1=0.095 R@3=0.237 R@5=0.303 NDCG@5=0.204 MRR=0.196
+scoring prompt sweep cell 2-3-2_query|L30|anti_pca_both_k15
+sweep_2-3-2_query_L30_both_k15: R@1=0.097 R@3=0.241 R@5=0.310 NDCG@5=0.208 MRR=0.198
+scoring prompt sweep cell 2-3-2_query|L31|anti_pca_both_k15
+sweep_2-3-2_query_L31_both_k15: R@1=0.085 R@3=0.210 R@5=0.289 NDCG@5=0.190 MRR=0.181
+scoring prompt sweep cell 2-4-1_user_word|L28|anti_pca_both_k15
+sweep_2-4-1_user_word_L28_both_k15: R@1=0.057 R@3=0.133 R@5=0.189 NDCG@5=0.124 MRR=0.124
+scoring prompt sweep cell 2-4-1_user_word|L29|anti_pca_both_k15
+sweep_2-4-1_user_word_L29_both_k15: R@1=0.062 R@3=0.143 R@5=0.207 NDCG@5=0.136 MRR=0.135
+scoring prompt sweep cell 2-4-1_user_word|L30|anti_pca_both_k15
+sweep_2-4-1_user_word_L30_both_k15: R@1=0.070 R@3=0.153 R@5=0.209 NDCG@5=0.142 MRR=0.142
+scoring prompt sweep cell 2-4-1_user_word|L31|anti_pca_both_k15
+sweep_2-4-1_user_word_L31_both_k15: R@1=0.062 R@3=0.125 R@5=0.191 NDCG@5=0.126 MRR=0.122
+scoring prompt sweep cell 2-4-2|L28|anti_pca_both_k15
+sweep_2-4-2_L28_both_k15: R@1=0.064 R@3=0.148 R@5=0.207 NDCG@5=0.138 MRR=0.142
+scoring prompt sweep cell 2-4-2|L29|anti_pca_both_k15
+sweep_2-4-2_L29_both_k15: R@1=0.072 R@3=0.159 R@5=0.211 NDCG@5=0.145 MRR=0.151
+scoring prompt sweep cell 2-4-2|L30|anti_pca_both_k15
+sweep_2-4-2_L30_both_k15: R@1=0.072 R@3=0.166 R@5=0.223 NDCG@5=0.152 MRR=0.155
+scoring prompt sweep cell 2-4-2|L31|anti_pca_both_k15
+sweep_2-4-2_L31_both_k15: R@1=0.069 R@3=0.161 R@5=0.219 NDCG@5=0.147 MRR=0.144
+scoring prompt sweep cell 2-5|L28|anti_pca_both_k15
+sweep_2-5_L28_both_k15: R@1=0.094 R@3=0.222 R@5=0.298 NDCG@5=0.200 MRR=0.195
+scoring prompt sweep cell 2-5|L29|anti_pca_both_k15
+sweep_2-5_L29_both_k15: R@1=0.096 R@3=0.233 R@5=0.301 NDCG@5=0.204 MRR=0.199
+scoring prompt sweep cell 2-5|L30|anti_pca_both_k15
+sweep_2-5_L30_both_k15: R@1=0.095 R@3=0.225 R@5=0.301 NDCG@5=0.203 MRR=0.198
+scoring prompt sweep cell 2-5|L31|anti_pca_both_k15
+sweep_2-5_L31_both_k15: R@1=0.090 R@3=0.225 R@5=0.293 NDCG@5=0.198 MRR=0.189
+scoring prompt sweep cell user_preference|L28|anti_pca_both_k15
+sweep_user_preference_L28_both_k15: R@1=0.069 R@3=0.139 R@5=0.196 NDCG@5=0.134 MRR=0.139
+scoring prompt sweep cell user_preference|L29|anti_pca_both_k15
+sweep_user_preference_L29_both_k15: R@1=0.071 R@3=0.152 R@5=0.203 NDCG@5=0.139 MRR=0.146
+scoring prompt sweep cell user_preference|L30|anti_pca_both_k15
+sweep_user_preference_L30_both_k15: R@1=0.072 R@3=0.153 R@5=0.214 NDCG@5=0.145 MRR=0.149
+scoring prompt sweep cell user_preference|L31|anti_pca_both_k15
+sweep_user_preference_L31_both_k15: R@1=0.060 R@3=0.137 R@5=0.193 NDCG@5=0.128 MRR=0.127
+scoring prompt sweep cell user_preference_token|L28|anti_pca_both_k15
+sweep_user_preference_token_L28_both_k15: R@1=0.057 R@3=0.154 R@5=0.198 NDCG@5=0.130 MRR=0.132
+scoring prompt sweep cell user_preference_token|L29|anti_pca_both_k15
+sweep_user_preference_token_L29_both_k15: R@1=0.061 R@3=0.149 R@5=0.208 NDCG@5=0.136 MRR=0.137
+scoring prompt sweep cell user_preference_token|L30|anti_pca_both_k15
+sweep_user_preference_token_L30_both_k15: R@1=0.065 R@3=0.149 R@5=0.209 NDCG@5=0.138 MRR=0.138
+scoring prompt sweep cell user_preference_token|L31|anti_pca_both_k15
+sweep_user_preference_token_L31_both_k15: R@1=0.036 R@3=0.099 R@5=0.148 NDCG@5=0.093 MRR=0.095
+scoring prompt sweep cell user_avoidance|L28|anti_pca_both_k15
+sweep_user_avoidance_L28_both_k15: R@1=0.029 R@3=0.075 R@5=0.111 NDCG@5=0.070 MRR=0.074
+scoring prompt sweep cell user_avoidance|L29|anti_pca_both_k15
+sweep_user_avoidance_L29_both_k15: R@1=0.034 R@3=0.091 R@5=0.127 NDCG@5=0.081 MRR=0.085
+scoring prompt sweep cell user_avoidance|L30|anti_pca_both_k15
+sweep_user_avoidance_L30_both_k15: R@1=0.044 R@3=0.096 R@5=0.128 NDCG@5=0.086 MRR=0.091
+scoring prompt sweep cell user_avoidance|L31|anti_pca_both_k15
+sweep_user_avoidance_L31_both_k15: R@1=0.047 R@3=0.089 R@5=0.125 NDCG@5=0.086 MRR=0.092
+scoring prompt sweep cell personalization_need|L28|anti_pca_both_k15
+sweep_personalization_need_L28_both_k15: R@1=0.059 R@3=0.132 R@5=0.183 NDCG@5=0.122 MRR=0.125
+scoring prompt sweep cell personalization_need|L29|anti_pca_both_k15
+sweep_personalization_need_L29_both_k15: R@1=0.070 R@3=0.145 R@5=0.191 NDCG@5=0.132 MRR=0.136
+scoring prompt sweep cell personalization_need|L30|anti_pca_both_k15
+sweep_personalization_need_L30_both_k15: R@1=0.066 R@3=0.146 R@5=0.189 NDCG@5=0.130 MRR=0.131
+scoring prompt sweep cell personalization_need|L31|anti_pca_both_k15
+sweep_personalization_need_L31_both_k15: R@1=0.049 R@3=0.106 R@5=0.145 NDCG@5=0.099 MRR=0.101
+wrote /Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/results/implicit_persona_n1000_pruned_hidden_l28_l29_l30_l31_logits256_promptreps128_20260512.json
+wrote /Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/results/implicit_persona_n1000_pruned_hidden_l28_l29_l30_l31_logits256_promptreps128_20260512.md

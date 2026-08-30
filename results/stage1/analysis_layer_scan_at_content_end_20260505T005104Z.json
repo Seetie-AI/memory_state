@@ -1,0 +1,884 @@
+{
+  "disclaimer": "Tier B contains only 20 LongMemEval-S/round instances. Treat these results as direction-finding diagnostics, not final performance claims.",
+  "memory_plan": "Lean per-prompt slice loading: each safetensors file is opened, one small set of (layer, position, 2048) vectors is materialized as fp32, then the file object and MLX cache are released. Target peak memory for TB extra analyses is below the 8GB budget.",
+  "position": "content_end",
+  "suffix_token_count": 15,
+  "valid_prompt_count": 5043,
+  "baseline": {
+    "config": "layer22_last_anti_pca_global_k10",
+    "valid_prompt_count": 5043,
+    "skipped_prompt_count": 0,
+    "metrics": {
+      "n_total": 20,
+      "n_scored": 20,
+      "ignored_abstention_count": 0,
+      "ignored_abstention_ids": [],
+      "ignored_no_target_count": 0,
+      "ignored_no_target_ids": [],
+      "metrics": {
+        "recall_all@1": {
+          "mean": 0.55,
+          "ci95": {
+            "low": 0.29875,
+            "high": 0.7512500000000003
+          }
+        },
+        "ndcg_any@1": {
+          "mean": 0.55,
+          "ci95": {
+            "low": 0.29875,
+            "high": 0.7512500000000003
+          }
+        },
+        "recall_all@3": {
+          "mean": 0.8,
+          "ci95": {
+            "low": 0.65,
+            "high": 0.95
+          }
+        },
+        "ndcg_any@3": {
+          "mean": 0.7077324383928645,
+          "ci95": {
+            "low": 0.5391449126473303,
+            "high": 0.8709594271741172
+          }
+        },
+        "recall_all@5": {
+          "mean": 0.85,
+          "ci95": {
+            "low": 0.7,
+            "high": 0.95
+          }
+        },
+        "ndcg_any@5": {
+          "mean": 0.7270750787545915,
+          "ci95": {
+            "low": 0.5704980893660815,
+            "high": 0.8709594271741172
+          }
+        },
+        "recall_all@10": {
+          "mean": 0.85,
+          "ci95": {
+            "low": 0.7,
+            "high": 0.95
+          }
+        },
+        "ndcg_any@10": {
+          "mean": 0.7270750787545915,
+          "ci95": {
+            "low": 0.5704980893660815,
+            "high": 0.8709594271741172
+          }
+        },
+        "recall_all@30": {
+          "mean": 0.95,
+          "ci95": {
+            "low": 0.85,
+            "high": 1.0
+          }
+        },
+        "ndcg_any@30": {
+          "mean": 0.7509585911894392,
+          "ci95": {
+            "low": 0.6078410626822189,
+            "high": 0.8869913121759221
+          }
+        },
+        "recall_all@50": {
+          "mean": 0.95,
+          "ci95": {
+            "low": 0.85,
+            "high": 1.0
+          }
+        },
+        "ndcg_any@50": {
+          "mean": 0.7509585911894392,
+          "ci95": {
+            "low": 0.6078410626822189,
+            "high": 0.8869913121759221
+          }
+        }
+      }
+    }
+  },
+  "layers": {
+    "16": {
+      "skipped_prompt_count": 0,
+      "metrics": {
+        "n_total": 20,
+        "n_scored": 20,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.05,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.15
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.05,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.15
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.25,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.45
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.1630929753571458,
+            "ci95": {
+              "low": 0.05,
+              "high": 0.3132566375491101
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.25,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.45
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.1630929753571458,
+            "ci95": {
+              "low": 0.05,
+              "high": 0.3132566375491101
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.3,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.5012500000000003
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.17975964202381242,
+            "ci95": {
+              "low": 0.06292931316518144,
+              "high": 0.3227016016875086
+            }
+          },
+          "recall_all@30": {
+            "mean": 0.55,
+            "ci95": {
+              "low": 0.35,
+              "high": 0.75
+            }
+          },
+          "ndcg_any@30": {
+            "mean": 0.2386008441233311,
+            "ci95": {
+              "low": 0.1306311226623944,
+              "high": 0.37517250167212973
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.7,
+            "ci95": {
+              "low": 0.5,
+              "high": 0.9
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.2670577396233961,
+            "ci95": {
+              "low": 0.16626685319129303,
+              "high": 0.3956109763704954
+            }
+          }
+        }
+      }
+    },
+    "17": {
+      "skipped_prompt_count": 0,
+      "metrics": {
+        "n_total": 20,
+        "n_scored": 20,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.05,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.15
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.05,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.15
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.05,
+              "high": 0.4
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.13154648767857288,
+            "ci95": {
+              "low": 0.025,
+              "high": 0.2763199641383986
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.3,
+            "ci95": {
+              "low": 0.15,
+              "high": 0.5012500000000003
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.17023176840202706,
+            "ci95": {
+              "low": 0.06368528072345417,
+              "high": 0.32159618894244063
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.4,
+            "ci95": {
+              "low": 0.2,
+              "high": 0.65
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.19973650950112048,
+            "ci95": {
+              "low": 0.08889354123100546,
+              "high": 0.33663273226395707
+            }
+          },
+          "recall_all@30": {
+            "mean": 0.5,
+            "ci95": {
+              "low": 0.3,
+              "high": 0.7012500000000003
+            }
+          },
+          "ndcg_any@30": {
+            "mean": 0.2203269917394713,
+            "ci95": {
+              "low": 0.11986748188284463,
+              "high": 0.35810458502725734
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.55,
+            "ci95": {
+              "low": 0.35,
+              "high": 0.75
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.23023898489799927,
+            "ci95": {
+              "low": 0.12979879326483093,
+              "high": 0.35810458502725734
+            }
+          }
+        }
+      }
+    },
+    "18": {
+      "skipped_prompt_count": 0,
+      "metrics": {
+        "n_total": 20,
+        "n_scored": 20,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.05,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.15
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.05,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.15
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.1,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.25
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.08154648767857288,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.20032732438392872
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.25,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.4512500000000003
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.14614797138958183,
+            "ci95": {
+              "low": 0.0430676558073393,
+              "high": 0.2892549223776306
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.4,
+            "ci95": {
+              "low": 0.2,
+              "high": 0.6012500000000003
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.19639824125093605,
+            "ci95": {
+              "low": 0.08839287811126524,
+              "high": 0.33218160202308283
+            }
+          },
+          "recall_all@30": {
+            "mean": 0.55,
+            "ci95": {
+              "low": 0.35,
+              "high": 0.7512500000000003
+            }
+          },
+          "ndcg_any@30": {
+            "mean": 0.2297816080139722,
+            "ci95": {
+              "low": 0.13143591610128624,
+              "high": 0.35814814323637106
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.6,
+            "ci95": {
+              "low": 0.4,
+              "high": 0.8012500000000004
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.2386407990207501,
+            "ci95": {
+              "low": 0.13894743984785177,
+              "high": 0.36100770743213284
+            }
+          }
+        }
+      }
+    },
+    "19": {
+      "skipped_prompt_count": 0,
+      "metrics": {
+        "n_total": 20,
+        "n_scored": 20,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.15,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.3012500000000003
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.15,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.3012500000000003
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.4,
+            "ci95": {
+              "low": 0.2,
+              "high": 0.65
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.3011859507142915,
+            "ci95": {
+              "low": 0.11947580084375431,
+              "high": 0.4827620871607217
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.4,
+            "ci95": {
+              "low": 0.2,
+              "high": 0.65
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3011859507142915,
+            "ci95": {
+              "low": 0.11947580084375431,
+              "high": 0.4827620871607217
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.55,
+            "ci95": {
+              "low": 0.34875,
+              "high": 0.7512500000000003
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3451439331292794,
+            "ci95": {
+              "low": 0.17736972269518408,
+              "high": 0.510910920182178
+            }
+          },
+          "recall_all@30": {
+            "mean": 0.55,
+            "ci95": {
+              "low": 0.34875,
+              "high": 0.7512500000000003
+            }
+          },
+          "ndcg_any@30": {
+            "mean": 0.3451439331292794,
+            "ci95": {
+              "low": 0.17736972269518408,
+              "high": 0.510910920182178
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.65,
+            "ci95": {
+              "low": 0.44875000000000004,
+              "high": 0.85
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3638764022758913,
+            "ci95": {
+              "low": 0.20322736312046447,
+              "high": 0.5309845756339222
+            }
+          }
+        }
+      }
+    },
+    "20": {
+      "skipped_prompt_count": 0,
+      "metrics": {
+        "n_total": 20,
+        "n_scored": 20,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.15,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.3
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.15,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.3
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.45,
+            "ci95": {
+              "low": 0.25,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.3261859507142916,
+            "ci95": {
+              "low": 0.15624881206250152,
+              "high": 0.5078961005848288
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.45,
+            "ci95": {
+              "low": 0.25,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3261859507142916,
+            "ci95": {
+              "low": 0.15624881206250152,
+              "high": 0.5078961005848288
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.5,
+            "ci95": {
+              "low": 0.3,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3428526173809582,
+            "ci95": {
+              "low": 0.1694758008437543,
+              "high": 0.5080301140089358
+            }
+          },
+          "recall_all@30": {
+            "mean": 0.65,
+            "ci95": {
+              "low": 0.45,
+              "high": 0.85
+            }
+          },
+          "ndcg_any@30": {
+            "mean": 0.37844893165316973,
+            "ci95": {
+              "low": 0.23357542831141512,
+              "high": 0.5324599421675781
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.8,
+            "ci95": {
+              "low": 0.6,
+              "high": 0.95
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.40604812371155424,
+            "ci95": {
+              "low": 0.2758866807033126,
+              "high": 0.5595260867818268
+            }
+          }
+        }
+      }
+    },
+    "21": {
+      "skipped_prompt_count": 0,
+      "metrics": {
+        "n_total": 20,
+        "n_scored": 20,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.35
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.35
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.45,
+            "ci95": {
+              "low": 0.25,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.35773243839286445,
+            "ci95": {
+              "low": 0.17572461290625582,
+              "high": 0.5392789260714373
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.5,
+            "ci95": {
+              "low": 0.3,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3770750787545915,
+            "ci95": {
+              "low": 0.18915229971463818,
+              "high": 0.5525281430536976
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.55,
+            "ci95": {
+              "low": 0.35,
+              "high": 0.75
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3915283200704859,
+            "ci95": {
+              "low": 0.22176106201205456,
+              "high": 0.5547213022027699
+            }
+          },
+          "recall_all@30": {
+            "mean": 0.75,
+            "ci95": {
+              "low": 0.6,
+              "high": 0.9
+            }
+          },
+          "ndcg_any@30": {
+            "mean": 0.4345410420286873,
+            "ci95": {
+              "low": 0.2916149263029864,
+              "high": 0.5975206784184088
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.9,
+            "ci95": {
+              "low": 0.7987500000000001,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4627951775279982,
+            "ci95": {
+              "low": 0.3205738462950741,
+              "high": 0.6070425990067931
+            }
+          }
+        }
+      }
+    },
+    "22": {
+      "skipped_prompt_count": 0,
+      "metrics": {
+        "n_total": 20,
+        "n_scored": 20,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.35
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.35
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.45,
+            "ci95": {
+              "low": 0.25,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.35118595071429154,
+            "ci95": {
+              "low": 0.16295896193303872,
+              "high": 0.5211230893660816
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.45,
+            "ci95": {
+              "low": 0.25,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.35118595071429154,
+            "ci95": {
+              "low": 0.16295896193303872,
+              "high": 0.5211230893660816
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.55,
+            "ci95": {
+              "low": 0.34875,
+              "high": 0.7512500000000003
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.3823058586968526,
+            "ci95": {
+              "low": 0.1980960238149272,
+              "high": 0.5622588002405791
+            }
+          },
+          "recall_all@30": {
+            "mean": 0.8,
+            "ci95": {
+              "low": 0.64875,
+              "high": 0.95
+            }
+          },
+          "ndcg_any@30": {
+            "mean": 0.4415280612192161,
+            "ci95": {
+              "low": 0.3022726309085975,
+              "high": 0.5919251011184108
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.8,
+            "ci95": {
+              "low": 0.64875,
+              "high": 0.95
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.4415280612192161,
+            "ci95": {
+              "low": 0.3022726309085975,
+              "high": 0.5919251011184108
+            }
+          }
+        }
+      }
+    },
+    "23": {
+      "skipped_prompt_count": 0,
+      "metrics": {
+        "n_total": 20,
+        "n_scored": 20,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.15,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.3012500000000003
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.15,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.3012500000000003
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.4,
+            "ci95": {
+              "low": 0.2,
+              "high": 0.6
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.29463946303571864,
+            "ci95": {
+              "low": 0.13792931316518145,
+              "high": 0.4765132750982203
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.5,
+            "ci95": {
+              "low": 0.35,
+              "high": 0.75
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.3355159313011154,
+            "ci95": {
+              "low": 0.19750649795875377,
+              "high": 0.5137769760550244
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.55,
+            "ci95": {
+              "low": 0.35,
+              "high": 0.7512500000000003
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.34996917261700977,
+            "ci95": {
+              "low": 0.21208782079287494,
+              "high": 0.5139879973686875
+            }
+          },
+          "recall_all@30": {
+            "mean": 0.8,
+            "ci95": {
+              "low": 0.64875,
+              "high": 0.95
+            }
+          },
+          "ndcg_any@30": {
+            "mean": 0.41027899268571877,
+            "ci95": {
+              "low": 0.3045757675332486,
+              "high": 0.5552144675080289
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.8,
+            "ci95": {
+              "low": 0.64875,
+              "high": 0.95
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.41027899268571877,
+            "ci95": {
+              "low": 0.3045757675332486,
+              "high": 0.5552144675080289
+            }
+          }
+        }
+      }
+    }
+  }
+}

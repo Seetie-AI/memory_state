@@ -1,0 +1,550 @@
+{
+  "stage": "stage2_step1_4bit_sanity",
+  "models": {
+    "bf16": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-2B-bf16",
+    "four_bit": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-2B-MLX-4bit"
+  },
+  "target_layer_index": 22,
+  "thresholds": {
+    "hidden_cosine_mean": 0.98,
+    "hidden_cosine_min": 0.97
+  },
+  "summary": {
+    "prompt_count": 16,
+    "hidden_cosine_mean": 0.9814087003469467,
+    "hidden_cosine_min": 0.9788089990615845,
+    "top5_token_jaccard_mean": 0.47172619047619047,
+    "top5_token_jaccard_min": 0.25,
+    "passed": true,
+    "decision": "go"
+  },
+  "rows": [
+    {
+      "index": 1,
+      "hidden_cosine": 0.9788089990615845,
+      "top5_token_jaccard": 0.6666666666666666,
+      "bf16_next_token": "无",
+      "four_bit_next_token": "无",
+      "bf16_top5": [
+        "无",
+        "sum",
+        "Sum",
+        "早餐",
+        "\n"
+      ],
+      "four_bit_top5": [
+        "无",
+        "sum",
+        "\n",
+        "Sum",
+        "s"
+      ]
+    },
+    {
+      "index": 2,
+      "hidden_cosine": 0.9825030565261841,
+      "top5_token_jaccard": 0.42857142857142855,
+      "bf16_next_token": "The",
+      "four_bit_next_token": "\n",
+      "bf16_top5": [
+        "The",
+        "\n",
+        "sum",
+        "summary",
+        "w"
+      ],
+      "four_bit_top5": [
+        "\n",
+        "The",
+        "sum",
+        "\n\n",
+        " "
+      ]
+    },
+    {
+      "index": 3,
+      "hidden_cosine": 0.9836132526397705,
+      "top5_token_jaccard": 0.6666666666666666,
+      "bf16_next_token": "数据",
+      "four_bit_next_token": "数据",
+      "bf16_top5": [
+        "数据",
+        "clean",
+        "清洗",
+        "\n",
+        "Sum"
+      ],
+      "four_bit_top5": [
+        "数据",
+        "\n",
+        "clean",
+        "清洗",
+        "\n\n"
+      ]
+    },
+    {
+      "index": 4,
+      "hidden_cosine": 0.9821910858154297,
+      "top5_token_jaccard": 0.25,
+      "bf16_next_token": "旅行",
+      "four_bit_next_token": "舒适",
+      "bf16_top5": [
+        "旅行",
+        "舒适",
+        "住",
+        "偏好",
+        "安静"
+      ],
+      "four_bit_top5": [
+        "舒适",
+        "旅行",
+        "好",
+        "\n",
+        " "
+      ]
+    },
+    {
+      "index": 5,
+      "hidden_cosine": 0.9825921058654785,
+      "top5_token_jaccard": 1.0,
+      "bf16_next_token": "cache",
+      "four_bit_next_token": "cache",
+      "bf16_top5": [
+        "cache",
+        "Cache",
+        "debug",
+        "缓存",
+        "bug"
+      ],
+      "four_bit_top5": [
+        "cache",
+        "缓存",
+        "Cache",
+        "bug",
+        "debug"
+      ]
+    },
+    {
+      "index": 6,
+      "hidden_cosine": 0.9790388345718384,
+      "top5_token_jaccard": 0.42857142857142855,
+      "bf16_next_token": "总结",
+      "four_bit_next_token": "\n",
+      "bf16_top5": [
+        "总结",
+        "天",
+        "\n",
+        "天文",
+        "Sum"
+      ],
+      "four_bit_top5": [
+        "\n",
+        "宇宙",
+        "天",
+        "总结",
+        "sum"
+      ]
+    },
+    {
+      "index": 7,
+      "hidden_cosine": 0.9829035401344299,
+      "top5_token_jaccard": 0.6666666666666666,
+      "bf16_next_token": "简洁",
+      "four_bit_next_token": "清晰",
+      "bf16_top5": [
+        "简洁",
+        "清晰",
+        "行动",
+        "总结",
+        "用户"
+      ],
+      "four_bit_top5": [
+        "清晰",
+        "简洁",
+        "行动",
+        "务实",
+        "用户"
+      ]
+    },
+    {
+      "index": 8,
+      "hidden_cosine": 0.9812882542610168,
+      "top5_token_jaccard": 0.25,
+      "bf16_next_token": "D",
+      "four_bit_next_token": "\n",
+      "bf16_top5": [
+        "D",
+        "d",
+        "\n",
+        "偏好",
+        "The"
+      ],
+      "four_bit_top5": [
+        "\n",
+        "D",
+        "避免",
+        "好",
+        " "
+      ]
+    },
+    {
+      "index": 9,
+      "hidden_cosine": 0.9790538549423218,
+      "top5_token_jaccard": 0.42857142857142855,
+      "bf16_next_token": "研究",
+      "four_bit_next_token": "\n",
+      "bf16_top5": [
+        "研究",
+        "\n",
+        "摘要",
+        "The",
+        "总结"
+      ],
+      "four_bit_top5": [
+        "\n",
+        "sum",
+        "研究",
+        "Sum",
+        "总结"
+      ]
+    },
+    {
+      "index": 10,
+      "hidden_cosine": 0.9830615520477295,
+      "top5_token_jaccard": 0.25,
+      "bf16_next_token": "crow",
+      "four_bit_next_token": "\n",
+      "bf16_top5": [
+        "crow",
+        "拥挤",
+        "customer",
+        "\n",
+        "The"
+      ],
+      "four_bit_top5": [
+        "\n",
+        " ",
+        "好",
+        "”",
+        "拥挤"
+      ]
+    },
+    {
+      "index": 11,
+      "hidden_cosine": 0.9795843362808228,
+      "top5_token_jaccard": 0.25,
+      "bf16_next_token": "轻",
+      "four_bit_next_token": "轻",
+      "bf16_top5": [
+        "轻",
+        "1",
+        "light",
+        "Sum",
+        "\n"
+      ],
+      "four_bit_top5": [
+        "轻",
+        " ",
+        "轻薄",
+        "\n",
+        "简洁"
+      ]
+    },
+    {
+      "index": 12,
+      "hidden_cosine": 0.9814361333847046,
+      "top5_token_jaccard": 0.6666666666666666,
+      "bf16_next_token": "dependency",
+      "four_bit_next_token": "依赖",
+      "bf16_top5": [
+        "dependency",
+        "依赖",
+        "dependencies",
+        "本地",
+        "Dependency"
+      ],
+      "four_bit_top5": [
+        "依赖",
+        "dependency",
+        "dependencies",
+        "local",
+        "Dependency"
+      ]
+    },
+    {
+      "index": 13,
+      "hidden_cosine": 0.9835354685783386,
+      "top5_token_jaccard": 0.6666666666666666,
+      "bf16_next_token": "风险",
+      "four_bit_next_token": "风险",
+      "bf16_top5": [
+        "风险",
+        "电池",
+        "锂",
+        "\n",
+        "关键"
+      ],
+      "four_bit_top5": [
+        "风险",
+        "电池",
+        "锂",
+        "\n",
+        "安全"
+      ]
+    },
+    {
+      "index": 14,
+      "hidden_cosine": 0.9797251224517822,
+      "top5_token_jaccard": 0.25,
+      "bf16_next_token": "\n",
+      "four_bit_next_token": "\n",
+      "bf16_top5": [
+        "\n",
+        "one",
+        "summary",
+        "sum",
+        "时间"
+      ],
+      "four_bit_top5": [
+        "\n",
+        "one",
+        "\n\n",
+        " ",
+        "一个"
+      ]
+    },
+    {
+      "index": 15,
+      "hidden_cosine": 0.9797278642654419,
+      "top5_token_jaccard": 0.25,
+      "bf16_next_token": "健身",
+      "four_bit_next_token": "健身",
+      "bf16_top5": [
+        "健身",
+        "Sum",
+        "sum",
+        "\n",
+        "fitness"
+      ],
+      "four_bit_top5": [
+        "健身",
+        "\n",
+        "跑",
+        "好",
+        "跑步"
+      ]
+    },
+    {
+      "index": 16,
+      "hidden_cosine": 0.9834757447242737,
+      "top5_token_jaccard": 0.42857142857142855,
+      "bf16_next_token": "支持",
+      "four_bit_next_token": "\n",
+      "bf16_top5": [
+        "支持",
+        "support",
+        "\n",
+        "登录",
+        "The"
+      ],
+      "four_bit_top5": [
+        "\n",
+        "支持",
+        "support",
+        "信任",
+        " "
+      ]
+    }
+  ],
+  "retrieval_smoke": {
+    "bf16": [
+      {
+        "name": "breakfast",
+        "gold_index": 0,
+        "ranking": [
+          0,
+          3,
+          2,
+          1,
+          4
+        ],
+        "gold_rank_1_indexed": 1,
+        "top1_is_gold": true,
+        "scores": [
+          0.938493013381958,
+          0.8619661331176758,
+          0.869170606136322,
+          0.8849387168884277,
+          0.8524940609931946
+        ]
+      },
+      {
+        "name": "debug_cache",
+        "gold_index": 1,
+        "ranking": [
+          1,
+          2,
+          4,
+          0,
+          3
+        ],
+        "gold_rank_1_indexed": 1,
+        "top1_is_gold": true,
+        "scores": [
+          0.8770862221717834,
+          0.9335606098175049,
+          0.8946704864501953,
+          0.870460033416748,
+          0.8792359828948975
+        ]
+      },
+      {
+        "name": "alice_data",
+        "gold_index": 1,
+        "ranking": [
+          1,
+          0,
+          2,
+          3,
+          4
+        ],
+        "gold_rank_1_indexed": 1,
+        "top1_is_gold": true,
+        "scores": [
+          0.8848645091056824,
+          0.945465087890625,
+          0.8817111849784851,
+          0.8734810948371887,
+          0.8673630952835083
+        ]
+      }
+    ],
+    "four_bit": [
+      {
+        "name": "breakfast",
+        "gold_index": 0,
+        "ranking": [
+          0,
+          2,
+          3,
+          1,
+          4
+        ],
+        "gold_rank_1_indexed": 1,
+        "top1_is_gold": true,
+        "scores": [
+          0.940531849861145,
+          0.867037832736969,
+          0.8852465152740479,
+          0.8838462233543396,
+          0.8616965413093567
+        ]
+      },
+      {
+        "name": "debug_cache",
+        "gold_index": 1,
+        "ranking": [
+          1,
+          2,
+          4,
+          3,
+          0
+        ],
+        "gold_rank_1_indexed": 1,
+        "top1_is_gold": true,
+        "scores": [
+          0.8834227919578552,
+          0.9378982782363892,
+          0.9092859625816345,
+          0.8917930722236633,
+          0.8957003355026245
+        ]
+      },
+      {
+        "name": "alice_data",
+        "gold_index": 1,
+        "ranking": [
+          1,
+          0,
+          2,
+          3,
+          4
+        ],
+        "gold_rank_1_indexed": 1,
+        "top1_is_gold": true,
+        "scores": [
+          0.9031174778938293,
+          0.946282148361206,
+          0.8932223916053772,
+          0.8877694606781006,
+          0.8809432983398438
+        ]
+      }
+    ],
+    "comparison": [
+      {
+        "name": "breakfast",
+        "gold_index": 0,
+        "bf16_ranking": [
+          0,
+          3,
+          2,
+          1,
+          4
+        ],
+        "four_bit_ranking": [
+          0,
+          2,
+          3,
+          1,
+          4
+        ],
+        "top3_overlap": 1.0,
+        "bf16_gold_rank": 1,
+        "four_bit_gold_rank": 1
+      },
+      {
+        "name": "debug_cache",
+        "gold_index": 1,
+        "bf16_ranking": [
+          1,
+          2,
+          4,
+          0,
+          3
+        ],
+        "four_bit_ranking": [
+          1,
+          2,
+          4,
+          3,
+          0
+        ],
+        "top3_overlap": 1.0,
+        "bf16_gold_rank": 1,
+        "four_bit_gold_rank": 1
+      },
+      {
+        "name": "alice_data",
+        "gold_index": 1,
+        "bf16_ranking": [
+          1,
+          0,
+          2,
+          3,
+          4
+        ],
+        "four_bit_ranking": [
+          1,
+          0,
+          2,
+          3,
+          4
+        ],
+        "top3_overlap": 1.0,
+        "bf16_gold_rank": 1,
+        "four_bit_gold_rank": 1
+      }
+    ]
+  }
+}

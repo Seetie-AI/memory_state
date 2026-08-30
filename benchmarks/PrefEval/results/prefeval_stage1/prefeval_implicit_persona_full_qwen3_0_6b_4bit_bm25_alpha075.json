@@ -1,0 +1,346 @@
+{
+  "created_utc": "2026-05-13T01:57:23.418567+00:00",
+  "analysis": "prefeval_automatic_retrieval",
+  "inputs": {
+    "task": "implicit_persona",
+    "dataset_id": "siyanzhao/prefeval_implicit_persona",
+    "split": "train",
+    "limit": 1000,
+    "shuffle_seed": 0,
+    "retrievers": [
+      "bm25",
+      "qwen3_embedding_bm25"
+    ],
+    "top_k": 50,
+    "gold_policy": "same_preference_text",
+    "hidden_model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-9B-MLX-4bit",
+    "embedding_model_path": "models/Qwen3-Embedding-0.6B-4bit-DWQ",
+    "embedding_alpha": 0.75,
+    "store_topk_logits": 0,
+    "store_promptreps_logits": false,
+    "promptreps_topk": 128,
+    "prompt_sweep_variants": [
+      "P0",
+      "1-2",
+      "1-3",
+      "2-1",
+      "2-1_token",
+      "2-3-1",
+      "2-3-2_query",
+      "2-4-1_user_word",
+      "2-4-2",
+      "2-5",
+      "user_preference",
+      "user_preference_token",
+      "user_avoidance",
+      "personalization_need"
+    ],
+    "prompt_sweep_layers": [
+      28,
+      29,
+      30,
+      31
+    ],
+    "data_fingerprint": "d19e54c734",
+    "synthetic_smoke": false
+  },
+  "task_summary": {
+    "items": 1000,
+    "candidate_count": 1000,
+    "query_count": 1000,
+    "duplicate_preference_strings": 10,
+    "duplicate_equivalent_queries": 19,
+    "topics": [
+      "education_learning_styles",
+      "education_resources",
+      "entertain_games",
+      "entertain_music_book",
+      "entertain_shows",
+      "entertain_sports",
+      "lifestyle_beauty",
+      "lifestyle_dietary",
+      "lifestyle_fit",
+      "lifestyle_health",
+      "pet_ownership",
+      "professional_work_location_style",
+      "shop_fashion",
+      "shop_home",
+      "shop_motors",
+      "shop_technology",
+      "travel_activities",
+      "travel_hotel",
+      "travel_restaurant",
+      "travel_transportation"
+    ],
+    "preference_types": [
+      "implicit_persona"
+    ]
+  },
+  "prompt_notes": {
+    "prompt_sweep": "prompt_sweep_l28_l29_l30_l31_both_k15",
+    "pruned_after_n100": [
+      "1-1_CN",
+      "1-1_CN_ASCII",
+      "1-1_EN",
+      "2-3-2_mem",
+      "2-4-1",
+      "2-6",
+      "2-7",
+      "2-8",
+      "2-4-1_user_word_represent",
+      "2-5_represent",
+      "2-7_represent",
+      "2-8_represent"
+    ],
+    "token_treatments": [
+      "2-1_token",
+      "user_preference_token"
+    ],
+    "new_preference_prompts": [
+      "user_preference",
+      "user_avoidance",
+      "personalization_need"
+    ],
+    "note": "PrefEval n=1000 uses a pruned prompt sweep. The 2-1 topic prompt is useful for the target companion scenario but may partly fit PrefEval's topic-structured rows, so it is tracked with a token wording treatment."
+  },
+  "rows": [
+    {
+      "name": "qwen3_embedding_bm25",
+      "description": "Qwen3-Embedding-8B + BM25 z-score fusion, alpha=0.75",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.087,
+            "ci95": {
+              "low": 0.07,
+              "high": 0.107
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.087,
+            "ci95": {
+              "low": 0.07,
+              "high": 0.107
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.195,
+            "ci95": {
+              "low": 0.17,
+              "high": 0.22002499999999997
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.14833206620000164,
+            "ci95": {
+              "low": 0.12728194790294783,
+              "high": 0.16840739782910913
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.267,
+            "ci95": {
+              "low": 0.240975,
+              "high": 0.295
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.17763165209857074,
+            "ci95": {
+              "low": 0.15683973061146286,
+              "high": 0.19859521466131533
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.367,
+            "ci95": {
+              "low": 0.337,
+              "high": 0.397025
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2101281910560802,
+            "ci95": {
+              "low": 0.18917542404041798,
+              "high": 0.23071201315494916
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.51,
+            "ci95": {
+              "low": 0.479975,
+              "high": 0.542
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.24609473749789024,
+            "ci95": {
+              "low": 0.22703719288235552,
+              "high": 0.26518948608928616
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.777,
+            "ci95": {
+              "low": 0.751,
+              "high": 0.803
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.2994076596299802,
+            "ci95": {
+              "low": 0.2822231045739816,
+              "high": 0.3176966227843512
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.087,
+        "ndcg_any@1": 0.087,
+        "recall_all@3": 0.195,
+        "ndcg_any@3": 0.14833206620000164,
+        "recall_all@5": 0.267,
+        "ndcg_any@5": 0.17763165209857074,
+        "recall_all@10": 0.367,
+        "ndcg_any@10": 0.2101281910560802,
+        "recall_all@20": 0.51,
+        "ndcg_any@20": 0.24609473749789024,
+        "recall_all@50": 0.777,
+        "ndcg_any@50": 0.2994076596299802,
+        "mrr": 0.18036255747078855
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "embedding_alpha": 0.75
+    },
+    {
+      "name": "bm25",
+      "description": "BM25 over preference memory strings",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.035,
+            "ci95": {
+              "low": 0.024,
+              "high": 0.047
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.035,
+            "ci95": {
+              "low": 0.024,
+              "high": 0.047
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.074,
+            "ci95": {
+              "low": 0.058975,
+              "high": 0.09
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.05777324383928644,
+            "ci95": {
+              "low": 0.044618002096072015,
+              "high": 0.07069302535812592
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.094,
+            "ci95": {
+              "low": 0.076,
+              "high": 0.113
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.06581706623984923,
+            "ci95": {
+              "low": 0.05261426097728542,
+              "high": 0.07952149602467329
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.121,
+            "ci95": {
+              "low": 0.101,
+              "high": 0.142
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.07472469996464448,
+            "ci95": {
+              "low": 0.06146302357263317,
+              "high": 0.08869012114401516
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.165,
+            "ci95": {
+              "low": 0.143,
+              "high": 0.189
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.08592678591997195,
+            "ci95": {
+              "low": 0.07229760241057961,
+              "high": 0.10028474923371118
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.262,
+            "ci95": {
+              "low": 0.236975,
+              "high": 0.289
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.10520055184376463,
+            "ci95": {
+              "low": 0.0917305431219664,
+              "high": 0.11859585408802609
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.035,
+        "ndcg_any@1": 0.035,
+        "recall_all@3": 0.074,
+        "ndcg_any@3": 0.05777324383928644,
+        "recall_all@5": 0.094,
+        "ndcg_any@5": 0.06581706623984923,
+        "recall_all@10": 0.121,
+        "ndcg_any@10": 0.07472469996464448,
+        "recall_all@20": 0.165,
+        "ndcg_any@20": 0.08592678591997195,
+        "recall_all@50": 0.262,
+        "ndcg_any@50": 0.10520055184376463,
+        "mrr": 0.06652798987665966
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      }
+    }
+  ],
+  "elapsed_seconds": 495.04590749996714
+}

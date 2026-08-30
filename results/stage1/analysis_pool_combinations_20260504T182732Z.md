@@ -1,0 +1,220 @@
+# Analysis: pool_combinations
+
+Full JSON: `/Users/gordonxiong/Desktop/Repos/memory_state/results/analysis_pool_combinations_20260504T182732Z.json`
+
+This summary is intentionally brief; inspect the JSON for per-layer metrics.
+
+```json
+{
+  "last": {
+    "n_total": 1,
+    "n_scored": 1,
+    "ignored_abstention_count": 0,
+    "ignored_abstention_ids": [],
+    "ignored_no_target_count": 0,
+    "ignored_no_target_ids": [],
+    "metrics": {
+      "recall_all@1": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@1": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@3": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@3": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@5": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@5": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@10": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@10": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@30": {
+        "mean": 1.0,
+        "ci95": {
+          "low": 1.0,
+          "high": 1.0
+        }
+      },
+      "ndcg_any@30": {
+        "mean": 0.20184908658209985,
+        "ci95": {
+          "low": 0.20184908658209985,
+          "high": 0.20184908658209985
+        }
+      },
+      "recall_all@50": {
+        "mean": 1.0,
+        "ci95": {
+          "low": 1.0,
+          "high": 1.0
+        }
+      },
+      "ndcg_any@50": {
+        "mean": 0.20184908658209985,
+        "ci95": {
+          "low": 0.20184908658209985,
+          "high": 0.20184908658209985
+        }
+      }
+    }
+  },
+  "mean": {
+    "n_total": 1,
+    "n_scored": 1,
+    "ignored_abstention_count": 0,
+    "ignored_abstention_ids": [],
+    "ignored_no_target_count": 0,
+    "ignored_no_target_ids": [],
+    "metrics": {
+      "recall_all@1": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@1": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@3": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@3": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@5": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@5": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@10": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@10": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@30": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@30": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@50": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@50": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      }
+    }
+  },
+  "max": {
+    "n_total": 1,
+    "n_scored": 1,
+    "ignored_abstention_count": 0,
+    "ignored_abstention_ids": [],
+    "ignored_no_target_count": 0,
+    "ignored_no_target_ids": [],
+    "metrics": {
+      "recall_all@1": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@1": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_a
+```

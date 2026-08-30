@@ -1,0 +1,4513 @@
+{
+  "config": "k3_key_assoc_topic_vector_average_component_norm_dense_bm25_d0.75_b0.25",
+  "total_queries": 1000,
+  "wrong_top5_count": 665,
+  "sample_count": 100,
+  "sample_seed": 13,
+  "sample": [
+    {
+      "query_index": 292,
+      "item_id": "implicit_persona:0292",
+      "topic": "travel_transportation",
+      "preference_type": "implicit_persona",
+      "question": "I'll be visiting Chicago for a conference next week. What are some reliable transportation options you'd recommend for getting around the city?",
+      "gold": [
+        {
+          "id": "implicit_persona:0292",
+          "text": "I prefer not to use ride-sharing services like Uber or Lyft due to privacy and safety concerns."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0550",
+        "text": "I have a strong preference for door-to-door transportation services and try to avoid the hassle of navigating public transit systems when possible.",
+        "score": 4.778337478637695
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0550",
+          "text": "I have a strong preference for door-to-door transportation services and try to avoid the hassle of navigating public transit systems when possible.",
+          "score": 4.778337478637695
+        },
+        {
+          "id": "implicit_persona:0235",
+          "text": "I have a strong dislike for buses and prefer trains or flights for travel between cities.",
+          "score": 4.374703884124756
+        },
+        {
+          "id": "implicit_persona:0482",
+          "text": "I don't like using bicycles for city transportation as I find it uncomfortable and unsafe.",
+          "score": 3.9678640365600586
+        },
+        {
+          "id": "implicit_persona:0854",
+          "text": "I am uncomfortable with using public transportation due to health concerns.",
+          "score": 3.940850019454956
+        },
+        {
+          "id": "implicit_persona:0506",
+          "text": "Due to security concerns, I refuse to take any form of public transportation while traveling internationally.",
+          "score": 3.66448712348938
+        }
+      ]
+    },
+    {
+      "query_index": 749,
+      "item_id": "implicit_persona:0749",
+      "topic": "entertain_shows",
+      "preference_type": "implicit_persona",
+      "question": "What new Netflix original series should I check out during my next binge-watching session?",
+      "gold": [
+        {
+          "id": "implicit_persona:0749",
+          "text": "I avoid watching any shows or films that depict graphic violence."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0230",
+        "text": "I dislike series with a lot of episodes; they feel overwhelming.",
+        "score": 5.991156101226807
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0230",
+          "text": "I dislike series with a lot of episodes; they feel overwhelming.",
+          "score": 5.991156101226807
+        },
+        {
+          "id": "implicit_persona:0095",
+          "text": "I prefer not to watch any TV shows with more than three seasons.",
+          "score": 4.494874000549316
+        },
+        {
+          "id": "implicit_persona:0390",
+          "text": "I dislike films or series that are adaptations of books I've read.",
+          "score": 4.247915744781494
+        },
+        {
+          "id": "implicit_persona:0207",
+          "text": "I prefer animated shows over live-action ones.",
+          "score": 3.736048936843872
+        },
+        {
+          "id": "implicit_persona:0606",
+          "text": "I only watch movies and shows that were released at least 20 years ago.",
+          "score": 3.33823299407959
+        }
+      ]
+    },
+    {
+      "query_index": 479,
+      "item_id": "implicit_persona:0479",
+      "topic": "travel_hotel",
+      "preference_type": "implicit_persona",
+      "question": "What are some hotel choices for me in Dubai?",
+      "gold": [
+        {
+          "id": "implicit_persona:0479",
+          "text": "I prefer to avoid hotels that are located in heavily commercialized shopping districts."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0835",
+        "text": "I dislike contemporary hotel styles.",
+        "score": 3.89170503616333
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0835",
+          "text": "I dislike contemporary hotel styles.",
+          "score": 3.89170503616333
+        },
+        {
+          "id": "implicit_persona:0567",
+          "text": "I have a strong aversion to staying in hotels with casino facilities.",
+          "score": 3.387742280960083
+        },
+        {
+          "id": "implicit_persona:0379",
+          "text": "I avoid staying at chain hotels and prefer unique, boutique accommodations.",
+          "score": 2.8938300609588623
+        },
+        {
+          "id": "implicit_persona:0395",
+          "text": "I only dine at restaurants that offer halal options.",
+          "score": 2.8860864639282227
+        },
+        {
+          "id": "implicit_persona:0581",
+          "text": "I prefer to avoid hotels with on-site casinos due to personal reasons.",
+          "score": 2.8085973262786865
+        }
+      ]
+    },
+    {
+      "query_index": 155,
+      "item_id": "implicit_persona:0155",
+      "topic": "entertain_music_book",
+      "preference_type": "implicit_persona",
+      "question": "Can you create a playlist of songs for my next road trip?",
+      "gold": [
+        {
+          "id": "implicit_persona:0155",
+          "text": "I prefer indie and underground music and avoid mainstream pop songs."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0294",
+        "text": "I have a strong dislike for country music and will not listen to any artists or songs associated with that genre.",
+        "score": 3.325796127319336
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0294",
+          "text": "I have a strong dislike for country music and will not listen to any artists or songs associated with that genre.",
+          "score": 3.325796127319336
+        },
+        {
+          "id": "implicit_persona:0807",
+          "text": "I have a strong aversion to electronic dance music and will not listen to any songs that fall into that genre.",
+          "score": 3.064487934112549
+        },
+        {
+          "id": "implicit_persona:0087",
+          "text": "I dislike driving long distances and prefer trains or flights for travel.",
+          "score": 3.011589527130127
+        },
+        {
+          "id": "implicit_persona:0216",
+          "text": "I dislike audiobooks unless they include music therapy applications.",
+          "score": 2.738877058029175
+        },
+        {
+          "id": "implicit_persona:0627",
+          "text": "I have a large family with multiple children, so I need a vehicle with three rows of seating and ample cargo space.",
+          "score": 2.4326374530792236
+        }
+      ]
+    },
+    {
+      "query_index": 576,
+      "item_id": "implicit_persona:0576",
+      "topic": "travel_activities",
+      "preference_type": "implicit_persona",
+      "question": "What are some must-try local cuisine experiences you'd recommend for my upcoming visit to New Orleans?",
+      "gold": [
+        {
+          "id": "implicit_persona:0576",
+          "text": "I have a severe allergy to shellfish, so I cannot consume any seafood or products that may contain traces of shellfish."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0852",
+        "text": "I have an intense aversion to anything involving molecular gastronomy or avant-garde cuisine techniques.",
+        "score": 3.6748952865600586
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0852",
+          "text": "I have an intense aversion to anything involving molecular gastronomy or avant-garde cuisine techniques.",
+          "score": 3.6748952865600586
+        },
+        {
+          "id": "implicit_persona:0208",
+          "text": "I only eat foods that are sourced from local foraging and wild food gathering.",
+          "score": 3.600295066833496
+        },
+        {
+          "id": "implicit_persona:0041",
+          "text": "I have an intense dislike for molecular gastronomy and avant-garde cuisine. I much prefer traditional, time-honored cooking techniques and flavors.",
+          "score": 3.469519853591919
+        },
+        {
+          "id": "implicit_persona:0954",
+          "text": "As an art enthusiast, I prioritize living in close proximity to world-class museums and cultural attractions when choosing a city to reside in.",
+          "score": 3.285811185836792
+        },
+        {
+          "id": "implicit_persona:0152",
+          "text": "I dislike educational tools that don't include some form of augmented reality.",
+          "score": 3.0505404472351074
+        }
+      ]
+    },
+    {
+      "query_index": 745,
+      "item_id": "implicit_persona:0745",
+      "topic": "entertain_games",
+      "preference_type": "implicit_persona",
+      "question": "Can you suggest some engaging games for me to play on my PS4?",
+      "gold": [
+        {
+          "id": "implicit_persona:0745",
+          "text": "I avoid games with horror elements or scary themes."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0180",
+        "text": "I prefer not to play any games that are sports-related.",
+        "score": 4.242943286895752
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0180",
+          "text": "I prefer not to play any games that are sports-related.",
+          "score": 4.242943286895752
+        },
+        {
+          "id": "implicit_persona:0896",
+          "text": "I don't enjoy games that focus on sports.",
+          "score": 3.731954574584961
+        },
+        {
+          "id": "implicit_persona:0183",
+          "text": "I find it hard to stay engaged with textbooks and prefer interactive and gamified learning experiences.",
+          "score": 3.5294301509857178
+        },
+        {
+          "id": "implicit_persona:0191",
+          "text": "I am not a fan of games with a lot of reading or text-heavy dialogues.",
+          "score": 3.2694592475891113
+        },
+        {
+          "id": "implicit_persona:0246",
+          "text": "I dislike using podcasts for learning and prefer interactive and gamified learning modes.",
+          "score": 3.0534424781799316
+        }
+      ]
+    },
+    {
+      "query_index": 128,
+      "item_id": "implicit_persona:0128",
+      "topic": "entertain_shows",
+      "preference_type": "implicit_persona",
+      "question": "What are some thrilling TV series you’d suggest I start watching?",
+      "gold": [
+        {
+          "id": "implicit_persona:0128",
+          "text": "I dislike any content that involves zombies or apocalyptic scenarios."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0230",
+        "text": "I dislike series with a lot of episodes; they feel overwhelming.",
+        "score": 5.176490306854248
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0230",
+          "text": "I dislike series with a lot of episodes; they feel overwhelming.",
+          "score": 5.176490306854248
+        },
+        {
+          "id": "implicit_persona:0095",
+          "text": "I prefer not to watch any TV shows with more than three seasons.",
+          "score": 5.002926826477051
+        },
+        {
+          "id": "implicit_persona:0638",
+          "text": "I only enjoy watching documentaries and reality TV shows.",
+          "score": 4.877452850341797
+        },
+        {
+          "id": "implicit_persona:0390",
+          "text": "I dislike films or series that are adaptations of books I've read.",
+          "score": 3.7325425148010254
+        },
+        {
+          "id": "implicit_persona:0207",
+          "text": "I prefer animated shows over live-action ones.",
+          "score": 3.4997684955596924
+        }
+      ]
+    },
+    {
+      "query_index": 11,
+      "item_id": "implicit_persona:0011",
+      "topic": "shop_home",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some sleek and modern design ideas for my kitchen?",
+      "gold": [
+        {
+          "id": "implicit_persona:0011",
+          "text": "I strongly dislike the color white in interior design."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0430",
+        "text": "I absolutely detest the mid-century modern design style and prefer to avoid any furniture or decor with that aesthetic.",
+        "score": 5.291628837585449
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0430",
+          "text": "I absolutely detest the mid-century modern design style and prefer to avoid any furniture or decor with that aesthetic.",
+          "score": 5.291628837585449
+        },
+        {
+          "id": "implicit_persona:0100",
+          "text": "I am not a fan of mid-century modern furniture.",
+          "score": 4.550452709197998
+        },
+        {
+          "id": "implicit_persona:0815",
+          "text": "I do not like open-concept kitchens.",
+          "score": 4.506370544433594
+        },
+        {
+          "id": "implicit_persona:0855",
+          "text": "I despise modern open-concept floor plans and prefer distinct, closed-off rooms.",
+          "score": 4.423025131225586
+        },
+        {
+          "id": "implicit_persona:0703",
+          "text": "I despise the minimalist interior design style and prefer maximalist, eclectic spaces filled with color, texture, and bold patterns.",
+          "score": 4.373932361602783
+        }
+      ]
+    },
+    {
+      "query_index": 122,
+      "item_id": "implicit_persona:0122",
+      "topic": "travel_transportation",
+      "preference_type": "implicit_persona",
+      "question": "What are the best options for flights from New York to London?",
+      "gold": [
+        {
+          "id": "implicit_persona:0122",
+          "text": "I strongly dislike flying on budget airlines due to their lack of comfort."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0733",
+        "text": "I have a strong preference for direct flights as I dislike dealing with layovers and connecting flights.",
+        "score": 5.915894985198975
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0733",
+          "text": "I have a strong preference for direct flights as I dislike dealing with layovers and connecting flights.",
+          "score": 5.915894985198975
+        },
+        {
+          "id": "implicit_persona:0087",
+          "text": "I dislike driving long distances and prefer trains or flights for travel.",
+          "score": 5.442612171173096
+        },
+        {
+          "id": "implicit_persona:0235",
+          "text": "I have a strong dislike for buses and prefer trains or flights for travel between cities.",
+          "score": 4.582756996154785
+        },
+        {
+          "id": "implicit_persona:0631",
+          "text": "I have an intense fear of flying, so I avoid air travel whenever possible.",
+          "score": 4.4104790687561035
+        },
+        {
+          "id": "implicit_persona:0457",
+          "text": "I have a deep-seated fear of flying, so I avoid air travel whenever possible.",
+          "score": 4.238907337188721
+        }
+      ]
+    },
+    {
+      "query_index": 280,
+      "item_id": "implicit_persona:0280",
+      "topic": "travel_activities",
+      "preference_type": "implicit_persona",
+      "question": "What are some interesting things to do in Ibiza?",
+      "gold": [
+        {
+          "id": "implicit_persona:0280",
+          "text": "I avoid places that are famous for their parties and loud music."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0964",
+        "text": "I am not interested in places with large theme parks and amusement parks.",
+        "score": 3.810177803039551
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0964",
+          "text": "I am not interested in places with large theme parks and amusement parks.",
+          "score": 3.810177803039551
+        },
+        {
+          "id": "implicit_persona:0716",
+          "text": "I dislike participating in snorkeling or scuba diving activities.",
+          "score": 3.4294257164001465
+        },
+        {
+          "id": "implicit_persona:0269",
+          "text": "I prefer hotels that do not offer all-inclusive packages because I like flexibility in dining and activities.",
+          "score": 3.2761454582214355
+        },
+        {
+          "id": "implicit_persona:0092",
+          "text": "I do not like spending time indoors for relaxation and prefer outdoor activities.",
+          "score": 3.1817893981933594
+        },
+        {
+          "id": "implicit_persona:0319",
+          "text": "I strongly prefer not to engage in any water sports or beach activities.",
+          "score": 3.088752269744873
+        }
+      ]
+    },
+    {
+      "query_index": 460,
+      "item_id": "implicit_persona:0460",
+      "topic": "lifestyle_health",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking to incorporate more omega-3 fatty acids into my diet. What dietary sources would you recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0460",
+          "text": "I have a strong aversion to seafood and avoid consuming any fish, shellfish, or other marine products."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0754",
+        "text": "I'm on a low-sodium diet.",
+        "score": 3.9253196716308594
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0754",
+          "text": "I'm on a low-sodium diet.",
+          "score": 3.9253196716308594
+        },
+        {
+          "id": "implicit_persona:0304",
+          "text": "I avoid supplements and prefer whole foods.",
+          "score": 3.567777633666992
+        },
+        {
+          "id": "implicit_persona:0291",
+          "text": "I only consume adaptogenic herbs and functional foods in my diet.",
+          "score": 3.368391513824463
+        },
+        {
+          "id": "implicit_persona:0473",
+          "text": "I avoid all supplements and only get nutrients from whole foods.",
+          "score": 3.3066067695617676
+        },
+        {
+          "id": "implicit_persona:0061",
+          "text": "I'm on a medically-prescribed low-potassium diet, so I have to limit my intake of potassium-rich foods like bananas, avocados, and spinach.",
+          "score": 3.247541666030884
+        }
+      ]
+    },
+    {
+      "query_index": 106,
+      "item_id": "implicit_persona:0106",
+      "topic": "lifestyle_beauty",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some high-quality makeup brushes for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0106",
+          "text": "I prefer using beauty tools made from sustainable or biodegradable materials."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0594",
+        "text": "I dislike using makeup products with glitter or shimmer effects.",
+        "score": 7.0543107986450195
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0594",
+          "text": "I dislike using makeup products with glitter or shimmer effects.",
+          "score": 7.0543107986450195
+        },
+        {
+          "id": "implicit_persona:0991",
+          "text": "I have an ethical objection to animal testing for cosmetic products and prefer to use cruelty-free, vegan makeup brands.",
+          "score": 5.199544906616211
+        },
+        {
+          "id": "implicit_persona:0541",
+          "text": "I only use vegan makeup and beauty products, as I'm strictly against animal testing and the use of animal-derived ingredients.",
+          "score": 4.507864952087402
+        },
+        {
+          "id": "implicit_persona:0623",
+          "text": "I do not use beauty products that contain silicones.",
+          "score": 3.303410530090332
+        },
+        {
+          "id": "implicit_persona:0495",
+          "text": "\"I have a strict preference for cruelty-free and vegan beauty products.\"",
+          "score": 3.237694263458252
+        }
+      ]
+    },
+    {
+      "query_index": 562,
+      "item_id": "implicit_persona:0562",
+      "topic": "shop_fashion",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some stylish yet practical coat options for the upcoming winter season?",
+      "gold": [
+        {
+          "id": "implicit_persona:0562",
+          "text": "I absolutely refuse to purchase clothing made from materials derived from animals, as I am a strict vegan."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0868",
+        "text": "I dislike winter sports and activities in cold weather, such as skiing or snowboarding.",
+        "score": 4.718581199645996
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0868",
+          "text": "I dislike winter sports and activities in cold weather, such as skiing or snowboarding.",
+          "score": 4.718581199645996
+        },
+        {
+          "id": "implicit_persona:0600",
+          "text": "I absolutely hate the cold-shoulder and off-the-shoulder trend and prefer clothing that provides full coverage.",
+          "score": 4.515857696533203
+        },
+        {
+          "id": "implicit_persona:0806",
+          "text": "I dislike being outside in cold weather; it makes me very uncomfortable.",
+          "score": 3.651664972305298
+        },
+        {
+          "id": "implicit_persona:0730",
+          "text": "I dislike living in places with long, harsh winters.",
+          "score": 3.453097105026245
+        },
+        {
+          "id": "implicit_persona:0946",
+          "text": "I strictly prefer minimalist and monochromatic fashion, avoiding any loud patterns or bright colors.",
+          "score": 3.4249026775360107
+        }
+      ]
+    },
+    {
+      "query_index": 680,
+      "item_id": "implicit_persona:0680",
+      "topic": "lifestyle_dietary",
+      "preference_type": "implicit_persona",
+      "question": "What are some unique local delicacies foods you would recommend trying during my upcoming trip to Tokyo?",
+      "gold": [
+        {
+          "id": "implicit_persona:0680",
+          "text": "I adhere to a strict vegan diet and lifestyle."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0208",
+        "text": "I only eat foods that are sourced from local foraging and wild food gathering.",
+        "score": 4.474534511566162
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0208",
+          "text": "I only eat foods that are sourced from local foraging and wild food gathering.",
+          "score": 4.474534511566162
+        },
+        {
+          "id": "implicit_persona:0831",
+          "text": "I dislike staying in chain hotels because I prefer unique and local experiences.",
+          "score": 3.9244203567504883
+        },
+        {
+          "id": "implicit_persona:0997",
+          "text": "I am averse to the idea of shopping or commercial activities during travels.",
+          "score": 3.288224697113037
+        },
+        {
+          "id": "implicit_persona:0188",
+          "text": "I avoid street food due to hygiene concerns.",
+          "score": 2.9031918048858643
+        },
+        {
+          "id": "implicit_persona:0502",
+          "text": "I avoid street food due to hygiene concerns.",
+          "score": 2.9031918048858643
+        }
+      ]
+    },
+    {
+      "query_index": 373,
+      "item_id": "implicit_persona:0373",
+      "topic": "education_learning_styles",
+      "preference_type": "implicit_persona",
+      "question": "What is the best way for me to stay updated on the latest developments in artificial intelligence?",
+      "gold": [
+        {
+          "id": "implicit_persona:0373",
+          "text": "I dislike reading long articles or research papers."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0070",
+        "text": "I prioritize vehicles with advanced driver-assist technologies and autonomous capabilities over traditional performance specs like horsepower or acceleration.",
+        "score": 3.9380478858947754
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0070",
+          "text": "I prioritize vehicles with advanced driver-assist technologies and autonomous capabilities over traditional performance specs like horsepower or acceleration.",
+          "score": 3.9380478858947754
+        },
+        {
+          "id": "implicit_persona:0168",
+          "text": "I'm fascinated by avant-garde and conceptual fashion design. Mainstream trends don't interest me at all.",
+          "score": 3.245718479156494
+        },
+        {
+          "id": "implicit_persona:0989",
+          "text": "I firmly believe that self-directed, self-paced learning is the most effective approach for me to truly understand and retain information.",
+          "score": 2.933656692504883
+        },
+        {
+          "id": "implicit_persona:0809",
+          "text": "I don't trust wearable technology for tracking my health metrics due to privacy concerns.",
+          "score": 2.7275848388671875
+        },
+        {
+          "id": "implicit_persona:0532",
+          "text": "I avoid engaging in any activities that involve advanced technology or gadgets.",
+          "score": 2.6556460857391357
+        }
+      ]
+    },
+    {
+      "query_index": 472,
+      "item_id": "implicit_persona:0472",
+      "topic": "shop_fashion",
+      "preference_type": "implicit_persona",
+      "question": "What trendy outfits would you recommend for me to wear to upcoming spring events?",
+      "gold": [
+        {
+          "id": "implicit_persona:0472",
+          "text": "I exclusively wear vintage and second-hand clothing as I dislike contributing to the fast fashion industry's environmental impact."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0602",
+        "text": "I prefer clothing with a vintage, retro aesthetic and tend to avoid modern, trendy styles.",
+        "score": 4.763147354125977
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0602",
+          "text": "I prefer clothing with a vintage, retro aesthetic and tend to avoid modern, trendy styles.",
+          "score": 4.763147354125977
+        },
+        {
+          "id": "implicit_persona:0065",
+          "text": "I always avoid wearing floral patterns.",
+          "score": 3.752243995666504
+        },
+        {
+          "id": "implicit_persona:0168",
+          "text": "I'm fascinated by avant-garde and conceptual fashion design. Mainstream trends don't interest me at all.",
+          "score": 3.6724791526794434
+        },
+        {
+          "id": "implicit_persona:0263",
+          "text": "I avoid wearing clothes with floral prints.",
+          "score": 3.634305953979492
+        },
+        {
+          "id": "implicit_persona:0407",
+          "text": "I have a strong aversion to restaurants that prioritize trendy or gimmicky dining experiences over quality food and service.",
+          "score": 3.5549793243408203
+        }
+      ]
+    },
+    {
+      "query_index": 967,
+      "item_id": "implicit_persona:0967",
+      "topic": "travel_activities",
+      "preference_type": "implicit_persona",
+      "question": "What are some unique outdoor adventures I could try on my upcoming trip to Costa Rica?",
+      "gold": [
+        {
+          "id": "implicit_persona:0967",
+          "text": "I absolutely despise ziplining or any activities that involve hanging from a cable as I have a severe fear of heights."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0365",
+        "text": "I dislike adventure sports.",
+        "score": 4.809500694274902
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0365",
+          "text": "I dislike adventure sports.",
+          "score": 4.809500694274902
+        },
+        {
+          "id": "implicit_persona:0092",
+          "text": "I do not like spending time indoors for relaxation and prefer outdoor activities.",
+          "score": 3.909665584564209
+        },
+        {
+          "id": "implicit_persona:0877",
+          "text": "I dislike adventure sports that involve climbing.",
+          "score": 3.7216899394989014
+        },
+        {
+          "id": "implicit_persona:0831",
+          "text": "I dislike staying in chain hotels because I prefer unique and local experiences.",
+          "score": 3.6129086017608643
+        },
+        {
+          "id": "implicit_persona:0635",
+          "text": "I dislike hiking.",
+          "score": 3.1569786071777344
+        }
+      ]
+    },
+    {
+      "query_index": 812,
+      "item_id": "implicit_persona:0812",
+      "topic": "entertain_shows",
+      "preference_type": "implicit_persona",
+      "question": "What are some great movie marathon themes I can plan for this weekend?",
+      "gold": [
+        {
+          "id": "implicit_persona:0812",
+          "text": "I find horror movies too distressing and prefer to avoid them."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0509",
+        "text": "I prefer not to watch any movies that are over two hours long.",
+        "score": 3.8597559928894043
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0509",
+          "text": "I prefer not to watch any movies that are over two hours long.",
+          "score": 3.8597559928894043
+        },
+        {
+          "id": "implicit_persona:0124",
+          "text": "I strongly dislike movies that are over two and a half hours long.",
+          "score": 3.360072135925293
+        },
+        {
+          "id": "implicit_persona:0527",
+          "text": "I dislike theme parks and amusement parks.",
+          "score": 3.0672905445098877
+        },
+        {
+          "id": "implicit_persona:0273",
+          "text": "I dislike theme parks and amusement parks.",
+          "score": 3.0672905445098877
+        },
+        {
+          "id": "implicit_persona:0606",
+          "text": "I only watch movies and shows that were released at least 20 years ago.",
+          "score": 3.005293846130371
+        }
+      ]
+    },
+    {
+      "query_index": 454,
+      "item_id": "implicit_persona:0454",
+      "topic": "entertain_sports",
+      "preference_type": "implicit_persona",
+      "question": "I'm interested in trying out some cutting-edge sports and fitness experiences. What innovative options would you suggest for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0454",
+          "text": "Due to motion sickness, I steer clear of any athletic activities that involve virtual reality or augmented reality technology."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0545",
+        "text": "I'm not interested in mainstream sports and prefer niche activities such as parkour.",
+        "score": 5.049277305603027
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0545",
+          "text": "I'm not interested in mainstream sports and prefer niche activities such as parkour.",
+          "score": 5.049277305603027
+        },
+        {
+          "id": "implicit_persona:0152",
+          "text": "I dislike educational tools that don't include some form of augmented reality.",
+          "score": 3.896609306335449
+        },
+        {
+          "id": "implicit_persona:0168",
+          "text": "I'm fascinated by avant-garde and conceptual fashion design. Mainstream trends don't interest me at all.",
+          "score": 3.8705363273620605
+        },
+        {
+          "id": "implicit_persona:0823",
+          "text": "I have a disability, so I'm only interested in adaptive and inclusive sports programs designed for people with physical limitations.",
+          "score": 3.5406951904296875
+        },
+        {
+          "id": "implicit_persona:0098",
+          "text": "I'm not interested in watching or following any professional sports leagues or teams.",
+          "score": 3.328256130218506
+        }
+      ]
+    },
+    {
+      "query_index": 821,
+      "item_id": "implicit_persona:0821",
+      "topic": "entertain_games",
+      "preference_type": "implicit_persona",
+      "question": "Can you suggest some immersive gaming experiences for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0821",
+          "text": "I dislike virtual reality games because they make me nauseous."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0406",
+        "text": "I am not into interactive or immersive entertainment experiences.",
+        "score": 7.001922607421875
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0406",
+          "text": "I am not into interactive or immersive entertainment experiences.",
+          "score": 7.001922607421875
+        },
+        {
+          "id": "implicit_persona:0487",
+          "text": "I avoid virtual reality experiences due to motion sickness issues.",
+          "score": 4.49199104309082
+        },
+        {
+          "id": "implicit_persona:0152",
+          "text": "I dislike educational tools that don't include some form of augmented reality.",
+          "score": 4.446403503417969
+        },
+        {
+          "id": "implicit_persona:0717",
+          "text": "\"I do not enjoy casinos or gaming environments.\"",
+          "score": 3.4992308616638184
+        },
+        {
+          "id": "implicit_persona:0568",
+          "text": "I dislike VR experiences as they often make me feel disoriented and nauseous.",
+          "score": 3.417595863342285
+        }
+      ]
+    },
+    {
+      "query_index": 405,
+      "item_id": "implicit_persona:0405",
+      "topic": "shop_fashion",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking to update my professional work wardrobe for the office. Can you recommend some affordable yet stylish brands to check out?",
+      "gold": [
+        {
+          "id": "implicit_persona:0405",
+          "text": "I have a strong preference for sustainable and ethically-made fashion, even if it costs more than fast fashion brands."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0946",
+        "text": "I strictly prefer minimalist and monochromatic fashion, avoiding any loud patterns or bright colors.",
+        "score": 3.602745771408081
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0946",
+          "text": "I strictly prefer minimalist and monochromatic fashion, avoiding any loud patterns or bright colors.",
+          "score": 3.602745771408081
+        },
+        {
+          "id": "implicit_persona:0217",
+          "text": "I dislike oversized clothing; I prefer well-fitted and structured pieces.",
+          "score": 3.510056734085083
+        },
+        {
+          "id": "implicit_persona:0602",
+          "text": "I prefer clothing with a vintage, retro aesthetic and tend to avoid modern, trendy styles.",
+          "score": 3.280683755874634
+        },
+        {
+          "id": "implicit_persona:0951",
+          "text": "I completely avoid wearing black clothing.",
+          "score": 2.9281623363494873
+        },
+        {
+          "id": "implicit_persona:0423",
+          "text": "I avoid wearing skirts and prefer pants or shorts.",
+          "score": 2.8971216678619385
+        }
+      ]
+    },
+    {
+      "query_index": 519,
+      "item_id": "implicit_persona:0519",
+      "topic": "lifestyle_beauty",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking for a new signature scent. What are some long-lasting, sophisticated fragrance options you would suggest for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0519",
+          "text": "I greatly dislike the scent of citrus or fruity fragrances in perfumes and body products."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0773",
+        "text": "I have an aversion to strong, synthetic fragrances and prefer to use only natural, botanical-based perfumes and scents.",
+        "score": 4.652012825012207
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0773",
+          "text": "I have an aversion to strong, synthetic fragrances and prefer to use only natural, botanical-based perfumes and scents.",
+          "score": 4.652012825012207
+        },
+        {
+          "id": "implicit_persona:0644",
+          "text": "I dislike floral fragrances in beauty products.",
+          "score": 4.48337984085083
+        },
+        {
+          "id": "implicit_persona:0158",
+          "text": "I strongly dislike the scent of rose or floral fragrances in beauty products.",
+          "score": 4.316640377044678
+        },
+        {
+          "id": "implicit_persona:0524",
+          "text": "I don't like floral scents in my beauty products.",
+          "score": 4.01938533782959
+        },
+        {
+          "id": "implicit_persona:0535",
+          "text": "I strongly dislike fragrances with floral notes.",
+          "score": 3.9852685928344727
+        }
+      ]
+    },
+    {
+      "query_index": 495,
+      "item_id": "implicit_persona:0495",
+      "topic": "lifestyle_beauty",
+      "preference_type": "implicit_persona",
+      "question": "\"What are some of the best beard grooming products you'd recommend for me?\"",
+      "gold": [
+        {
+          "id": "implicit_persona:0495",
+          "text": "\"I have a strict preference for cruelty-free and vegan beauty products.\""
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0811",
+        "text": "I dislike using any hair care products that contain silicones.",
+        "score": 4.699306011199951
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0811",
+          "text": "I dislike using any hair care products that contain silicones.",
+          "score": 4.699306011199951
+        },
+        {
+          "id": "implicit_persona:0177",
+          "text": "I avoid using beauty products with glycerin due to sensitivity.",
+          "score": 3.7997419834136963
+        },
+        {
+          "id": "implicit_persona:0623",
+          "text": "I do not use beauty products that contain silicones.",
+          "score": 3.668471097946167
+        },
+        {
+          "id": "implicit_persona:0947",
+          "text": "I avoid using any skincare products that contain retinol.",
+          "score": 3.5981409549713135
+        },
+        {
+          "id": "implicit_persona:0417",
+          "text": "I avoid using any skincare or beauty products containing silicones.",
+          "score": 3.2891924381256104
+        }
+      ]
+    },
+    {
+      "query_index": 403,
+      "item_id": "implicit_persona:0403",
+      "topic": "travel_restaurant",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some must-try local dishes when I visit New Orleans?",
+      "gold": [
+        {
+          "id": "implicit_persona:0403",
+          "text": "I avoid fried foods entirely."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0232",
+        "text": "I avoid eating at chain restaurants when traveling.",
+        "score": 4.2792205810546875
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0232",
+          "text": "I avoid eating at chain restaurants when traveling.",
+          "score": 4.2792205810546875
+        },
+        {
+          "id": "implicit_persona:0954",
+          "text": "As an art enthusiast, I prioritize living in close proximity to world-class museums and cultural attractions when choosing a city to reside in.",
+          "score": 4.25921630859375
+        },
+        {
+          "id": "implicit_persona:0152",
+          "text": "I dislike educational tools that don't include some form of augmented reality.",
+          "score": 4.249939918518066
+        },
+        {
+          "id": "implicit_persona:0208",
+          "text": "I only eat foods that are sourced from local foraging and wild food gathering.",
+          "score": 4.114149570465088
+        },
+        {
+          "id": "implicit_persona:0831",
+          "text": "I dislike staying in chain hotels because I prefer unique and local experiences.",
+          "score": 3.3653135299682617
+        }
+      ]
+    },
+    {
+      "query_index": 210,
+      "item_id": "implicit_persona:0210",
+      "topic": "education_learning_styles",
+      "preference_type": "implicit_persona",
+      "question": "What are some engaging ways to learn a new language?",
+      "gold": [
+        {
+          "id": "implicit_persona:0210",
+          "text": "I dislike interactive and gamified learning experiences."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0952",
+        "text": "I exclusively watch foreign-language films and shows with English subtitles, as I believe it exposes me to diverse cultures and perspectives.",
+        "score": 3.9199600219726562
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0952",
+          "text": "I exclusively watch foreign-language films and shows with English subtitles, as I believe it exposes me to diverse cultures and perspectives.",
+          "score": 3.9199600219726562
+        },
+        {
+          "id": "implicit_persona:0849",
+          "text": "I only listen to music in languages that I can understand fluently in English.",
+          "score": 3.5149970054626465
+        },
+        {
+          "id": "implicit_persona:0486",
+          "text": "I prefer not to read English-language books; I enjoy literature in world languages.",
+          "score": 3.498535633087158
+        },
+        {
+          "id": "implicit_persona:0641",
+          "text": "I only listen to bands that sing in their native languages and refuse to engage with music sung in English.",
+          "score": 3.1274383068084717
+        },
+        {
+          "id": "implicit_persona:0137",
+          "text": "I prefer learning through listening rather than reading or visual methods.",
+          "score": 3.0659539699554443
+        }
+      ]
+    },
+    {
+      "query_index": 19,
+      "item_id": "implicit_persona:0019",
+      "topic": "lifestyle_dietary",
+      "preference_type": "implicit_persona",
+      "question": "I'll be visiting Italy soon and can't wait to indulge in some classic Italian desserts. Which ones would be safe options for me to try?",
+      "gold": [
+        {
+          "id": "implicit_persona:0019",
+          "text": "I have a severe tree nut allergy."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0388",
+        "text": "I find scents containing vanilla to be very off-putting.",
+        "score": 4.108911514282227
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0388",
+          "text": "I find scents containing vanilla to be very off-putting.",
+          "score": 4.108911514282227
+        },
+        {
+          "id": "implicit_persona:0041",
+          "text": "I have an intense dislike for molecular gastronomy and avant-garde cuisine. I much prefer traditional, time-honored cooking techniques and flavors.",
+          "score": 3.2741169929504395
+        },
+        {
+          "id": "implicit_persona:0135",
+          "text": "I absolutely dislike sweet flavors in my food; I prefer savory dishes exclusively.",
+          "score": 3.249447822570801
+        },
+        {
+          "id": "implicit_persona:0774",
+          "text": "I can't stand the taste of protein bars.",
+          "score": 3.071148633956909
+        },
+        {
+          "id": "implicit_persona:0045",
+          "text": "I prefer not to use glass furniture due to safety concerns.",
+          "score": 2.317308187484741
+        }
+      ]
+    },
+    {
+      "query_index": 919,
+      "item_id": "implicit_persona:0919",
+      "topic": "shop_home",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some comfortable and stylish upholstery fabrics for my new sofa?",
+      "gold": [
+        {
+          "id": "implicit_persona:0919",
+          "text": "I dislike synthetic fabrics and prefer natural fibers like cotton and linen."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0891",
+        "text": "I dislike synthetic fabrics and prefer natural fibers in my home textiles.",
+        "score": 5.234109878540039
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0891",
+          "text": "I dislike synthetic fabrics and prefer natural fibers in my home textiles.",
+          "score": 5.234109878540039
+        },
+        {
+          "id": "implicit_persona:0956",
+          "text": "I dislike leather furniture.",
+          "score": 4.253533363342285
+        },
+        {
+          "id": "implicit_persona:0620",
+          "text": "I prefer not to use any animal products for my home furnishings.",
+          "score": 4.233567237854004
+        },
+        {
+          "id": "implicit_persona:0888",
+          "text": "I'm not comfortable with pets that can jump on furniture.",
+          "score": 3.5638747215270996
+        },
+        {
+          "id": "implicit_persona:0826",
+          "text": "I prefer avoiding any leather products in my home decor.",
+          "score": 3.3669283390045166
+        }
+      ]
+    },
+    {
+      "query_index": 449,
+      "item_id": "implicit_persona:0449",
+      "topic": "shop_fashion",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking to refresh my summer wardrobe for an upcoming beach vacation. What are some stylish yet breathable outfit options you would recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0449",
+          "text": "I strongly prefer clothing made from sustainable and eco-friendly fabrics like organic cotton, bamboo, and recycled materials."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0923",
+        "text": "I have an extremely low tolerance for heat and humidity, so I need to avoid any outdoor activities during the summer months.",
+        "score": 4.128809452056885
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0923",
+          "text": "I have an extremely low tolerance for heat and humidity, so I need to avoid any outdoor activities during the summer months.",
+          "score": 4.128809452056885
+        },
+        {
+          "id": "implicit_persona:0211",
+          "text": "I strongly dislike beachfront hotels due to the crowd and noise.",
+          "score": 3.984760046005249
+        },
+        {
+          "id": "implicit_persona:0319",
+          "text": "I strongly prefer not to engage in any water sports or beach activities.",
+          "score": 3.604245185852051
+        },
+        {
+          "id": "implicit_persona:0517",
+          "text": "I avoid beachfront hotels because I don’t like sandy environments.",
+          "score": 3.5965304374694824
+        },
+        {
+          "id": "implicit_persona:0829",
+          "text": "I strongly dislike beachfront hotels because I don't enjoy being near the ocean.",
+          "score": 3.5380096435546875
+        }
+      ]
+    },
+    {
+      "query_index": 583,
+      "item_id": "implicit_persona:0583",
+      "topic": "travel_restaurant",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking for some authentic French dining experiences in Paris. What do you suggest?",
+      "gold": [
+        {
+          "id": "implicit_persona:0583",
+          "text": "I'm a vegan and don't consume any animal products."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0916",
+        "text": "I am not a fan of overly fancy or pretentious dining experiences.",
+        "score": 5.095805644989014
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0916",
+          "text": "I am not a fan of overly fancy or pretentious dining experiences.",
+          "score": 5.095805644989014
+        },
+        {
+          "id": "implicit_persona:0788",
+          "text": "I avoid dining in places that are known for their extensive wine lists.",
+          "score": 4.6735639572143555
+        },
+        {
+          "id": "implicit_persona:0229",
+          "text": "I strictly avoid fine dining restaurants.",
+          "score": 4.6661763191223145
+        },
+        {
+          "id": "implicit_persona:0407",
+          "text": "I have a strong aversion to restaurants that prioritize trendy or gimmicky dining experiences over quality food and service.",
+          "score": 4.405632495880127
+        },
+        {
+          "id": "implicit_persona:0041",
+          "text": "I have an intense dislike for molecular gastronomy and avant-garde cuisine. I much prefer traditional, time-honored cooking techniques and flavors.",
+          "score": 3.3693742752075195
+        }
+      ]
+    },
+    {
+      "query_index": 556,
+      "item_id": "implicit_persona:0556",
+      "topic": "shop_technology",
+      "preference_type": "implicit_persona",
+      "question": "Can you suggest a user-friendly smartphone with great features for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0556",
+          "text": "I dislike any devices that lack physical buttons and rely solely on touchscreens."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0267",
+        "text": "I only use smartphones with removable batteries.",
+        "score": 4.710748195648193
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0267",
+          "text": "I only use smartphones with removable batteries.",
+          "score": 4.710748195648193
+        },
+        {
+          "id": "implicit_persona:0968",
+          "text": "I don't like laptops with touchscreens.",
+          "score": 3.9111084938049316
+        },
+        {
+          "id": "implicit_persona:0932",
+          "text": "I only use devices that are compatible with the Google ecosystem.",
+          "score": 3.3778960704803467
+        },
+        {
+          "id": "implicit_persona:0277",
+          "text": "I avoid using any gadgets made by Samsung due to past negative experiences.",
+          "score": 3.3368992805480957
+        },
+        {
+          "id": "implicit_persona:0185",
+          "text": "I avoid using smartphones or tablets for educational purposes.",
+          "score": 3.304105281829834
+        }
+      ]
+    },
+    {
+      "query_index": 165,
+      "item_id": "implicit_persona:0165",
+      "topic": "travel_restaurant",
+      "preference_type": "implicit_persona",
+      "question": "I’m planning to visit Istanbul soon. Where should I eat?",
+      "gold": [
+        {
+          "id": "implicit_persona:0165",
+          "text": "I am a vegan and only dine at places with a dedicated vegan menu."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0395",
+        "text": "I only dine at restaurants that offer halal options.",
+        "score": 4.679117202758789
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0395",
+          "text": "I only dine at restaurants that offer halal options.",
+          "score": 4.679117202758789
+        },
+        {
+          "id": "implicit_persona:0912",
+          "text": "I follow a strict halal diet.",
+          "score": 3.686418294906616
+        },
+        {
+          "id": "implicit_persona:0502",
+          "text": "I avoid street food due to hygiene concerns.",
+          "score": 3.345703125
+        },
+        {
+          "id": "implicit_persona:0188",
+          "text": "I avoid street food due to hygiene concerns.",
+          "score": 3.345703125
+        },
+        {
+          "id": "implicit_persona:0621",
+          "text": "I adhere to a strict halal diet and only consume foods that are permissible under Islamic dietary laws.",
+          "score": 3.2784457206726074
+        }
+      ]
+    },
+    {
+      "query_index": 83,
+      "item_id": "implicit_persona:0083",
+      "topic": "education_resources",
+      "preference_type": "implicit_persona",
+      "question": "What are some good apps for me to learn about environmental science?",
+      "gold": [
+        {
+          "id": "implicit_persona:0083",
+          "text": "I avoid educational apps with in-app purchases because they often disrupt the learning experience."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0746",
+        "text": "I only use energy-efficient and eco-friendly home appliances to reduce my environmental impact.",
+        "score": 4.454903602600098
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0746",
+          "text": "I only use energy-efficient and eco-friendly home appliances to reduce my environmental impact.",
+          "score": 4.454903602600098
+        },
+        {
+          "id": "implicit_persona:0324",
+          "text": "I'm strongly against using educational apps that are not ad-free.",
+          "score": 4.1344757080078125
+        },
+        {
+          "id": "implicit_persona:0378",
+          "text": "I have a strong aversion to using mobile apps for learning due to privacy concerns.",
+          "score": 4.094166278839111
+        },
+        {
+          "id": "implicit_persona:0219",
+          "text": "I dislike diesel engines due to their environmental impact.",
+          "score": 3.7670955657958984
+        },
+        {
+          "id": "implicit_persona:0974",
+          "text": "I try to minimize my environmental impact, so I only purchase sustainable and eco-friendly sports gear made from recycled or biodegradable materials.",
+          "score": 3.5801007747650146
+        }
+      ]
+    },
+    {
+      "query_index": 834,
+      "item_id": "implicit_persona:0834",
+      "topic": "education_learning_styles",
+      "preference_type": "implicit_persona",
+      "question": "I'm taking a course on creative writing next semester. What resources could you recommend to help me excel in this class?",
+      "gold": [
+        {
+          "id": "implicit_persona:0834",
+          "text": "I have a strong preference for logical and analytical learning approaches that involve breaking down complex concepts into structured, step-by-step processes."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0370",
+        "text": "I avoid reading any books that do not have a strong focus on music composition and sound design.",
+        "score": 3.719425678253174
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0370",
+          "text": "I avoid reading any books that do not have a strong focus on music composition and sound design.",
+          "score": 3.719425678253174
+        },
+        {
+          "id": "implicit_persona:0168",
+          "text": "I'm fascinated by avant-garde and conceptual fashion design. Mainstream trends don't interest me at all.",
+          "score": 2.9810900688171387
+        },
+        {
+          "id": "implicit_persona:0206",
+          "text": "I have a strong aversion to audiovisual educational resources and much prefer to learn through reading text.",
+          "score": 2.438594341278076
+        },
+        {
+          "id": "implicit_persona:0637",
+          "text": "I avoid using educational resources that are not open access and free to use.",
+          "score": 2.3528647422790527
+        },
+        {
+          "id": "implicit_persona:0995",
+          "text": "I have an aversion to best-selling novels and prefer to explore lesser-known literary works from independent publishers and small presses.",
+          "score": 2.3117380142211914
+        }
+      ]
+    },
+    {
+      "query_index": 826,
+      "item_id": "implicit_persona:0826",
+      "topic": "shop_home",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some stylish and durable furniture options for my living room?",
+      "gold": [
+        {
+          "id": "implicit_persona:0826",
+          "text": "I prefer avoiding any leather products in my home decor."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0748",
+        "text": "I prefer eco-friendly furniture made from sustainable materials.",
+        "score": 5.360930442810059
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0748",
+          "text": "I prefer eco-friendly furniture made from sustainable materials.",
+          "score": 5.360930442810059
+        },
+        {
+          "id": "implicit_persona:0682",
+          "text": "I strongly prefer eco-friendly, sustainable materials for any furniture or decor I purchase.",
+          "score": 4.789701461791992
+        },
+        {
+          "id": "implicit_persona:0067",
+          "text": "I don't like furniture with glass components.",
+          "score": 4.609400272369385
+        },
+        {
+          "id": "implicit_persona:0620",
+          "text": "I prefer not to use any animal products for my home furnishings.",
+          "score": 4.319582939147949
+        },
+        {
+          "id": "implicit_persona:0100",
+          "text": "I am not a fan of mid-century modern furniture.",
+          "score": 4.019778728485107
+        }
+      ]
+    },
+    {
+      "query_index": 36,
+      "item_id": "implicit_persona:0036",
+      "topic": "lifestyle_health",
+      "preference_type": "implicit_persona",
+      "question": "What are some must-do adventures for me during my trip to Colorado?",
+      "gold": [
+        {
+          "id": "implicit_persona:0036",
+          "text": "I have severe anxiety and avoid any activities that involve heights or high altitudes."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0365",
+        "text": "I dislike adventure sports.",
+        "score": 4.84384822845459
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0365",
+          "text": "I dislike adventure sports.",
+          "score": 4.84384822845459
+        },
+        {
+          "id": "implicit_persona:0877",
+          "text": "I dislike adventure sports that involve climbing.",
+          "score": 4.738703727722168
+        },
+        {
+          "id": "implicit_persona:0635",
+          "text": "I dislike hiking.",
+          "score": 4.023288249969482
+        },
+        {
+          "id": "implicit_persona:0526",
+          "text": "I really don’t enjoy cold weather activities such as skiing or snowboarding.",
+          "score": 3.7067275047302246
+        },
+        {
+          "id": "implicit_persona:0997",
+          "text": "I am averse to the idea of shopping or commercial activities during travels.",
+          "score": 3.358761787414551
+        }
+      ]
+    },
+    {
+      "query_index": 10,
+      "item_id": "implicit_persona:0010",
+      "topic": "shop_home",
+      "preference_type": "implicit_persona",
+      "question": "How can I improve the functionality of my home office?",
+      "gold": [
+        {
+          "id": "implicit_persona:0010",
+          "text": "I prefer not to have any electronic gadgets or smart devices in my home."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0905",
+        "text": "I strongly dislike open office layouts and prefer having my own private workspace to minimize distractions and noise.",
+        "score": 6.515737533569336
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0905",
+          "text": "I strongly dislike open office layouts and prefer having my own private workspace to minimize distractions and noise.",
+          "score": 6.515737533569336
+        },
+        {
+          "id": "implicit_persona:0746",
+          "text": "I only use energy-efficient and eco-friendly home appliances to reduce my environmental impact.",
+          "score": 3.8875932693481445
+        },
+        {
+          "id": "implicit_persona:0826",
+          "text": "I prefer avoiding any leather products in my home decor.",
+          "score": 3.418921947479248
+        },
+        {
+          "id": "implicit_persona:0620",
+          "text": "I prefer not to use any animal products for my home furnishings.",
+          "score": 3.2922163009643555
+        },
+        {
+          "id": "implicit_persona:0251",
+          "text": "I thrive in collaborative learning environments where I can engage in discussions and group work.",
+          "score": 3.2783002853393555
+        }
+      ]
+    },
+    {
+      "query_index": 484,
+      "item_id": "implicit_persona:0484",
+      "topic": "entertain_games",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some highly immersive game experiences for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0484",
+          "text": "I strongly dislike virtual reality (VR) games because they make me feel nauseous."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0406",
+        "text": "I am not into interactive or immersive entertainment experiences.",
+        "score": 7.3124566078186035
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0406",
+          "text": "I am not into interactive or immersive entertainment experiences.",
+          "score": 7.3124566078186035
+        },
+        {
+          "id": "implicit_persona:0487",
+          "text": "I avoid virtual reality experiences due to motion sickness issues.",
+          "score": 4.181568622589111
+        },
+        {
+          "id": "implicit_persona:0152",
+          "text": "I dislike educational tools that don't include some form of augmented reality.",
+          "score": 3.7697994709014893
+        },
+        {
+          "id": "implicit_persona:0867",
+          "text": "I have a strong preference for games that allow extensive character customization and role-playing.",
+          "score": 3.726259469985962
+        },
+        {
+          "id": "implicit_persona:0136",
+          "text": "I avoid games that are highly competitive and involve a lot of player-versus-player (PvP) interactions.",
+          "score": 3.375731945037842
+        }
+      ]
+    },
+    {
+      "query_index": 900,
+      "item_id": "implicit_persona:0900",
+      "topic": "lifestyle_beauty",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some top new skincare products I should try?",
+      "gold": [
+        {
+          "id": "implicit_persona:0900",
+          "text": "I absolutely avoid using any beauty products that are not cruelty-free and vegan."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0947",
+        "text": "I avoid using any skincare products that contain retinol.",
+        "score": 7.797924518585205
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0947",
+          "text": "I avoid using any skincare products that contain retinol.",
+          "score": 7.797924518585205
+        },
+        {
+          "id": "implicit_persona:0417",
+          "text": "I avoid using any skincare or beauty products containing silicones.",
+          "score": 6.173125267028809
+        },
+        {
+          "id": "implicit_persona:0271",
+          "text": "I have extremely sensitive skin and can only use hypoallergenic products with minimal ingredients.",
+          "score": 4.103021144866943
+        },
+        {
+          "id": "implicit_persona:0660",
+          "text": "I have a strong preference for vegan, plant-based skincare formulas that are free from any animal-derived ingredients.",
+          "score": 4.029624938964844
+        },
+        {
+          "id": "implicit_persona:0623",
+          "text": "I do not use beauty products that contain silicones.",
+          "score": 3.8525760173797607
+        }
+      ]
+    },
+    {
+      "query_index": 348,
+      "item_id": "implicit_persona:0348",
+      "topic": "shop_motors",
+      "preference_type": "implicit_persona",
+      "question": "What are some environmentally friendly cars I should look into?",
+      "gold": [
+        {
+          "id": "implicit_persona:0348",
+          "text": "I have a strong aversion to pure electric vehicles."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0890",
+        "text": "I dislike renting gas-powered vehicles as I prefer environmentally friendly options.",
+        "score": 6.839521408081055
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0890",
+          "text": "I dislike renting gas-powered vehicles as I prefer environmentally friendly options.",
+          "score": 6.839521408081055
+        },
+        {
+          "id": "implicit_persona:0004",
+          "text": "I'm an environmentally conscious person, so I strongly prefer electric or hybrid vehicles over traditional gasoline-powered ones.",
+          "score": 5.733619213104248
+        },
+        {
+          "id": "implicit_persona:0553",
+          "text": "I'm an environmentalist, so I prioritize vehicles with minimal carbon emissions and high fuel efficiency.",
+          "score": 4.3154215812683105
+        },
+        {
+          "id": "implicit_persona:0047",
+          "text": "I refuse to use rental cars that are not electric or hybrid vehicles due to environmental concerns.",
+          "score": 4.126436710357666
+        },
+        {
+          "id": "implicit_persona:0598",
+          "text": "I exclusively drive electric vehicles due to environmental concerns, so I won't consider any gasoline-powered options.",
+          "score": 3.9669718742370605
+        }
+      ]
+    },
+    {
+      "query_index": 636,
+      "item_id": "implicit_persona:0636",
+      "topic": "lifestyle_beauty",
+      "preference_type": "implicit_persona",
+      "question": "What are some good body lotions that have a pleasant scent?",
+      "gold": [
+        {
+          "id": "implicit_persona:0636",
+          "text": "I avoid any products containing synthetic fragrances."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0519",
+        "text": "I greatly dislike the scent of citrus or fruity fragrances in perfumes and body products.",
+        "score": 4.861427307128906
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0519",
+          "text": "I greatly dislike the scent of citrus or fruity fragrances in perfumes and body products.",
+          "score": 4.861427307128906
+        },
+        {
+          "id": "implicit_persona:0644",
+          "text": "I dislike floral fragrances in beauty products.",
+          "score": 4.0310187339782715
+        },
+        {
+          "id": "implicit_persona:0524",
+          "text": "I don't like floral scents in my beauty products.",
+          "score": 4.0284104347229
+        },
+        {
+          "id": "implicit_persona:0158",
+          "text": "I strongly dislike the scent of rose or floral fragrances in beauty products.",
+          "score": 3.806694507598877
+        },
+        {
+          "id": "implicit_persona:0118",
+          "text": "I have a strong aversion to strong scents and avoid using heavily fragranced products.",
+          "score": 3.6638894081115723
+        }
+      ]
+    },
+    {
+      "query_index": 43,
+      "item_id": "implicit_persona:0043",
+      "topic": "education_resources",
+      "preference_type": "implicit_persona",
+      "question": "What resources would you recommend for me to effectively learn and understand data visualization techniques?",
+      "gold": [
+        {
+          "id": "implicit_persona:0043",
+          "text": "I strongly prefer learning through auditory means, such as lectures, podcasts, or audiobooks, over visual or text-based materials."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0864",
+        "text": "I have a strong aversion to educational resources that rely heavily on visual aids like diagrams or infographics, as I find them confusing and prefer text-based explanations.",
+        "score": 4.5519232749938965
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0864",
+          "text": "I have a strong aversion to educational resources that rely heavily on visual aids like diagrams or infographics, as I find them confusing and prefer text-based explanations.",
+          "score": 4.5519232749938965
+        },
+        {
+          "id": "implicit_persona:0776",
+          "text": "I strongly prefer educational resources that do not rely on multimedia components like videos or animations as I learn better from text-based materials.",
+          "score": 3.6151316165924072
+        },
+        {
+          "id": "implicit_persona:0028",
+          "text": "I have a strong aversion to educational resources that require me to share personal data or create accounts.",
+          "score": 3.5215723514556885
+        },
+        {
+          "id": "implicit_persona:0789",
+          "text": "I have a strong aversion to educational resources that rely heavily on mathematical formulas and quantitative data.",
+          "score": 3.4851419925689697
+        },
+        {
+          "id": "implicit_persona:0834",
+          "text": "I have a strong preference for logical and analytical learning approaches that involve breaking down complex concepts into structured, step-by-step processes.",
+          "score": 3.4728610515594482
+        }
+      ]
+    },
+    {
+      "query_index": 960,
+      "item_id": "implicit_persona:0960",
+      "topic": "lifestyle_beauty",
+      "preference_type": "implicit_persona",
+      "question": "Can you suggest a good lightweight daily moisturizer?",
+      "gold": [
+        {
+          "id": "implicit_persona:0960",
+          "text": "I avoid using any products containing silicones."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0947",
+        "text": "I avoid using any skincare products that contain retinol.",
+        "score": 4.3492841720581055
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0947",
+          "text": "I avoid using any skincare products that contain retinol.",
+          "score": 4.3492841720581055
+        },
+        {
+          "id": "implicit_persona:0177",
+          "text": "I avoid using beauty products with glycerin due to sensitivity.",
+          "score": 4.03247594833374
+        },
+        {
+          "id": "implicit_persona:0271",
+          "text": "I have extremely sensitive skin and can only use hypoallergenic products with minimal ingredients.",
+          "score": 3.933100938796997
+        },
+        {
+          "id": "implicit_persona:0417",
+          "text": "I avoid using any skincare or beauty products containing silicones.",
+          "score": 3.693054437637329
+        },
+        {
+          "id": "implicit_persona:0652",
+          "text": "I have extremely sensitive skin, so I avoid any products with fragrances, dyes, or harsh chemicals.",
+          "score": 3.606309413909912
+        }
+      ]
+    },
+    {
+      "query_index": 551,
+      "item_id": "implicit_persona:0551",
+      "topic": "entertain_sports",
+      "preference_type": "implicit_persona",
+      "question": "I'm planning an active vacation in the Rocky Mountains. Can you recommend some exciting outdoor pursuits for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0551",
+          "text": "I have an intense fear of heights, so I avoid any activities or sports that take place at significant elevations."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0092",
+        "text": "I do not like spending time indoors for relaxation and prefer outdoor activities.",
+        "score": 5.053438186645508
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0092",
+          "text": "I do not like spending time indoors for relaxation and prefer outdoor activities.",
+          "score": 5.053438186645508
+        },
+        {
+          "id": "implicit_persona:0877",
+          "text": "I dislike adventure sports that involve climbing.",
+          "score": 4.955258846282959
+        },
+        {
+          "id": "implicit_persona:0526",
+          "text": "I really don’t enjoy cold weather activities such as skiing or snowboarding.",
+          "score": 4.521728038787842
+        },
+        {
+          "id": "implicit_persona:0635",
+          "text": "I dislike hiking.",
+          "score": 4.481568813323975
+        },
+        {
+          "id": "implicit_persona:0868",
+          "text": "I dislike winter sports and activities in cold weather, such as skiing or snowboarding.",
+          "score": 4.210109710693359
+        }
+      ]
+    },
+    {
+      "query_index": 700,
+      "item_id": "implicit_persona:0700",
+      "topic": "entertain_sports",
+      "preference_type": "implicit_persona",
+      "question": "What are some exciting ways I could get involved in the local sports culture during my visit to Las Vegas?",
+      "gold": [
+        {
+          "id": "implicit_persona:0700",
+          "text": "I have a strong aversion to any form of gambling or betting, even for entertainment purposes."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0098",
+        "text": "I'm not interested in watching or following any professional sports leagues or teams.",
+        "score": 3.9033215045928955
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0098",
+          "text": "I'm not interested in watching or following any professional sports leagues or teams.",
+          "score": 3.9033215045928955
+        },
+        {
+          "id": "implicit_persona:0371",
+          "text": "I absolutely dislike watching traditional team sports like football or basketball.",
+          "score": 3.646261215209961
+        },
+        {
+          "id": "implicit_persona:0077",
+          "text": "I find watching professional sports extremely boring.",
+          "score": 3.4443960189819336
+        },
+        {
+          "id": "implicit_persona:0851",
+          "text": "I strongly dislike watching mainstream team sports like football or basketball.",
+          "score": 3.4043495655059814
+        },
+        {
+          "id": "implicit_persona:0896",
+          "text": "I don't enjoy games that focus on sports.",
+          "score": 3.3689117431640625
+        }
+      ]
+    },
+    {
+      "query_index": 144,
+      "item_id": "implicit_persona:0144",
+      "topic": "travel_restaurant",
+      "preference_type": "implicit_persona",
+      "question": "I'm planning a trip to Thailand and I'm so excited to try amazing street food. What are some must-try local snacks and dishes you'd recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0144",
+          "text": "I have a severe peanut and tree nut allergy."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0188",
+        "text": "I avoid street food due to hygiene concerns.",
+        "score": 6.298802852630615
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0188",
+          "text": "I avoid street food due to hygiene concerns.",
+          "score": 6.298802852630615
+        },
+        {
+          "id": "implicit_persona:0502",
+          "text": "I avoid street food due to hygiene concerns.",
+          "score": 6.298802852630615
+        },
+        {
+          "id": "implicit_persona:0355",
+          "text": "I avoid restaurants that primarily serve spicy food.",
+          "score": 3.2040112018585205
+        },
+        {
+          "id": "implicit_persona:0321",
+          "text": "I have a deep dislike for crowded tourist hotspots and strongly prefer offbeat, less-traveled destinations.",
+          "score": 2.822983980178833
+        },
+        {
+          "id": "implicit_persona:0261",
+          "text": "I dislike eating spicy food.",
+          "score": 2.7097978591918945
+        }
+      ]
+    },
+    {
+      "query_index": 82,
+      "item_id": "implicit_persona:0082",
+      "topic": "shop_fashion",
+      "preference_type": "implicit_persona",
+      "question": "What are some fashionable options for a bold and trendy look?",
+      "gold": [
+        {
+          "id": "implicit_persona:0082",
+          "text": "I dislike wearing clothes with any kind of animal print."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0987",
+        "text": "I strongly prefer gender-neutral and non-binary fashion options that move beyond traditional masculine and feminine designs.",
+        "score": 4.749903678894043
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0987",
+          "text": "I strongly prefer gender-neutral and non-binary fashion options that move beyond traditional masculine and feminine designs.",
+          "score": 4.749903678894043
+        },
+        {
+          "id": "implicit_persona:0602",
+          "text": "I prefer clothing with a vintage, retro aesthetic and tend to avoid modern, trendy styles.",
+          "score": 4.715487003326416
+        },
+        {
+          "id": "implicit_persona:0168",
+          "text": "I'm fascinated by avant-garde and conceptual fashion design. Mainstream trends don't interest me at all.",
+          "score": 4.434762954711914
+        },
+        {
+          "id": "implicit_persona:0946",
+          "text": "I strictly prefer minimalist and monochromatic fashion, avoiding any loud patterns or bright colors.",
+          "score": 3.9992127418518066
+        },
+        {
+          "id": "implicit_persona:0703",
+          "text": "I despise the minimalist interior design style and prefer maximalist, eclectic spaces filled with color, texture, and bold patterns.",
+          "score": 3.551259994506836
+        }
+      ]
+    },
+    {
+      "query_index": 970,
+      "item_id": "implicit_persona:0970",
+      "topic": "travel_restaurant",
+      "preference_type": "implicit_persona",
+      "question": "I'm planning a trip to Barcelona. What are some must-try local dishes you'd suggest for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0970",
+          "text": "I follow a strict vegan diet and avoid all animal-derived products, including honey."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0208",
+        "text": "I only eat foods that are sourced from local foraging and wild food gathering.",
+        "score": 3.320075511932373
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0208",
+          "text": "I only eat foods that are sourced from local foraging and wild food gathering.",
+          "score": 3.320075511932373
+        },
+        {
+          "id": "implicit_persona:0041",
+          "text": "I have an intense dislike for molecular gastronomy and avant-garde cuisine. I much prefer traditional, time-honored cooking techniques and flavors.",
+          "score": 3.260833978652954
+        },
+        {
+          "id": "implicit_persona:0954",
+          "text": "As an art enthusiast, I prioritize living in close proximity to world-class museums and cultural attractions when choosing a city to reside in.",
+          "score": 3.193747043609619
+        },
+        {
+          "id": "implicit_persona:0788",
+          "text": "I avoid dining in places that are known for their extensive wine lists.",
+          "score": 2.8486697673797607
+        },
+        {
+          "id": "implicit_persona:0152",
+          "text": "I dislike educational tools that don't include some form of augmented reality.",
+          "score": 2.724421501159668
+        }
+      ]
+    },
+    {
+      "query_index": 115,
+      "item_id": "implicit_persona:0115",
+      "topic": "lifestyle_fit",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking for nutritional advice to support my fitness goals. Can you recommend some protein-rich foods I should incorporate into my diet?",
+      "gold": [
+        {
+          "id": "implicit_persona:0115",
+          "text": "I follow a strict vegan diet and avoid consuming any animal-based products, including honey."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0976",
+        "text": "I strongly dislike the taste of protein powders and prefer to get my protein from whole food sources.",
+        "score": 6.067631244659424
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0976",
+          "text": "I strongly dislike the taste of protein powders and prefer to get my protein from whole food sources.",
+          "score": 6.067631244659424
+        },
+        {
+          "id": "implicit_persona:0936",
+          "text": "I don't like consuming any kind of supplements or protein powders.",
+          "score": 4.894656181335449
+        },
+        {
+          "id": "implicit_persona:0774",
+          "text": "I can't stand the taste of protein bars.",
+          "score": 4.082676887512207
+        },
+        {
+          "id": "implicit_persona:0061",
+          "text": "I'm on a medically-prescribed low-potassium diet, so I have to limit my intake of potassium-rich foods like bananas, avocados, and spinach.",
+          "score": 3.1263341903686523
+        },
+        {
+          "id": "implicit_persona:0304",
+          "text": "I avoid supplements and prefer whole foods.",
+          "score": 3.023709535598755
+        }
+      ]
+    },
+    {
+      "query_index": 244,
+      "item_id": "implicit_persona:0244",
+      "topic": "shop_fashion",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking for some practical yet stylish activewear for my upcoming hiking trip. What options would you recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0244",
+          "text": "I have a strong aversion to synthetic fabrics like polyester and prefer natural materials like cotton, linen, and silk for their breathability and comfort."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0635",
+        "text": "I dislike hiking.",
+        "score": 5.5469770431518555
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0635",
+          "text": "I dislike hiking.",
+          "score": 5.5469770431518555
+        },
+        {
+          "id": "implicit_persona:0092",
+          "text": "I do not like spending time indoors for relaxation and prefer outdoor activities.",
+          "score": 3.5937752723693848
+        },
+        {
+          "id": "implicit_persona:0877",
+          "text": "I dislike adventure sports that involve climbing.",
+          "score": 2.961597204208374
+        },
+        {
+          "id": "implicit_persona:0809",
+          "text": "I don't trust wearable technology for tracking my health metrics due to privacy concerns.",
+          "score": 2.8617708683013916
+        },
+        {
+          "id": "implicit_persona:0731",
+          "text": "I dislike any form of camping, even glamping.",
+          "score": 2.783477783203125
+        }
+      ]
+    },
+    {
+      "query_index": 871,
+      "item_id": "implicit_persona:0871",
+      "topic": "pet_ownership",
+      "preference_type": "implicit_persona",
+      "question": "What are some interactive pets that I can keep at home?",
+      "gold": [
+        {
+          "id": "implicit_persona:0871",
+          "text": "I dislike caged birds and find it cruel to keep them as pets."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0720",
+        "text": "I dislike small pets like hamsters or mice.",
+        "score": 4.183685779571533
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0720",
+          "text": "I dislike small pets like hamsters or mice.",
+          "score": 4.183685779571533
+        },
+        {
+          "id": "implicit_persona:0761",
+          "text": "I'm not a fan of fish as pets.",
+          "score": 3.9984660148620605
+        },
+        {
+          "id": "implicit_persona:0073",
+          "text": "I am not a fan of fish as pets due to the maintenance involved.",
+          "score": 3.989032745361328
+        },
+        {
+          "id": "implicit_persona:0888",
+          "text": "I'm not comfortable with pets that can jump on furniture.",
+          "score": 3.5411272048950195
+        },
+        {
+          "id": "implicit_persona:0848",
+          "text": "I prefer pets that don't have scales or feathers.",
+          "score": 3.5119714736938477
+        }
+      ]
+    },
+    {
+      "query_index": 55,
+      "item_id": "implicit_persona:0055",
+      "topic": "shop_technology",
+      "preference_type": "implicit_persona",
+      "question": "What are the best wireless headphones with high sound quality you would suggest for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0055",
+          "text": "I refuse to use any tech products that are built using non-recyclable materials."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0478",
+        "text": "I only use wired peripherals due to concerns about wireless interference.",
+        "score": 4.061014652252197
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0478",
+          "text": "I only use wired peripherals due to concerns about wireless interference.",
+          "score": 4.061014652252197
+        },
+        {
+          "id": "implicit_persona:0698",
+          "text": "I strongly prefer educational materials that are in audio format.",
+          "score": 3.534064531326294
+        },
+        {
+          "id": "implicit_persona:0370",
+          "text": "I avoid reading any books that do not have a strong focus on music composition and sound design.",
+          "score": 3.265890598297119
+        },
+        {
+          "id": "implicit_persona:0932",
+          "text": "I only use devices that are compatible with the Google ecosystem.",
+          "score": 3.1961824893951416
+        },
+        {
+          "id": "implicit_persona:0942",
+          "text": "I have a strong dislike for any fitness activities that involve loud music or noise.",
+          "score": 2.892122983932495
+        }
+      ]
+    },
+    {
+      "query_index": 574,
+      "item_id": "implicit_persona:0574",
+      "topic": "travel_restaurant",
+      "preference_type": "implicit_persona",
+      "question": "I'm visiting Bangkok next month. What are some must-try local restaurants you'd recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0574",
+          "text": "I have a severe peanut allergy."
+        },
+        {
+          "id": "implicit_persona:0725",
+          "text": "I have a severe peanut allergy."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0355",
+        "text": "I avoid restaurants that primarily serve spicy food.",
+        "score": 4.470705986022949
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0355",
+          "text": "I avoid restaurants that primarily serve spicy food.",
+          "score": 4.470705986022949
+        },
+        {
+          "id": "implicit_persona:0395",
+          "text": "I only dine at restaurants that offer halal options.",
+          "score": 3.5990376472473145
+        },
+        {
+          "id": "implicit_persona:0232",
+          "text": "I avoid eating at chain restaurants when traveling.",
+          "score": 3.1576778888702393
+        },
+        {
+          "id": "implicit_persona:0152",
+          "text": "I dislike educational tools that don't include some form of augmented reality.",
+          "score": 2.894652843475342
+        },
+        {
+          "id": "implicit_persona:0954",
+          "text": "As an art enthusiast, I prioritize living in close proximity to world-class museums and cultural attractions when choosing a city to reside in.",
+          "score": 2.7667226791381836
+        }
+      ]
+    },
+    {
+      "query_index": 306,
+      "item_id": "implicit_persona:0306",
+      "topic": "travel_restaurant",
+      "preference_type": "implicit_persona",
+      "question": "I'm going to Thailand next month. What street foods should I definitely try?",
+      "gold": [
+        {
+          "id": "implicit_persona:0306",
+          "text": "I'm allergic to peanuts."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0188",
+        "text": "I avoid street food due to hygiene concerns.",
+        "score": 7.936344623565674
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0188",
+          "text": "I avoid street food due to hygiene concerns.",
+          "score": 7.936344623565674
+        },
+        {
+          "id": "implicit_persona:0502",
+          "text": "I avoid street food due to hygiene concerns.",
+          "score": 7.936344623565674
+        },
+        {
+          "id": "implicit_persona:0355",
+          "text": "I avoid restaurants that primarily serve spicy food.",
+          "score": 2.7228097915649414
+        },
+        {
+          "id": "implicit_persona:0941",
+          "text": "I avoid hotels located on busy streets.",
+          "score": 2.3877100944519043
+        },
+        {
+          "id": "implicit_persona:0683",
+          "text": "I dislike spicy foods and avoid using hot spices entirely.",
+          "score": 2.3769588470458984
+        }
+      ]
+    },
+    {
+      "query_index": 101,
+      "item_id": "implicit_persona:0101",
+      "topic": "entertain_sports",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking to get more involved in an exciting and competitive sport. What are some options you would suggest for me to explore?",
+      "gold": [
+        {
+          "id": "implicit_persona:0101",
+          "text": "I have a strong dislike for sports that involve excessive physical contact or risk of injury, such as boxing, mixed martial arts, or American football."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0896",
+        "text": "I don't enjoy games that focus on sports.",
+        "score": 4.73208475112915
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0896",
+          "text": "I don't enjoy games that focus on sports.",
+          "score": 4.73208475112915
+        },
+        {
+          "id": "implicit_persona:0740",
+          "text": "I avoid attending events that are primarily focused on competitive gaming or esports.",
+          "score": 4.574948310852051
+        },
+        {
+          "id": "implicit_persona:0180",
+          "text": "I prefer not to play any games that are sports-related.",
+          "score": 4.258388519287109
+        },
+        {
+          "id": "implicit_persona:0098",
+          "text": "I'm not interested in watching or following any professional sports leagues or teams.",
+          "score": 4.159412860870361
+        },
+        {
+          "id": "implicit_persona:0545",
+          "text": "I'm not interested in mainstream sports and prefer niche activities such as parkour.",
+          "score": 3.6876060962677
+        }
+      ]
+    },
+    {
+      "query_index": 593,
+      "item_id": "implicit_persona:0593",
+      "topic": "lifestyle_fit",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking to try a new martial art or combat sport for fitness. What would you recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0593",
+          "text": "Due to a medical condition, I need to avoid any activities that could potentially cause head trauma or concussions."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0253",
+        "text": "I don't like watching or participating in any kind of fighting or martial arts sports.",
+        "score": 7.054800510406494
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0253",
+          "text": "I don't like watching or participating in any kind of fighting or martial arts sports.",
+          "score": 7.054800510406494
+        },
+        {
+          "id": "implicit_persona:0101",
+          "text": "I have a strong dislike for sports that involve excessive physical contact or risk of injury, such as boxing, mixed martial arts, or American football.",
+          "score": 4.684481620788574
+        },
+        {
+          "id": "implicit_persona:0372",
+          "text": "I don't like using any equipment or machines for my workouts.",
+          "score": 3.603327512741089
+        },
+        {
+          "id": "implicit_persona:0817",
+          "text": "I have a strong dislike for sports that involve significant physical contact or risk of injury, such as boxing or American football.",
+          "score": 3.523268222808838
+        },
+        {
+          "id": "implicit_persona:0880",
+          "text": "I prefer not to use any fitness equipment when working out due to safety concern.",
+          "score": 3.4442925453186035
+        }
+      ]
+    },
+    {
+      "query_index": 959,
+      "item_id": "implicit_persona:0959",
+      "topic": "shop_fashion",
+      "preference_type": "implicit_persona",
+      "question": "I need a new jacket for the upcoming fall season. What are some stylish and warm options you would recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0959",
+          "text": "I absolutely refuse to purchase clothing made from animal-derived fabrics like leather, wool, or silk due to ethical concerns."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0600",
+        "text": "I absolutely hate the cold-shoulder and off-the-shoulder trend and prefer clothing that provides full coverage.",
+        "score": 3.9719417095184326
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0600",
+          "text": "I absolutely hate the cold-shoulder and off-the-shoulder trend and prefer clothing that provides full coverage.",
+          "score": 3.9719417095184326
+        },
+        {
+          "id": "implicit_persona:0326",
+          "text": "I never wear sleeveless tops; I prefer tops with sleeves of any length.",
+          "score": 3.223426580429077
+        },
+        {
+          "id": "implicit_persona:0806",
+          "text": "I dislike being outside in cold weather; it makes me very uncomfortable.",
+          "score": 3.10217022895813
+        },
+        {
+          "id": "implicit_persona:0602",
+          "text": "I prefer clothing with a vintage, retro aesthetic and tend to avoid modern, trendy styles.",
+          "score": 3.067617177963257
+        },
+        {
+          "id": "implicit_persona:0040",
+          "text": "\"I do not wear clothes made from wool.\"",
+          "score": 3.0132713317871094
+        }
+      ]
+    },
+    {
+      "query_index": 428,
+      "item_id": "implicit_persona:0428",
+      "topic": "lifestyle_dietary",
+      "preference_type": "implicit_persona",
+      "question": "I'm traveling to Italy next month. What are some authentic Italian dishes you'd recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0428",
+          "text": "I follow a strict ketogenic diet and avoid all high-carb foods, including bread, pasta, and sweets."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0041",
+        "text": "I have an intense dislike for molecular gastronomy and avant-garde cuisine. I much prefer traditional, time-honored cooking techniques and flavors.",
+        "score": 3.6675913333892822
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0041",
+          "text": "I have an intense dislike for molecular gastronomy and avant-garde cuisine. I much prefer traditional, time-honored cooking techniques and flavors.",
+          "score": 3.6675913333892822
+        },
+        {
+          "id": "implicit_persona:0506",
+          "text": "Due to security concerns, I refuse to take any form of public transportation while traveling internationally.",
+          "score": 3.1720080375671387
+        },
+        {
+          "id": "implicit_persona:0788",
+          "text": "I avoid dining in places that are known for their extensive wine lists.",
+          "score": 2.9620285034179688
+        },
+        {
+          "id": "implicit_persona:0152",
+          "text": "I dislike educational tools that don't include some form of augmented reality.",
+          "score": 2.6464905738830566
+        },
+        {
+          "id": "implicit_persona:0952",
+          "text": "I exclusively watch foreign-language films and shows with English subtitles, as I believe it exposes me to diverse cultures and perspectives.",
+          "score": 2.521824359893799
+        }
+      ]
+    },
+    {
+      "query_index": 883,
+      "item_id": "implicit_persona:0883",
+      "topic": "education_resources",
+      "preference_type": "implicit_persona",
+      "question": "How can I effectively learn a new language, like Spanish?",
+      "gold": [
+        {
+          "id": "implicit_persona:0883",
+          "text": "I strongly dislike learning through flashcards or rote memorization techniques."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0849",
+        "text": "I only listen to music in languages that I can understand fluently in English.",
+        "score": 5.38748025894165
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0849",
+          "text": "I only listen to music in languages that I can understand fluently in English.",
+          "score": 5.38748025894165
+        },
+        {
+          "id": "implicit_persona:0486",
+          "text": "I prefer not to read English-language books; I enjoy literature in world languages.",
+          "score": 4.0006208419799805
+        },
+        {
+          "id": "implicit_persona:0952",
+          "text": "I exclusively watch foreign-language films and shows with English subtitles, as I believe it exposes me to diverse cultures and perspectives.",
+          "score": 3.774549961090088
+        },
+        {
+          "id": "implicit_persona:0033",
+          "text": "I learn best in a structured, guided environment with clear objectives and milestones rather than open-ended, self-directed learning.",
+          "score": 3.545762538909912
+        },
+        {
+          "id": "implicit_persona:0641",
+          "text": "I only listen to bands that sing in their native languages and refuse to engage with music sung in English.",
+          "score": 3.5206189155578613
+        }
+      ]
+    },
+    {
+      "query_index": 147,
+      "item_id": "implicit_persona:0147",
+      "topic": "travel_restaurant",
+      "preference_type": "implicit_persona",
+      "question": "I'm visiting New Orleans next month and would love your recommendations for must-try local dishes and restaurants for me.",
+      "gold": [
+        {
+          "id": "implicit_persona:0147",
+          "text": "I am allergic to shellfish, so I strictly avoid dishes containing shrimp, crab, lobster, or any other seafood with shells."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0041",
+        "text": "I have an intense dislike for molecular gastronomy and avant-garde cuisine. I much prefer traditional, time-honored cooking techniques and flavors.",
+        "score": 3.511092185974121
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0041",
+          "text": "I have an intense dislike for molecular gastronomy and avant-garde cuisine. I much prefer traditional, time-honored cooking techniques and flavors.",
+          "score": 3.511092185974121
+        },
+        {
+          "id": "implicit_persona:0117",
+          "text": "I strongly dislike restaurants with loud live music.",
+          "score": 3.0388474464416504
+        },
+        {
+          "id": "implicit_persona:0954",
+          "text": "As an art enthusiast, I prioritize living in close proximity to world-class museums and cultural attractions when choosing a city to reside in.",
+          "score": 3.008575201034546
+        },
+        {
+          "id": "implicit_persona:0355",
+          "text": "I avoid restaurants that primarily serve spicy food.",
+          "score": 2.913057327270508
+        },
+        {
+          "id": "implicit_persona:0232",
+          "text": "I avoid eating at chain restaurants when traveling.",
+          "score": 2.7851181030273438
+        }
+      ]
+    },
+    {
+      "query_index": 475,
+      "item_id": "implicit_persona:0475",
+      "topic": "entertain_shows",
+      "preference_type": "implicit_persona",
+      "question": "What are some popular TV series from recent years that I should check out?",
+      "gold": [
+        {
+          "id": "implicit_persona:0475",
+          "text": "I avoid watching shows that prominently feature supernatural elements."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0095",
+        "text": "I prefer not to watch any TV shows with more than three seasons.",
+        "score": 6.092020511627197
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0095",
+          "text": "I prefer not to watch any TV shows with more than three seasons.",
+          "score": 6.092020511627197
+        },
+        {
+          "id": "implicit_persona:0638",
+          "text": "I only enjoy watching documentaries and reality TV shows.",
+          "score": 5.5168657302856445
+        },
+        {
+          "id": "implicit_persona:0606",
+          "text": "I only watch movies and shows that were released at least 20 years ago.",
+          "score": 5.454241752624512
+        },
+        {
+          "id": "implicit_persona:0230",
+          "text": "I dislike series with a lot of episodes; they feel overwhelming.",
+          "score": 4.569359302520752
+        },
+        {
+          "id": "implicit_persona:0614",
+          "text": "I strongly dislike reality TV shows that promote drama and conflict for entertainment value.",
+          "score": 4.473634719848633
+        }
+      ]
+    },
+    {
+      "query_index": 179,
+      "item_id": "implicit_persona:0179",
+      "topic": "education_resources",
+      "preference_type": "implicit_persona",
+      "question": "What are some effective resources to learn about Ancient History for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0179",
+          "text": "I dislike text-based learning and prefer interactive content."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0872",
+        "text": "I have no interest in historical museums or monuments.",
+        "score": 4.939744472503662
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0872",
+          "text": "I have no interest in historical museums or monuments.",
+          "score": 4.939744472503662
+        },
+        {
+          "id": "implicit_persona:0308",
+          "text": "I don't enjoy historical monuments or museums.",
+          "score": 4.806563854217529
+        },
+        {
+          "id": "implicit_persona:0630",
+          "text": "I dislike historical fiction.",
+          "score": 4.19676399230957
+        },
+        {
+          "id": "implicit_persona:0663",
+          "text": "I prefer not to stay in historic or cultural properties because I find them too old-fashioned.",
+          "score": 3.6683273315429688
+        },
+        {
+          "id": "implicit_persona:0609",
+          "text": "I dislike museums and indoor historical sites.",
+          "score": 3.5087592601776123
+        }
+      ]
+    },
+    {
+      "query_index": 67,
+      "item_id": "implicit_persona:0067",
+      "topic": "shop_home",
+      "preference_type": "implicit_persona",
+      "question": "What are some stylish desk options for my home office?",
+      "gold": [
+        {
+          "id": "implicit_persona:0067",
+          "text": "I don't like furniture with glass components."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0905",
+        "text": "I strongly dislike open office layouts and prefer having my own private workspace to minimize distractions and noise.",
+        "score": 5.240689754486084
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0905",
+          "text": "I strongly dislike open office layouts and prefer having my own private workspace to minimize distractions and noise.",
+          "score": 5.240689754486084
+        },
+        {
+          "id": "implicit_persona:0620",
+          "text": "I prefer not to use any animal products for my home furnishings.",
+          "score": 4.183428764343262
+        },
+        {
+          "id": "implicit_persona:0826",
+          "text": "I prefer avoiding any leather products in my home decor.",
+          "score": 4.051377773284912
+        },
+        {
+          "id": "implicit_persona:0268",
+          "text": "I have a strong dislike for floral patterns and prefer geometric or abstract designs in my home decor.",
+          "score": 3.375091552734375
+        },
+        {
+          "id": "implicit_persona:0100",
+          "text": "I am not a fan of mid-century modern furniture.",
+          "score": 3.3508033752441406
+        }
+      ]
+    },
+    {
+      "query_index": 290,
+      "item_id": "implicit_persona:0290",
+      "topic": "lifestyle_health",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some fun group exercise classes for me to try with friends?",
+      "gold": [
+        {
+          "id": "implicit_persona:0290",
+          "text": "I avoid any form of physical activity that involves jumping or high-impact movements due to joint issues."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0538",
+        "text": "I dislike group fitness classes and prefer working out alone.",
+        "score": 6.93895149230957
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0538",
+          "text": "I dislike group fitness classes and prefer working out alone.",
+          "score": 6.93895149230957
+        },
+        {
+          "id": "implicit_persona:0251",
+          "text": "I thrive in collaborative learning environments where I can engage in discussions and group work.",
+          "score": 4.221610069274902
+        },
+        {
+          "id": "implicit_persona:0000",
+          "text": "I have a strong aversion to workout classes that involve mirroring choreographed routines, as I find them restrictive and demotivating.",
+          "score": 3.9407742023468018
+        },
+        {
+          "id": "implicit_persona:0426",
+          "text": "I strongly dislike any form of exercise that takes place indoors or in a gym setting.",
+          "score": 3.86289644241333
+        },
+        {
+          "id": "implicit_persona:0091",
+          "text": "I dislike team-building activities that involve physical sports.",
+          "score": 3.7591772079467773
+        }
+      ]
+    },
+    {
+      "query_index": 654,
+      "item_id": "implicit_persona:0654",
+      "topic": "shop_fashion",
+      "preference_type": "implicit_persona",
+      "question": "Can you suggest some elegant evening wear options for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0654",
+          "text": "I do not like wearing the color black."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0326",
+        "text": "I never wear sleeveless tops; I prefer tops with sleeves of any length.",
+        "score": 4.099098205566406
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0326",
+          "text": "I never wear sleeveless tops; I prefer tops with sleeves of any length.",
+          "score": 4.099098205566406
+        },
+        {
+          "id": "implicit_persona:0951",
+          "text": "I completely avoid wearing black clothing.",
+          "score": 3.7395777702331543
+        },
+        {
+          "id": "implicit_persona:0726",
+          "text": "I avoid nightlife scenes, including bars and clubs.",
+          "score": 3.406874179840088
+        },
+        {
+          "id": "implicit_persona:0280",
+          "text": "I avoid places that are famous for their parties and loud music.",
+          "score": 3.3938751220703125
+        },
+        {
+          "id": "implicit_persona:0987",
+          "text": "I strongly prefer gender-neutral and non-binary fashion options that move beyond traditional masculine and feminine designs.",
+          "score": 3.0679848194122314
+        }
+      ]
+    },
+    {
+      "query_index": 183,
+      "item_id": "implicit_persona:0183",
+      "topic": "education_learning_styles",
+      "preference_type": "implicit_persona",
+      "question": "What's the best way for me to learn organic chemistry principles?",
+      "gold": [
+        {
+          "id": "implicit_persona:0183",
+          "text": "I find it hard to stay engaged with textbooks and prefer interactive and gamified learning experiences."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0893",
+        "text": "I learn best through personalized, one-on-one instruction.",
+        "score": 4.4764580726623535
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0893",
+          "text": "I learn best through personalized, one-on-one instruction.",
+          "score": 4.4764580726623535
+        },
+        {
+          "id": "implicit_persona:0834",
+          "text": "I have a strong preference for logical and analytical learning approaches that involve breaking down complex concepts into structured, step-by-step processes.",
+          "score": 4.413299083709717
+        },
+        {
+          "id": "implicit_persona:0033",
+          "text": "I learn best in a structured, guided environment with clear objectives and milestones rather than open-ended, self-directed learning.",
+          "score": 4.214684963226318
+        },
+        {
+          "id": "implicit_persona:0392",
+          "text": "I strongly dislike rote memorization and prefer learning through real-world applications and practical examples that demonstrate the relevance and usefulness of the material.",
+          "score": 4.068241596221924
+        },
+        {
+          "id": "implicit_persona:0909",
+          "text": "I prefer using only organic beauty products.",
+          "score": 4.062072277069092
+        }
+      ]
+    },
+    {
+      "query_index": 79,
+      "item_id": "implicit_persona:0079",
+      "topic": "entertain_games",
+      "preference_type": "implicit_persona",
+      "question": "What are some great casual mobile games I can play during my commute?",
+      "gold": [
+        {
+          "id": "implicit_persona:0079",
+          "text": "I can't stand games with microtransactions or in-game purchases."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0434",
+        "text": "I strongly dislike mobile games and free-to-play models with microtransactions or pay-to-win mechanics.",
+        "score": 4.705643653869629
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0434",
+          "text": "I strongly dislike mobile games and free-to-play models with microtransactions or pay-to-win mechanics.",
+          "score": 4.705643653869629
+        },
+        {
+          "id": "implicit_persona:0433",
+          "text": "I strongly dislike using commuter trains because they are often overcrowded.",
+          "score": 3.2815122604370117
+        },
+        {
+          "id": "implicit_persona:0191",
+          "text": "I am not a fan of games with a lot of reading or text-heavy dialogues.",
+          "score": 2.988783836364746
+        },
+        {
+          "id": "implicit_persona:0843",
+          "text": "I avoid games that require extensive grinding or repetitive tasks.",
+          "score": 2.969355344772339
+        },
+        {
+          "id": "implicit_persona:0899",
+          "text": "I find it tedious to play games that require extensive resource management.",
+          "score": 2.8999600410461426
+        }
+      ]
+    },
+    {
+      "query_index": 675,
+      "item_id": "implicit_persona:0675",
+      "topic": "entertain_sports",
+      "preference_type": "implicit_persona",
+      "question": "What are some effective ways to boost my cardio fitness?",
+      "gold": [
+        {
+          "id": "implicit_persona:0675",
+          "text": "I strongly dislike running as a form of exercise."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0944",
+        "text": "I have a strong dislike for traditional cardio exercises like running or cycling and prefer low-impact alternatives.",
+        "score": 6.401168346405029
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0944",
+          "text": "I have a strong dislike for traditional cardio exercises like running or cycling and prefer low-impact alternatives.",
+          "score": 6.401168346405029
+        },
+        {
+          "id": "implicit_persona:0245",
+          "text": "I adamantly avoid any workout routines that involve running or high-impact cardio due to chronic knee issues.",
+          "score": 5.203530311584473
+        },
+        {
+          "id": "implicit_persona:0838",
+          "text": "I despise workout routines that involve running or jogging.",
+          "score": 4.789579391479492
+        },
+        {
+          "id": "implicit_persona:0837",
+          "text": "I do not like running or jogging as a form of exercise.",
+          "score": 4.57067346572876
+        },
+        {
+          "id": "implicit_persona:0481",
+          "text": "I have severe respiratory issues and cannot tolerate any activities that involve intense cardio or heavy breathing.",
+          "score": 3.9548187255859375
+        }
+      ]
+    },
+    {
+      "query_index": 784,
+      "item_id": "implicit_persona:0784",
+      "topic": "education_resources",
+      "preference_type": "implicit_persona",
+      "question": "Can you suggest some good platforms for learning graphic design?",
+      "gold": [
+        {
+          "id": "implicit_persona:0784",
+          "text": "I don't enjoy self-paced learning; I perform better with scheduled, interactive classes."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0439",
+        "text": "I avoid games with graphic violence.",
+        "score": 4.038207054138184
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0439",
+          "text": "I avoid games with graphic violence.",
+          "score": 4.038207054138184
+        },
+        {
+          "id": "implicit_persona:0803",
+          "text": "I avoid any shows or movies with graphic violence or horror elements.",
+          "score": 3.5136775970458984
+        },
+        {
+          "id": "implicit_persona:0749",
+          "text": "I avoid watching any shows or films that depict graphic violence.",
+          "score": 3.3465001583099365
+        },
+        {
+          "id": "implicit_persona:0643",
+          "text": "I prefer not to watch any films involving graphic violence.",
+          "score": 3.28593373298645
+        },
+        {
+          "id": "implicit_persona:0310",
+          "text": "I have a strong dislike for graphic tees and much prefer solid-colored tops.",
+          "score": 3.2425849437713623
+        }
+      ]
+    },
+    {
+      "query_index": 859,
+      "item_id": "implicit_persona:0859",
+      "topic": "professional_work_location_style",
+      "preference_type": "implicit_persona",
+      "question": "I'm considering a job opportunity in Phoenix, Arizona. Can you provide some insights into the quality of life there?",
+      "gold": [
+        {
+          "id": "implicit_persona:0859",
+          "text": "I have a strong aversion to extreme heat and prefer mild, temperate climates year-round."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0498",
+        "text": "I dislike living in areas with a high cost of living.",
+        "score": 4.5572099685668945
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0498",
+          "text": "I dislike living in areas with a high cost of living.",
+          "score": 4.5572099685668945
+        },
+        {
+          "id": "implicit_persona:0119",
+          "text": "I dislike cities with a high cost of living.",
+          "score": 4.357144832611084
+        },
+        {
+          "id": "implicit_persona:0943",
+          "text": "I prefer not to live in places with a high cost of living.",
+          "score": 3.880103588104248
+        },
+        {
+          "id": "implicit_persona:0150",
+          "text": "I dislike working in the healthcare industry.",
+          "score": 3.4943485260009766
+        },
+        {
+          "id": "implicit_persona:0699",
+          "text": "I dislike densely populated urban centers and prefer living in smaller towns or suburbs with a more relaxed pace of life.",
+          "score": 3.4240427017211914
+        }
+      ]
+    },
+    {
+      "query_index": 516,
+      "item_id": "implicit_persona:0516",
+      "topic": "entertain_games",
+      "preference_type": "implicit_persona",
+      "question": "What are some immersive role-playing games you would suggest for me to play?",
+      "gold": [
+        {
+          "id": "implicit_persona:0516",
+          "text": "I dislike games that include extensive crafting or resource management systems."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0867",
+        "text": "I have a strong preference for games that allow extensive character customization and role-playing.",
+        "score": 5.518715858459473
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0867",
+          "text": "I have a strong preference for games that allow extensive character customization and role-playing.",
+          "score": 5.518715858459473
+        },
+        {
+          "id": "implicit_persona:0406",
+          "text": "I am not into interactive or immersive entertainment experiences.",
+          "score": 5.183995246887207
+        },
+        {
+          "id": "implicit_persona:0575",
+          "text": "I don't enjoy fantasy-themed tabletop RPGs.",
+          "score": 4.328205108642578
+        },
+        {
+          "id": "implicit_persona:0488",
+          "text": "I strongly dislike fantasy-themed tabletop games because I'm not interested in that genre.",
+          "score": 3.7364284992218018
+        },
+        {
+          "id": "implicit_persona:0825",
+          "text": "I prefer to stay away from games set in medieval or fantasy worlds.",
+          "score": 3.708993911743164
+        }
+      ]
+    },
+    {
+      "query_index": 618,
+      "item_id": "implicit_persona:0618",
+      "topic": "pet_ownership",
+      "preference_type": "implicit_persona",
+      "question": "What are some healthy treat options for my dog?",
+      "gold": [
+        {
+          "id": "implicit_persona:0618",
+          "text": "I avoid using any dairy products in my pet's diet."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0008",
+        "text": "I only use raw diets for my pets.",
+        "score": 4.548470497131348
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0008",
+          "text": "I only use raw diets for my pets.",
+          "score": 4.548470497131348
+        },
+        {
+          "id": "implicit_persona:0736",
+          "text": "I only want to feed my cat homemade, natural food.",
+          "score": 4.529211044311523
+        },
+        {
+          "id": "implicit_persona:0411",
+          "text": "I refuse to feed my pets any commercial pet food and prefer homemade, natural diets.",
+          "score": 4.374836444854736
+        },
+        {
+          "id": "implicit_persona:0408",
+          "text": "I do not like using commercial flea and tick treatments on my pets.",
+          "score": 4.034201145172119
+        },
+        {
+          "id": "implicit_persona:0760",
+          "text": "\"I am opposed to crate training for dogs.\"",
+          "score": 3.5772690773010254
+        }
+      ]
+    },
+    {
+      "query_index": 390,
+      "item_id": "implicit_persona:0390",
+      "topic": "entertain_shows",
+      "preference_type": "implicit_persona",
+      "question": "Can you suggest some new releases for me to watch?",
+      "gold": [
+        {
+          "id": "implicit_persona:0390",
+          "text": "I dislike films or series that are adaptations of books I've read."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0606",
+        "text": "I only watch movies and shows that were released at least 20 years ago.",
+        "score": 5.050484657287598
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0606",
+          "text": "I only watch movies and shows that were released at least 20 years ago.",
+          "score": 5.050484657287598
+        },
+        {
+          "id": "implicit_persona:0509",
+          "text": "I prefer not to watch any movies that are over two hours long.",
+          "score": 3.3987483978271484
+        },
+        {
+          "id": "implicit_persona:0095",
+          "text": "I prefer not to watch any TV shows with more than three seasons.",
+          "score": 3.2390003204345703
+        },
+        {
+          "id": "implicit_persona:0640",
+          "text": "I strongly prefer not to watch shows or movies that are more than two hours long.",
+          "score": 3.048236608505249
+        },
+        {
+          "id": "implicit_persona:0708",
+          "text": "I am not interested in documentaries.",
+          "score": 2.9289255142211914
+        }
+      ]
+    },
+    {
+      "query_index": 250,
+      "item_id": "implicit_persona:0250",
+      "topic": "entertain_music_book",
+      "preference_type": "implicit_persona",
+      "question": "Could you recommend some new music releases for my upcoming road trip across the country?",
+      "gold": [
+        {
+          "id": "implicit_persona:0250",
+          "text": "I cannot stand heavy metal and refuse to listen to music involving excessive screaming or distortion."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0031",
+        "text": "I can't stand modern country music and vastly prefer old-school traditional country from the 1950s-1970s era.",
+        "score": 4.376959800720215
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0031",
+          "text": "I can't stand modern country music and vastly prefer old-school traditional country from the 1950s-1970s era.",
+          "score": 4.376959800720215
+        },
+        {
+          "id": "implicit_persona:0294",
+          "text": "I have a strong dislike for country music and will not listen to any artists or songs associated with that genre.",
+          "score": 4.034730911254883
+        },
+        {
+          "id": "implicit_persona:0383",
+          "text": "I have no interest in listening to modern rap or hip-hop music and vastly prefer classic rock from the 1960s-1980s.",
+          "score": 3.8823342323303223
+        },
+        {
+          "id": "implicit_persona:0216",
+          "text": "I dislike audiobooks unless they include music therapy applications.",
+          "score": 3.673140048980713
+        },
+        {
+          "id": "implicit_persona:0381",
+          "text": "I absolutely cannot stand country music and avoid any events or venues featuring it.",
+          "score": 3.5537896156311035
+        }
+      ]
+    },
+    {
+      "query_index": 227,
+      "item_id": "implicit_persona:0227",
+      "topic": "travel_hotel",
+      "preference_type": "implicit_persona",
+      "question": "I'm planning a trip to San Francisco. Could you please recommend some highly-rated hotels for my stay?",
+      "gold": [
+        {
+          "id": "implicit_persona:0227",
+          "text": "I absolutely refuse to stay in hotels that are part of large corporate chains, as I prefer to support local, independently owned boutique hotels."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0979",
+        "text": "I have a strong aversion to hotels located in high-rise buildings.",
+        "score": 3.097426176071167
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0979",
+          "text": "I have a strong aversion to hotels located in high-rise buildings.",
+          "score": 3.097426176071167
+        },
+        {
+          "id": "implicit_persona:0603",
+          "text": "I avoid hotels located near airports due to noise concerns.",
+          "score": 3.0563228130340576
+        },
+        {
+          "id": "implicit_persona:0379",
+          "text": "I avoid staying at chain hotels and prefer unique, boutique accommodations.",
+          "score": 2.9240269660949707
+        },
+        {
+          "id": "implicit_persona:0986",
+          "text": "I avoid hotels located in busy downtown areas due to noise and crowds.",
+          "score": 2.850616693496704
+        },
+        {
+          "id": "implicit_persona:0567",
+          "text": "I have a strong aversion to staying in hotels with casino facilities.",
+          "score": 2.77437686920166
+        }
+      ]
+    },
+    {
+      "query_index": 850,
+      "item_id": "implicit_persona:0850",
+      "topic": "travel_transportation",
+      "preference_type": "implicit_persona",
+      "question": "I need to travel from New York to Los Angeles for a work conference next month. What would be the best transportation option for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0850",
+          "text": "I have an intense fear of flying, so I actively avoid air travel whenever possible."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0451",
+        "text": "I have a strong aversion to flying, so I prefer to travel exclusively by ground transportation whenever possible.",
+        "score": 5.913154602050781
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0451",
+          "text": "I have a strong aversion to flying, so I prefer to travel exclusively by ground transportation whenever possible.",
+          "score": 5.913154602050781
+        },
+        {
+          "id": "implicit_persona:0087",
+          "text": "I dislike driving long distances and prefer trains or flights for travel.",
+          "score": 5.387795448303223
+        },
+        {
+          "id": "implicit_persona:0497",
+          "text": "I try to avoid air travel due to its environmental impact, so I almost exclusively use trains for long-distance journeys.",
+          "score": 5.156584739685059
+        },
+        {
+          "id": "implicit_persona:0235",
+          "text": "I have a strong dislike for buses and prefer trains or flights for travel between cities.",
+          "score": 5.144708156585693
+        },
+        {
+          "id": "implicit_persona:0631",
+          "text": "I have an intense fear of flying, so I avoid air travel whenever possible.",
+          "score": 4.7268829345703125
+        }
+      ]
+    },
+    {
+      "query_index": 963,
+      "item_id": "implicit_persona:0963",
+      "topic": "shop_technology",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking for a new wireless speaker system for my home. What are some great options you can recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0963",
+          "text": "I prefer to shop for technology products from smaller, independent brands rather than large corporations."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0478",
+        "text": "I only use wired peripherals due to concerns about wireless interference.",
+        "score": 3.8846189975738525
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0478",
+          "text": "I only use wired peripherals due to concerns about wireless interference.",
+          "score": 3.8846189975738525
+        },
+        {
+          "id": "implicit_persona:0942",
+          "text": "I have a strong dislike for any fitness activities that involve loud music or noise.",
+          "score": 3.056011199951172
+        },
+        {
+          "id": "implicit_persona:0010",
+          "text": "I prefer not to have any electronic gadgets or smart devices in my home.",
+          "score": 3.003995418548584
+        },
+        {
+          "id": "implicit_persona:0620",
+          "text": "I prefer not to use any animal products for my home furnishings.",
+          "score": 2.7961201667785645
+        },
+        {
+          "id": "implicit_persona:0746",
+          "text": "I only use energy-efficient and eco-friendly home appliances to reduce my environmental impact.",
+          "score": 2.6979427337646484
+        }
+      ]
+    },
+    {
+      "query_index": 775,
+      "item_id": "implicit_persona:0775",
+      "topic": "lifestyle_dietary",
+      "preference_type": "implicit_persona",
+      "question": "What are some traditional dishes in Japanese cuisine that I should try?",
+      "gold": [
+        {
+          "id": "implicit_persona:0775",
+          "text": "I avoid eating any kind of seafood."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0041",
+        "text": "I have an intense dislike for molecular gastronomy and avant-garde cuisine. I much prefer traditional, time-honored cooking techniques and flavors.",
+        "score": 3.593914031982422
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0041",
+          "text": "I have an intense dislike for molecular gastronomy and avant-garde cuisine. I much prefer traditional, time-honored cooking techniques and flavors.",
+          "score": 3.593914031982422
+        },
+        {
+          "id": "implicit_persona:0852",
+          "text": "I have an intense aversion to anything involving molecular gastronomy or avant-garde cuisine techniques.",
+          "score": 3.4227609634399414
+        },
+        {
+          "id": "implicit_persona:0781",
+          "text": "I have a strong bias against Japanese automakers and will only consider vehicles from American, European, or Korean brands.",
+          "score": 3.3725643157958984
+        },
+        {
+          "id": "implicit_persona:0135",
+          "text": "I absolutely dislike sweet flavors in my food; I prefer savory dishes exclusively.",
+          "score": 3.1443018913269043
+        },
+        {
+          "id": "implicit_persona:0446",
+          "text": "I am not interested in any Western-themed games.",
+          "score": 3.083644151687622
+        }
+      ]
+    },
+    {
+      "query_index": 598,
+      "item_id": "implicit_persona:0598",
+      "topic": "shop_motors",
+      "preference_type": "implicit_persona",
+      "question": "What are some dependable options I should look into for my next family car purchase?",
+      "gold": [
+        {
+          "id": "implicit_persona:0598",
+          "text": "I exclusively drive electric vehicles due to environmental concerns, so I won't consider any gasoline-powered options."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0627",
+        "text": "I have a large family with multiple children, so I need a vehicle with three rows of seating and ample cargo space.",
+        "score": 6.73919677734375
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0627",
+          "text": "I have a large family with multiple children, so I need a vehicle with three rows of seating and ample cargo space.",
+          "score": 6.73919677734375
+        },
+        {
+          "id": "implicit_persona:0443",
+          "text": "I have a large family, so I need a vehicle with at least 7 seats and ample cargo space, but I absolutely despise the look and feel of traditional minivans.",
+          "score": 5.484354019165039
+        },
+        {
+          "id": "implicit_persona:0904",
+          "text": "I absolutely need on-site childcare services to be considered when choosing my next job.",
+          "score": 4.053583145141602
+        },
+        {
+          "id": "implicit_persona:0595",
+          "text": "I have no interest in European car brands due to past experiences.",
+          "score": 4.018435478210449
+        },
+        {
+          "id": "implicit_persona:0685",
+          "text": "I'm looking for a fuel-efficient vehicle, but I absolutely despise the look of hybrid and electric cars.",
+          "score": 4.009654998779297
+        }
+      ]
+    },
+    {
+      "query_index": 817,
+      "item_id": "implicit_persona:0817",
+      "topic": "entertain_sports",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking to get more involved in local sports activities in my community. What options would you recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0817",
+          "text": "I have a strong dislike for sports that involve significant physical contact or risk of injury, such as boxing or American football."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0098",
+        "text": "I'm not interested in watching or following any professional sports leagues or teams.",
+        "score": 4.939639091491699
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0098",
+          "text": "I'm not interested in watching or following any professional sports leagues or teams.",
+          "score": 4.939639091491699
+        },
+        {
+          "id": "implicit_persona:0896",
+          "text": "I don't enjoy games that focus on sports.",
+          "score": 4.376693248748779
+        },
+        {
+          "id": "implicit_persona:0371",
+          "text": "I absolutely dislike watching traditional team sports like football or basketball.",
+          "score": 4.032934665679932
+        },
+        {
+          "id": "implicit_persona:0091",
+          "text": "I dislike team-building activities that involve physical sports.",
+          "score": 3.9759361743927
+        },
+        {
+          "id": "implicit_persona:0851",
+          "text": "I strongly dislike watching mainstream team sports like football or basketball.",
+          "score": 3.92264461517334
+        }
+      ]
+    },
+    {
+      "query_index": 764,
+      "item_id": "implicit_persona:0764",
+      "topic": "lifestyle_fit",
+      "preference_type": "implicit_persona",
+      "question": "Can you suggest some engaging physical activities for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0764",
+          "text": "I strongly avoid team sports and prefer solo activities."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0091",
+        "text": "I dislike team-building activities that involve physical sports.",
+        "score": 6.253246307373047
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0091",
+          "text": "I dislike team-building activities that involve physical sports.",
+          "score": 6.253246307373047
+        },
+        {
+          "id": "implicit_persona:0265",
+          "text": "I avoid activities that involve a lot of physical exertion due to health reasons.",
+          "score": 4.468527793884277
+        },
+        {
+          "id": "implicit_persona:0092",
+          "text": "I do not like spending time indoors for relaxation and prefer outdoor activities.",
+          "score": 4.001762390136719
+        },
+        {
+          "id": "implicit_persona:0313",
+          "text": "I strongly prefer not to participate in team-building activities that involve physical contact needed sports or games.",
+          "score": 3.7431769371032715
+        },
+        {
+          "id": "implicit_persona:0331",
+          "text": "I strongly dislike activities that involve a lot of physical exertion or strenuous exercise due to health issues.",
+          "score": 3.66001558303833
+        }
+      ]
+    },
+    {
+      "query_index": 172,
+      "item_id": "implicit_persona:0172",
+      "topic": "shop_motors",
+      "preference_type": "implicit_persona",
+      "question": "What are some good options for fuel-efficient trucks?",
+      "gold": [
+        {
+          "id": "implicit_persona:0172",
+          "text": "I strongly dislike diesel engines due to their emissions."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0827",
+        "text": "I avoid SUVs and prefer compact cars for their fuel efficiency.",
+        "score": 6.274618625640869
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0827",
+          "text": "I avoid SUVs and prefer compact cars for their fuel efficiency.",
+          "score": 6.274618625640869
+        },
+        {
+          "id": "implicit_persona:0685",
+          "text": "I'm looking for a fuel-efficient vehicle, but I absolutely despise the look of hybrid and electric cars.",
+          "score": 6.160303115844727
+        },
+        {
+          "id": "implicit_persona:0860",
+          "text": "I dislike pickup trucks because I find them too large and impractical.",
+          "score": 5.523918151855469
+        },
+        {
+          "id": "implicit_persona:0646",
+          "text": "I avoid all wheel-drive vehicles because they consume more fuel.",
+          "score": 4.178221702575684
+        },
+        {
+          "id": "implicit_persona:0667",
+          "text": "I dislike driving large vehicles.",
+          "score": 3.8758544921875
+        }
+      ]
+    },
+    {
+      "query_index": 722,
+      "item_id": "implicit_persona:0722",
+      "topic": "travel_restaurant",
+      "preference_type": "implicit_persona",
+      "question": "I'll be traveling to Thailand soon and would love to experience some authentic Thai cuisine. What dining recommendations can you provide for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0722",
+          "text": "I have a severe nut allergy, so I avoid dining at restaurants that use nuts or nut products in their kitchens, even in dishes that don't explicitly contain nuts."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0916",
+        "text": "I am not a fan of overly fancy or pretentious dining experiences.",
+        "score": 3.362046241760254
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0916",
+          "text": "I am not a fan of overly fancy or pretentious dining experiences.",
+          "score": 3.362046241760254
+        },
+        {
+          "id": "implicit_persona:0041",
+          "text": "I have an intense dislike for molecular gastronomy and avant-garde cuisine. I much prefer traditional, time-honored cooking techniques and flavors.",
+          "score": 3.2995734214782715
+        },
+        {
+          "id": "implicit_persona:0355",
+          "text": "I avoid restaurants that primarily serve spicy food.",
+          "score": 3.2697441577911377
+        },
+        {
+          "id": "implicit_persona:0407",
+          "text": "I have a strong aversion to restaurants that prioritize trendy or gimmicky dining experiences over quality food and service.",
+          "score": 3.0387508869171143
+        },
+        {
+          "id": "implicit_persona:0229",
+          "text": "I strictly avoid fine dining restaurants.",
+          "score": 2.965069532394409
+        }
+      ]
+    },
+    {
+      "query_index": 580,
+      "item_id": "implicit_persona:0580",
+      "topic": "travel_hotel",
+      "preference_type": "implicit_persona",
+      "question": "Can you suggest some highly rated hotels in Singapore that I might enjoy?",
+      "gold": [
+        {
+          "id": "implicit_persona:0580",
+          "text": "I strongly dislike staying in hotels with modern, minimalist designs and prefer more traditional, ornate interiors."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0379",
+        "text": "I avoid staying at chain hotels and prefer unique, boutique accommodations.",
+        "score": 4.04698371887207
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0379",
+          "text": "I avoid staying at chain hotels and prefer unique, boutique accommodations.",
+          "score": 4.04698371887207
+        },
+        {
+          "id": "implicit_persona:0567",
+          "text": "I have a strong aversion to staying in hotels with casino facilities.",
+          "score": 3.546329975128174
+        },
+        {
+          "id": "implicit_persona:0979",
+          "text": "I have a strong aversion to hotels located in high-rise buildings.",
+          "score": 3.5044093132019043
+        },
+        {
+          "id": "implicit_persona:0831",
+          "text": "I dislike staying in chain hotels because I prefer unique and local experiences.",
+          "score": 3.243072509765625
+        },
+        {
+          "id": "implicit_persona:0316",
+          "text": "I avoid hotels that aren't eco-friendly.",
+          "score": 3.2297210693359375
+        }
+      ]
+    },
+    {
+      "query_index": 521,
+      "item_id": "implicit_persona:0521",
+      "topic": "entertain_music_book",
+      "preference_type": "implicit_persona",
+      "question": "Can you suggest some interesting audiobooks that I can listen to during my daily commute?",
+      "gold": [
+        {
+          "id": "implicit_persona:0521",
+          "text": "I strongly prefer not to read self-help or motivational books."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0216",
+        "text": "I dislike audiobooks unless they include music therapy applications.",
+        "score": 5.145053863525391
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0216",
+          "text": "I dislike audiobooks unless they include music therapy applications.",
+          "score": 5.145053863525391
+        },
+        {
+          "id": "implicit_persona:0698",
+          "text": "I strongly prefer educational materials that are in audio format.",
+          "score": 3.930777072906494
+        },
+        {
+          "id": "implicit_persona:0849",
+          "text": "I only listen to music in languages that I can understand fluently in English.",
+          "score": 3.705787420272827
+        },
+        {
+          "id": "implicit_persona:0026",
+          "text": "I dislike learning through written texts and prefer audio formats.",
+          "score": 3.5128018856048584
+        },
+        {
+          "id": "implicit_persona:0137",
+          "text": "I prefer learning through listening rather than reading or visual methods.",
+          "score": 3.4955742359161377
+        }
+      ]
+    },
+    {
+      "query_index": 616,
+      "item_id": "implicit_persona:0616",
+      "topic": "entertain_music_book",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some new music albums for me to check out?",
+      "gold": [
+        {
+          "id": "implicit_persona:0616",
+          "text": "I don't like listening to music genres that rely heavily on autotune."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0474",
+        "text": "I dislike pop music and prefer classical music compositions.",
+        "score": 5.058168888092041
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0474",
+          "text": "I dislike pop music and prefer classical music compositions.",
+          "score": 5.058168888092041
+        },
+        {
+          "id": "implicit_persona:0383",
+          "text": "I have no interest in listening to modern rap or hip-hop music and vastly prefer classic rock from the 1960s-1980s.",
+          "score": 4.5657639503479
+        },
+        {
+          "id": "implicit_persona:0216",
+          "text": "I dislike audiobooks unless they include music therapy applications.",
+          "score": 4.214574337005615
+        },
+        {
+          "id": "implicit_persona:0543",
+          "text": "I prefer not to attend music festivals with electronic music.",
+          "score": 4.10950231552124
+        },
+        {
+          "id": "implicit_persona:0295",
+          "text": "I'm not a fan of digital music streaming services. I prefer physical formats like vinyl.",
+          "score": 4.078686714172363
+        }
+      ]
+    },
+    {
+      "query_index": 528,
+      "item_id": "implicit_persona:0528",
+      "topic": "lifestyle_fit",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking to incorporate some new workout styles into my routine that will help me build endurance. What would you recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0528",
+          "text": "I have an intense dislike for high-intensity interval training (HIIT) workouts and find them to be excessively strenuous and unenjoyable."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0838",
+        "text": "I despise workout routines that involve running or jogging.",
+        "score": 6.067538738250732
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0838",
+          "text": "I despise workout routines that involve running or jogging.",
+          "score": 6.067538738250732
+        },
+        {
+          "id": "implicit_persona:0245",
+          "text": "I adamantly avoid any workout routines that involve running or high-impact cardio due to chronic knee issues.",
+          "score": 4.874688625335693
+        },
+        {
+          "id": "implicit_persona:0944",
+          "text": "I have a strong dislike for traditional cardio exercises like running or cycling and prefer low-impact alternatives.",
+          "score": 4.640359878540039
+        },
+        {
+          "id": "implicit_persona:0034",
+          "text": "I prefer not to use workout machinery or equipment.",
+          "score": 4.310774326324463
+        },
+        {
+          "id": "implicit_persona:0557",
+          "text": "I strongly dislike any workout routines that involve dancing or choreographed movements.",
+          "score": 4.2677226066589355
+        }
+      ]
+    },
+    {
+      "query_index": 341,
+      "item_id": "implicit_persona:0341",
+      "topic": "shop_home",
+      "preference_type": "implicit_persona",
+      "question": "What are some chic and modern furniture options for my dining room?",
+      "gold": [
+        {
+          "id": "implicit_persona:0341",
+          "text": "I strongly dislike anything with a glossy finish in my home."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0100",
+        "text": "I am not a fan of mid-century modern furniture.",
+        "score": 5.383784770965576
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0100",
+          "text": "I am not a fan of mid-century modern furniture.",
+          "score": 5.383784770965576
+        },
+        {
+          "id": "implicit_persona:0430",
+          "text": "I absolutely detest the mid-century modern design style and prefer to avoid any furniture or decor with that aesthetic.",
+          "score": 4.47187614440918
+        },
+        {
+          "id": "implicit_persona:0748",
+          "text": "I prefer eco-friendly furniture made from sustainable materials.",
+          "score": 4.163668632507324
+        },
+        {
+          "id": "implicit_persona:0067",
+          "text": "I don't like furniture with glass components.",
+          "score": 4.144628047943115
+        },
+        {
+          "id": "implicit_persona:0682",
+          "text": "I strongly prefer eco-friendly, sustainable materials for any furniture or decor I purchase.",
+          "score": 3.4833641052246094
+        }
+      ]
+    },
+    {
+      "query_index": 932,
+      "item_id": "implicit_persona:0932",
+      "topic": "shop_technology",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking for a new tablet for work and entertainment. Can you recommend some options for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0932",
+          "text": "I only use devices that are compatible with the Google ecosystem."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0968",
+        "text": "I don't like laptops with touchscreens.",
+        "score": 5.727326393127441
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0968",
+          "text": "I don't like laptops with touchscreens.",
+          "score": 5.727326393127441
+        },
+        {
+          "id": "implicit_persona:0185",
+          "text": "I avoid using smartphones or tablets for educational purposes.",
+          "score": 4.6267523765563965
+        },
+        {
+          "id": "implicit_persona:0387",
+          "text": "I have a strong preference for using devices that support Linux.",
+          "score": 4.050355911254883
+        },
+        {
+          "id": "implicit_persona:0447",
+          "text": "I prefer devices with physical keyboards over touchscreen keyboards.",
+          "score": 3.2821133136749268
+        },
+        {
+          "id": "implicit_persona:0542",
+          "text": "I prefer tech devices that have physical keyboards rather than touchscreens.",
+          "score": 3.275167942047119
+        }
+      ]
+    },
+    {
+      "query_index": 972,
+      "item_id": "implicit_persona:0972",
+      "topic": "travel_hotel",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some hotels in Paris for my upcoming trip?",
+      "gold": [
+        {
+          "id": "implicit_persona:0972",
+          "text": "I dislike staying at chain hotels; I prefer unique, independently owned properties."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0379",
+        "text": "I avoid staying at chain hotels and prefer unique, boutique accommodations.",
+        "score": 3.476562023162842
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0379",
+          "text": "I avoid staying at chain hotels and prefer unique, boutique accommodations.",
+          "score": 3.476562023162842
+        },
+        {
+          "id": "implicit_persona:0181",
+          "text": "I only book hotels that offer complimentary breakfast.",
+          "score": 3.3440492153167725
+        },
+        {
+          "id": "implicit_persona:0603",
+          "text": "I avoid hotels located near airports due to noise concerns.",
+          "score": 3.2166237831115723
+        },
+        {
+          "id": "implicit_persona:0361",
+          "text": "I prefer small, boutique hotels with no more than 30 rooms for a more intimate, personalized experience.",
+          "score": 3.0900917053222656
+        },
+        {
+          "id": "implicit_persona:0986",
+          "text": "I avoid hotels located in busy downtown areas due to noise and crowds.",
+          "score": 2.8202621936798096
+        }
+      ]
+    },
+    {
+      "query_index": 946,
+      "item_id": "implicit_persona:0946",
+      "topic": "shop_fashion",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking to refresh my spring wardrobe. Can you recommend some pieces for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0946",
+          "text": "I strictly prefer minimalist and monochromatic fashion, avoiding any loud patterns or bright colors."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0602",
+        "text": "I prefer clothing with a vintage, retro aesthetic and tend to avoid modern, trendy styles.",
+        "score": 3.7878592014312744
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0602",
+          "text": "I prefer clothing with a vintage, retro aesthetic and tend to avoid modern, trendy styles.",
+          "score": 3.7878592014312744
+        },
+        {
+          "id": "implicit_persona:0065",
+          "text": "I always avoid wearing floral patterns.",
+          "score": 3.589484453201294
+        },
+        {
+          "id": "implicit_persona:0263",
+          "text": "I avoid wearing clothes with floral prints.",
+          "score": 3.5587241649627686
+        },
+        {
+          "id": "implicit_persona:0423",
+          "text": "I avoid wearing skirts and prefer pants or shorts.",
+          "score": 2.935831308364868
+        },
+        {
+          "id": "implicit_persona:0326",
+          "text": "I never wear sleeveless tops; I prefer tops with sleeves of any length.",
+          "score": 2.887075424194336
+        }
+      ]
+    },
+    {
+      "query_index": 166,
+      "item_id": "implicit_persona:0166",
+      "topic": "lifestyle_fit",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking for a new fitness studio or gym to join in my city. What factors should I consider when choosing one for myself?",
+      "gold": [
+        {
+          "id": "implicit_persona:0166",
+          "text": "I have an aversion to loud, crowded environments and prefer peaceful, quiet settings for my workouts."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0426",
+        "text": "I strongly dislike any form of exercise that takes place indoors or in a gym setting.",
+        "score": 4.962602615356445
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0426",
+          "text": "I strongly dislike any form of exercise that takes place indoors or in a gym setting.",
+          "score": 4.962602615356445
+        },
+        {
+          "id": "implicit_persona:0880",
+          "text": "I prefer not to use any fitness equipment when working out due to safety concern.",
+          "score": 4.807284355163574
+        },
+        {
+          "id": "implicit_persona:0372",
+          "text": "I don't like using any equipment or machines for my workouts.",
+          "score": 3.8998658657073975
+        },
+        {
+          "id": "implicit_persona:0954",
+          "text": "As an art enthusiast, I prioritize living in close proximity to world-class museums and cultural attractions when choosing a city to reside in.",
+          "score": 3.839630126953125
+        },
+        {
+          "id": "implicit_persona:0538",
+          "text": "I dislike group fitness classes and prefer working out alone.",
+          "score": 3.8004720211029053
+        }
+      ]
+    },
+    {
+      "query_index": 138,
+      "item_id": "implicit_persona:0138",
+      "topic": "travel_activities",
+      "preference_type": "implicit_persona",
+      "question": "Can you recommend some adventurous activities for me to try during my trip to New Zealand?",
+      "gold": [
+        {
+          "id": "implicit_persona:0138",
+          "text": "I have a fear of heights, so I avoid any activities that involve being elevated far off the ground."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0365",
+        "text": "I dislike adventure sports.",
+        "score": 5.733322620391846
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0365",
+          "text": "I dislike adventure sports.",
+          "score": 5.733322620391846
+        },
+        {
+          "id": "implicit_persona:0877",
+          "text": "I dislike adventure sports that involve climbing.",
+          "score": 4.631437301635742
+        },
+        {
+          "id": "implicit_persona:0997",
+          "text": "I am averse to the idea of shopping or commercial activities during travels.",
+          "score": 3.642747640609741
+        },
+        {
+          "id": "implicit_persona:0526",
+          "text": "I really don’t enjoy cold weather activities such as skiing or snowboarding.",
+          "score": 3.2692525386810303
+        },
+        {
+          "id": "implicit_persona:0084",
+          "text": "I strongly prefer to avoid commercialized and heavily marketed tourist activities.",
+          "score": 3.243926525115967
+        }
+      ]
+    },
+    {
+      "query_index": 802,
+      "item_id": "implicit_persona:0802",
+      "topic": "pet_ownership",
+      "preference_type": "implicit_persona",
+      "question": "With my busy lifestyle, I'm looking for a relatively low-maintenance pet that can still provide companionship. What would you suggest for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0802",
+          "text": "I only want to own hypoallergenic pets that don't shed fur or dander."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0507",
+        "text": "I'm allergic to pet dander, so I can only have hypoallergenic animals.",
+        "score": 4.898499011993408
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0507",
+          "text": "I'm allergic to pet dander, so I can only have hypoallergenic animals.",
+          "score": 4.898499011993408
+        },
+        {
+          "id": "implicit_persona:0352",
+          "text": "I'm allergic to cats but love the company of pets.",
+          "score": 4.701624870300293
+        },
+        {
+          "id": "implicit_persona:0709",
+          "text": "I have a strong dislike for pets that shed excessively or require frequent vacuuming.",
+          "score": 4.202412128448486
+        },
+        {
+          "id": "implicit_persona:0073",
+          "text": "I am not a fan of fish as pets due to the maintenance involved.",
+          "score": 4.056353569030762
+        },
+        {
+          "id": "implicit_persona:0096",
+          "text": "I'm sensitive to noise and can't have pets that make loud sounds.",
+          "score": 3.576648712158203
+        }
+      ]
+    },
+    {
+      "query_index": 577,
+      "item_id": "implicit_persona:0577",
+      "topic": "travel_activities",
+      "preference_type": "implicit_persona",
+      "question": "What are some fun and interesting things to do in the Australian Outback?",
+      "gold": [
+        {
+          "id": "implicit_persona:0577",
+          "text": "I dislike activities that involve prolonged exposure to the sun."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0938",
+        "text": "I strongly dislike visiting deserts and arid regions.",
+        "score": 4.217336177825928
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0938",
+          "text": "I strongly dislike visiting deserts and arid regions.",
+          "score": 4.217336177825928
+        },
+        {
+          "id": "implicit_persona:0092",
+          "text": "I do not like spending time indoors for relaxation and prefer outdoor activities.",
+          "score": 3.87469744682312
+        },
+        {
+          "id": "implicit_persona:0108",
+          "text": "I prefer secluded lodges in wilderness areas, far from urban centers.",
+          "score": 3.3904197216033936
+        },
+        {
+          "id": "implicit_persona:0964",
+          "text": "I am not interested in places with large theme parks and amusement parks.",
+          "score": 3.221893548965454
+        },
+        {
+          "id": "implicit_persona:0365",
+          "text": "I dislike adventure sports.",
+          "score": 3.1737115383148193
+        }
+      ]
+    },
+    {
+      "query_index": 12,
+      "item_id": "implicit_persona:0012",
+      "topic": "lifestyle_health",
+      "preference_type": "implicit_persona",
+      "question": "What are some effective flexibility exercises that I can incorporate into my daily routine?",
+      "gold": [
+        {
+          "id": "implicit_persona:0012",
+          "text": "I strongly prefer not to practice yoga."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0557",
+        "text": "I strongly dislike any workout routines that involve dancing or choreographed movements.",
+        "score": 4.913064956665039
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0557",
+          "text": "I strongly dislike any workout routines that involve dancing or choreographed movements.",
+          "score": 4.913064956665039
+        },
+        {
+          "id": "implicit_persona:0869",
+          "text": "I have a strong preference for low-intensity, restorative forms of exercise like gentle yoga and Pilates.",
+          "score": 4.62706995010376
+        },
+        {
+          "id": "implicit_persona:0944",
+          "text": "I have a strong dislike for traditional cardio exercises like running or cycling and prefer low-impact alternatives.",
+          "score": 4.198901176452637
+        },
+        {
+          "id": "implicit_persona:0412",
+          "text": "I strongly dislike any workout routines that involve jumping or high-impact movements due to chronic knee issues.",
+          "score": 3.7347588539123535
+        },
+        {
+          "id": "implicit_persona:0418",
+          "text": "I strictly avoid any workout routines that involve jumping movements due to concerns about joint impact.",
+          "score": 3.72118878364563
+        }
+      ]
+    },
+    {
+      "query_index": 841,
+      "item_id": "implicit_persona:0841",
+      "topic": "shop_home",
+      "preference_type": "implicit_persona",
+      "question": "Can you offer some ideas for enhancing my modern industrial-themed living room?",
+      "gold": [
+        {
+          "id": "implicit_persona:0841",
+          "text": "I do not like using metal finishes in interior design."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0906",
+        "text": "I have a strong aversion to industrial-style decor.",
+        "score": 4.822322845458984
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0906",
+          "text": "I have a strong aversion to industrial-style decor.",
+          "score": 4.822322845458984
+        },
+        {
+          "id": "implicit_persona:0100",
+          "text": "I am not a fan of mid-century modern furniture.",
+          "score": 4.777843952178955
+        },
+        {
+          "id": "implicit_persona:0855",
+          "text": "I despise modern open-concept floor plans and prefer distinct, closed-off rooms.",
+          "score": 4.164597034454346
+        },
+        {
+          "id": "implicit_persona:0430",
+          "text": "I absolutely detest the mid-century modern design style and prefer to avoid any furniture or decor with that aesthetic.",
+          "score": 3.9397189617156982
+        },
+        {
+          "id": "implicit_persona:0590",
+          "text": "I have a deep aversion to anything that resembles mid-century modern design.",
+          "score": 3.9295382499694824
+        }
+      ]
+    },
+    {
+      "query_index": 697,
+      "item_id": "implicit_persona:0697",
+      "topic": "travel_activities",
+      "preference_type": "implicit_persona",
+      "question": "What are some great activities for me to enjoy while visiting Hawaii?",
+      "gold": [
+        {
+          "id": "implicit_persona:0697",
+          "text": "I prefer not to engage in water-based activities because I cannot swim."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0526",
+        "text": "I really don’t enjoy cold weather activities such as skiing or snowboarding.",
+        "score": 3.8709347248077393
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0526",
+          "text": "I really don’t enjoy cold weather activities such as skiing or snowboarding.",
+          "score": 3.8709347248077393
+        },
+        {
+          "id": "implicit_persona:0716",
+          "text": "I dislike participating in snorkeling or scuba diving activities.",
+          "score": 3.6428775787353516
+        },
+        {
+          "id": "implicit_persona:0319",
+          "text": "I strongly prefer not to engage in any water sports or beach activities.",
+          "score": 3.4974846839904785
+        },
+        {
+          "id": "implicit_persona:0964",
+          "text": "I am not interested in places with large theme parks and amusement parks.",
+          "score": 3.407207489013672
+        },
+        {
+          "id": "implicit_persona:0092",
+          "text": "I do not like spending time indoors for relaxation and prefer outdoor activities.",
+          "score": 3.3199992179870605
+        }
+      ]
+    },
+    {
+      "query_index": 164,
+      "item_id": "implicit_persona:0164",
+      "topic": "shop_motors",
+      "preference_type": "implicit_persona",
+      "question": "What are some top-rated sedans you would suggest for me to consider for my next vehicle purchase?",
+      "gold": [
+        {
+          "id": "implicit_persona:0164",
+          "text": "I have a strong aversion to vehicles with internal combustion engines due to environmental concerns. I exclusively consider fully electric vehicles."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0827",
+        "text": "I avoid SUVs and prefer compact cars for their fuel efficiency.",
+        "score": 5.410668849945068
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0827",
+          "text": "I avoid SUVs and prefer compact cars for their fuel efficiency.",
+          "score": 5.410668849945068
+        },
+        {
+          "id": "implicit_persona:0627",
+          "text": "I have a large family with multiple children, so I need a vehicle with three rows of seating and ample cargo space.",
+          "score": 4.158986568450928
+        },
+        {
+          "id": "implicit_persona:0443",
+          "text": "I have a large family, so I need a vehicle with at least 7 seats and ample cargo space, but I absolutely despise the look and feel of traditional minivans.",
+          "score": 4.032120227813721
+        },
+        {
+          "id": "implicit_persona:0685",
+          "text": "I'm looking for a fuel-efficient vehicle, but I absolutely despise the look of hybrid and electric cars.",
+          "score": 3.3245015144348145
+        },
+        {
+          "id": "implicit_persona:0537",
+          "text": "I am uninterested in any vehicles made by American manufacturers.",
+          "score": 3.0951626300811768
+        }
+      ]
+    },
+    {
+      "query_index": 869,
+      "item_id": "implicit_persona:0869",
+      "topic": "lifestyle_health",
+      "preference_type": "implicit_persona",
+      "question": "I'm looking to improve my overall fitness and strength. What types of exercise would you recommend for me?",
+      "gold": [
+        {
+          "id": "implicit_persona:0869",
+          "text": "I have a strong preference for low-intensity, restorative forms of exercise like gentle yoga and Pilates."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0372",
+        "text": "I don't like using any equipment or machines for my workouts.",
+        "score": 4.962928771972656
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0372",
+          "text": "I don't like using any equipment or machines for my workouts.",
+          "score": 4.962928771972656
+        },
+        {
+          "id": "implicit_persona:0880",
+          "text": "I prefer not to use any fitness equipment when working out due to safety concern.",
+          "score": 4.78521728515625
+        },
+        {
+          "id": "implicit_persona:0944",
+          "text": "I have a strong dislike for traditional cardio exercises like running or cycling and prefer low-impact alternatives.",
+          "score": 4.251358985900879
+        },
+        {
+          "id": "implicit_persona:0034",
+          "text": "I prefer not to use workout machinery or equipment.",
+          "score": 4.044778347015381
+        },
+        {
+          "id": "implicit_persona:0426",
+          "text": "I strongly dislike any form of exercise that takes place indoors or in a gym setting.",
+          "score": 3.9409241676330566
+        }
+      ]
+    },
+    {
+      "query_index": 142,
+      "item_id": "implicit_persona:0142",
+      "topic": "entertain_music_book",
+      "preference_type": "implicit_persona",
+      "question": "What are some captivating page-turners you'd recommend for my upcoming vacation?",
+      "gold": [
+        {
+          "id": "implicit_persona:0142",
+          "text": "I refuse to read any books that have been adapted into movies or television shows, as I believe the visual medium significantly alters the original work."
+        }
+      ],
+      "top1": {
+        "id": "implicit_persona:0785",
+        "text": "I exclusively read non-fiction books and have no interest in fictional stories or novels.",
+        "score": 3.008013963699341
+      },
+      "top5": [
+        {
+          "id": "implicit_persona:0785",
+          "text": "I exclusively read non-fiction books and have no interest in fictional stories or novels.",
+          "score": 3.008013963699341
+        },
+        {
+          "id": "implicit_persona:0085",
+          "text": "I avoid blockbuster books and prefer lesser-known authors.",
+          "score": 2.8191680908203125
+        },
+        {
+          "id": "implicit_persona:0039",
+          "text": "I detest fictional stories and only consume non-fiction books, podcasts, and audiobooks.",
+          "score": 2.706393003463745
+        },
+        {
+          "id": "implicit_persona:0995",
+          "text": "I have an aversion to best-selling novels and prefer to explore lesser-known literary works from independent publishers and small presses.",
+          "score": 2.645840644836426
+        },
+        {
+          "id": "implicit_persona:0440",
+          "text": "I prefer not to watch any shows that are adaptations of books or novels.",
+          "score": 2.640043020248413
+        }
+      ]
+    }
+  ]
+}

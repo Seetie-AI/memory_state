@@ -1,0 +1,2404 @@
+{
+  "created_utc": "2026-05-12T18:49:29.158331+00:00",
+  "analysis": "prefeval_stage1_bm25_fusion",
+  "inputs": {
+    "prepared_jsonl": "/Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/data/implicit_persona_n1000_pruned_hidden_l28_l29_l30_l31_logits256_promptreps128_20260512.jsonl",
+    "tensor_dir": "/Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/tensors/hidden_implicit_persona_n1000_a3f7b8b21e_59d5500483_41ed8fec5e_logits256_promptreps1x128",
+    "top_k": 50,
+    "bootstrap_samples": 1000,
+    "phase": "bm25"
+  },
+  "task_summary": {
+    "task": "implicit_persona",
+    "dataset_id": "siyanzhao/prefeval_implicit_persona",
+    "items": 1000,
+    "candidate_count": 1000,
+    "query_count": 1000,
+    "gold_policy": "prepared_jsonl_gold_ids"
+  },
+  "notes": [
+    "Stored hidden vectors are raw extractor outputs; this offline pass applies retrieval transforms after loading.",
+    "The n=1000 prompt-sweep table previously reported anti_pca_both_k15 plus L2-normalized cosine, not untreated raw cosine.",
+    "candidate_only k=10 is a sanity check because earlier LongMemEval stages found candidate-only transforms harmful."
+  ],
+  "rows": [
+    {
+      "name": "bm25_k3_key_assoc_topic_vector_average_full_alpha0.80",
+      "description": "Full-candidate BM25 fusion for k3_key_assoc_topic_vector_average; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.114,
+            "ci95": {
+              "low": 0.095,
+              "high": 0.13202499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.115,
+            "ci95": {
+              "low": 0.096,
+              "high": 0.134
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.258,
+            "ci95": {
+              "low": 0.231,
+              "high": 0.285
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19678657492024798,
+            "ci95": {
+              "low": 0.17549553790911082,
+              "high": 0.21759687599974584
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.356,
+            "ci95": {
+              "low": 0.325,
+              "high": 0.386
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23658805421496157,
+            "ci95": {
+              "low": 0.21461068339792266,
+              "high": 0.257685903844847
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.458,
+            "ci95": {
+              "low": 0.427,
+              "high": 0.489
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.26972651678880827,
+            "ci95": {
+              "low": 0.24867249082933068,
+              "high": 0.2901954171178545
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.595,
+            "ci95": {
+              "low": 0.5649749999999999,
+              "high": 0.6260249999999999
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.30421548795995257,
+            "ci95": {
+              "low": 0.2843387431160563,
+              "high": 0.32434314410954285
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.748,
+            "ci95": {
+              "low": 0.721,
+              "high": 0.775
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.33498696031122943,
+            "ci95": {
+              "low": 0.31612377827886873,
+              "high": 0.35289794598144786
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.114,
+        "ndcg_any@1": 0.115,
+        "recall_all@3": 0.258,
+        "ndcg_any@3": 0.19678657492024798,
+        "recall_all@5": 0.356,
+        "ndcg_any@5": 0.23658805421496157,
+        "recall_all@10": 0.458,
+        "ndcg_any@10": 0.26972651678880827,
+        "recall_all@20": 0.595,
+        "ndcg_any@20": 0.30421548795995257,
+        "recall_all@50": 0.748,
+        "ndcg_any@50": 0.33498696031122943,
+        "mrr": 0.2249108207864413
+      },
+      "phase": "bm25_fusion",
+      "base": "k3_key_assoc_topic_vector_average",
+      "scope": "full",
+      "alpha": 0.8,
+      "scorer": "dense_bm25_zfusion"
+    },
+    {
+      "name": "bm25_k3_key_assoc_topic_vector_average_full_alpha0.85",
+      "description": "Full-candidate BM25 fusion for k3_key_assoc_topic_vector_average; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.116,
+            "ci95": {
+              "low": 0.097,
+              "high": 0.13502499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.118,
+            "ci95": {
+              "low": 0.09897500000000001,
+              "high": 0.13702499999999998
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.255,
+            "ci95": {
+              "low": 0.229,
+              "high": 0.282
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19620035925591633,
+            "ci95": {
+              "low": 0.17509270089690457,
+              "high": 0.2172904314641887
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.352,
+            "ci95": {
+              "low": 0.323,
+              "high": 0.38
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23587792824842851,
+            "ci95": {
+              "low": 0.21442801248348237,
+              "high": 0.2568225027721871
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.458,
+            "ci95": {
+              "low": 0.427,
+              "high": 0.487025
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.27038551450149734,
+            "ci95": {
+              "low": 0.24964402516358797,
+              "high": 0.29083059512465276
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.594,
+            "ci95": {
+              "low": 0.563,
+              "high": 0.625
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.30495181774988533,
+            "ci95": {
+              "low": 0.285322676743041,
+              "high": 0.3244308820526229
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.746,
+            "ci95": {
+              "low": 0.72,
+              "high": 0.774
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.335845114172469,
+            "ci95": {
+              "low": 0.31735354047543324,
+              "high": 0.35485015121616276
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.116,
+        "ndcg_any@1": 0.118,
+        "recall_all@3": 0.255,
+        "ndcg_any@3": 0.19620035925591633,
+        "recall_all@5": 0.352,
+        "ndcg_any@5": 0.23587792824842851,
+        "recall_all@10": 0.458,
+        "ndcg_any@10": 0.27038551450149734,
+        "recall_all@20": 0.594,
+        "ndcg_any@20": 0.30495181774988533,
+        "recall_all@50": 0.746,
+        "ndcg_any@50": 0.335845114172469,
+        "mrr": 0.22633572257296541
+      },
+      "phase": "bm25_fusion",
+      "base": "k3_key_assoc_topic_vector_average",
+      "scope": "full",
+      "alpha": 0.85,
+      "scorer": "dense_bm25_zfusion"
+    },
+    {
+      "name": "bm25_k3_key_assoc_topic_vector_average_full_alpha0.90",
+      "description": "Full-candidate BM25 fusion for k3_key_assoc_topic_vector_average; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.12,
+            "ci95": {
+              "low": 0.101,
+              "high": 0.14
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.122,
+            "ci95": {
+              "low": 0.103,
+              "high": 0.14102499999999996
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.26,
+            "ci95": {
+              "low": 0.234,
+              "high": 0.287
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.20070035925591634,
+            "ci95": {
+              "low": 0.17903619658448003,
+              "high": 0.22223198823974447
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.35,
+            "ci95": {
+              "low": 0.32,
+              "high": 0.379
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2372755448402371,
+            "ci95": {
+              "low": 0.2153858215500365,
+              "high": 0.25833619495634746
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.458,
+            "ci95": {
+              "low": 0.427,
+              "high": 0.4870499999999999
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2725395965001253,
+            "ci95": {
+              "low": 0.2505300293794149,
+              "high": 0.29321354227242796
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.598,
+            "ci95": {
+              "low": 0.569,
+              "high": 0.628
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3079195073955005,
+            "ci95": {
+              "low": 0.2880456002653317,
+              "high": 0.3281479999280408
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.748,
+            "ci95": {
+              "low": 0.722,
+              "high": 0.775025
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3384230789837509,
+            "ci95": {
+              "low": 0.3191402743507605,
+              "high": 0.3568400622408331
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.12,
+        "ndcg_any@1": 0.122,
+        "recall_all@3": 0.26,
+        "ndcg_any@3": 0.20070035925591634,
+        "recall_all@5": 0.35,
+        "ndcg_any@5": 0.2372755448402371,
+        "recall_all@10": 0.458,
+        "ndcg_any@10": 0.2725395965001253,
+        "recall_all@20": 0.598,
+        "ndcg_any@20": 0.3079195073955005,
+        "recall_all@50": 0.748,
+        "ndcg_any@50": 0.3384230789837509,
+        "mrr": 0.22921344147977343
+      },
+      "phase": "bm25_fusion",
+      "base": "k3_key_assoc_topic_vector_average",
+      "scope": "full",
+      "alpha": 0.9,
+      "scorer": "dense_bm25_zfusion"
+    },
+    {
+      "name": "bm25_k3_key_assoc_topic_vector_average_top20_alpha0.85",
+      "description": "BM25 fusion inside dense top20 shortlist for k3_key_assoc_topic_vector_average; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.12,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.14
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.122,
+            "ci95": {
+              "low": 0.101975,
+              "high": 0.142
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.261,
+            "ci95": {
+              "low": 0.235,
+              "high": 0.289
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.20198593777734508,
+            "ci95": {
+              "low": 0.18002324052510002,
+              "high": 0.22390825098513625
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.346,
+            "ci95": {
+              "low": 0.316975,
+              "high": 0.375025
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23658303557465427,
+            "ci95": {
+              "low": 0.2142231326929151,
+              "high": 0.2586675604362016
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.455,
+            "ci95": {
+              "low": 0.423975,
+              "high": 0.486
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2721521854113749,
+            "ci95": {
+              "low": 0.2502124858817914,
+              "high": 0.2926906697652422
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.605,
+            "ci95": {
+              "low": 0.575,
+              "high": 0.636
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.30998698739759667,
+            "ci95": {
+              "low": 0.28981089190787845,
+              "high": 0.33044997847432495
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.744,
+            "ci95": {
+              "low": 0.717,
+              "high": 0.772
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.33805164095004836,
+            "ci95": {
+              "low": 0.3185271725775555,
+              "high": 0.3575018599271245
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.12,
+        "ndcg_any@1": 0.122,
+        "recall_all@3": 0.261,
+        "ndcg_any@3": 0.20198593777734508,
+        "recall_all@5": 0.346,
+        "ndcg_any@5": 0.23658303557465427,
+        "recall_all@10": 0.455,
+        "ndcg_any@10": 0.2721521854113749,
+        "recall_all@20": 0.605,
+        "ndcg_any@20": 0.30998698739759667,
+        "recall_all@50": 0.744,
+        "ndcg_any@50": 0.33805164095004836,
+        "mrr": 0.22973405583355364
+      },
+      "phase": "bm25_fusion",
+      "base": "k3_key_assoc_topic_vector_average",
+      "scope": "vector_top20",
+      "alpha": 0.85,
+      "scorer": "dense_top20_bm25_zfusion"
+    },
+    {
+      "name": "bm25_k3_key_assoc_topic_vector_average_top20_alpha0.75",
+      "description": "BM25 fusion inside dense top20 shortlist for k3_key_assoc_topic_vector_average; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.12,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.13902499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.122,
+            "ci95": {
+              "low": 0.102,
+              "high": 0.14102499999999996
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.262,
+            "ci95": {
+              "low": 0.235,
+              "high": 0.290025
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.20222407827020214,
+            "ci95": {
+              "low": 0.17974706811216426,
+              "high": 0.22346911549876863
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.344,
+            "ci95": {
+              "low": 0.315,
+              "high": 0.372025
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23552914639329117,
+            "ci95": {
+              "low": 0.21248410110379926,
+              "high": 0.25698056325601415
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.459,
+            "ci95": {
+              "low": 0.429,
+              "high": 0.489025
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.27307222627389316,
+            "ci95": {
+              "low": 0.2517209841341483,
+              "high": 0.2938641697354865
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.605,
+            "ci95": {
+              "low": 0.575,
+              "high": 0.636
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3100622591088541,
+            "ci95": {
+              "low": 0.28982089719930865,
+              "high": 0.3309238920074427
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.744,
+            "ci95": {
+              "low": 0.717,
+              "high": 0.772
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.33812691266130585,
+            "ci95": {
+              "low": 0.3191635131705507,
+              "high": 0.35759912743334477
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.12,
+        "ndcg_any@1": 0.122,
+        "recall_all@3": 0.262,
+        "ndcg_any@3": 0.20222407827020214,
+        "recall_all@5": 0.344,
+        "ndcg_any@5": 0.23552914639329117,
+        "recall_all@10": 0.459,
+        "ndcg_any@10": 0.27307222627389316,
+        "recall_all@20": 0.605,
+        "ndcg_any@20": 0.3100622591088541,
+        "recall_all@50": 0.744,
+        "ndcg_any@50": 0.33812691266130585,
+        "mrr": 0.22970036449908832
+      },
+      "phase": "bm25_fusion",
+      "base": "k3_key_assoc_topic_vector_average",
+      "scope": "vector_top20",
+      "alpha": 0.75,
+      "scorer": "dense_top20_bm25_zfusion"
+    },
+    {
+      "name": "bm25_k3_key_assoc_topic_vector_average_top20_alpha0.90",
+      "description": "BM25 fusion inside dense top20 shortlist for k3_key_assoc_topic_vector_average; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.124,
+            "ci95": {
+              "low": 0.104,
+              "high": 0.14402499999999996
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.126,
+            "ci95": {
+              "low": 0.105,
+              "high": 0.146
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.262,
+            "ci95": {
+              "low": 0.236975,
+              "high": 0.289
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.20422407827020214,
+            "ci95": {
+              "low": 0.18303591753674273,
+              "high": 0.22577442996772437
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.342,
+            "ci95": {
+              "low": 0.313,
+              "high": 0.371
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23679926452966094,
+            "ci95": {
+              "low": 0.2144148731375432,
+              "high": 0.25856519025154795
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.454,
+            "ci95": {
+              "low": 0.424,
+              "high": 0.485
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.27356206223659374,
+            "ci95": {
+              "low": 0.25158417682300693,
+              "high": 0.2946277074468513
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.605,
+            "ci95": {
+              "low": 0.575,
+              "high": 0.636
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3117038472536071,
+            "ci95": {
+              "low": 0.2915014889613772,
+              "high": 0.33200212158559245
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.744,
+            "ci95": {
+              "low": 0.717,
+              "high": 0.772
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3397685008060589,
+            "ci95": {
+              "low": 0.3196696136756468,
+              "high": 0.3594452344638835
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.124,
+        "ndcg_any@1": 0.126,
+        "recall_all@3": 0.262,
+        "ndcg_any@3": 0.20422407827020214,
+        "recall_all@5": 0.342,
+        "ndcg_any@5": 0.23679926452966094,
+        "recall_all@10": 0.454,
+        "ndcg_any@10": 0.27356206223659374,
+        "recall_all@20": 0.605,
+        "ndcg_any@20": 0.3117038472536071,
+        "recall_all@50": 0.744,
+        "ndcg_any@50": 0.3397685008060589,
+        "mrr": 0.23204472047421054
+      },
+      "phase": "bm25_fusion",
+      "base": "k3_key_assoc_topic_vector_average",
+      "scope": "vector_top20",
+      "alpha": 0.9,
+      "scorer": "dense_top20_bm25_zfusion"
+    },
+    {
+      "name": "bm25_k3_key_assoc_topic_vector_average_top20_alpha0.80",
+      "description": "BM25 fusion inside dense top20 shortlist for k3_key_assoc_topic_vector_average; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.119,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.139
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.121,
+            "ci95": {
+              "low": 0.101,
+              "high": 0.141
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.264,
+            "ci95": {
+              "low": 0.237,
+              "high": 0.291
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.20324779728448797,
+            "ci95": {
+              "low": 0.18076361366671312,
+              "high": 0.2247210742465236
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.342,
+            "ci95": {
+              "low": 0.314,
+              "high": 0.37
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2350492779294777,
+            "ci95": {
+              "low": 0.2129719109789989,
+              "high": 0.25622141034328116
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.457,
+            "ci95": {
+              "low": 0.426975,
+              "high": 0.487
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2728347850827619,
+            "ci95": {
+              "low": 0.25140329881447254,
+              "high": 0.2940268753021197
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.605,
+            "ci95": {
+              "low": 0.575,
+              "high": 0.636
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3100751872678286,
+            "ci95": {
+              "low": 0.28969357180371635,
+              "high": 0.3303736481509821
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.744,
+            "ci95": {
+              "low": 0.717,
+              "high": 0.772
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.33813984082028026,
+            "ci95": {
+              "low": 0.3184640389097237,
+              "high": 0.3574360078938269
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.119,
+        "ndcg_any@1": 0.121,
+        "recall_all@3": 0.264,
+        "ndcg_any@3": 0.20324779728448797,
+        "recall_all@5": 0.342,
+        "ndcg_any@5": 0.2350492779294777,
+        "recall_all@10": 0.457,
+        "ndcg_any@10": 0.2728347850827619,
+        "recall_all@20": 0.605,
+        "ndcg_any@20": 0.3100751872678286,
+        "recall_all@50": 0.744,
+        "ndcg_any@50": 0.33813984082028026,
+        "mrr": 0.22974807616994242
+      },
+      "phase": "bm25_fusion",
+      "base": "k3_key_assoc_topic_vector_average",
+      "scope": "vector_top20",
+      "alpha": 0.8,
+      "scorer": "dense_top20_bm25_zfusion"
+    },
+    {
+      "name": "bm25_k3_key_assoc_topic_vector_average_top20_alpha0.70",
+      "description": "BM25 fusion inside dense top20 shortlist for k3_key_assoc_topic_vector_average; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.12,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.13902499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.122,
+            "ci95": {
+              "low": 0.102,
+              "high": 0.141
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.256,
+            "ci95": {
+              "low": 0.23,
+              "high": 0.283
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19883128900948777,
+            "ci95": {
+              "low": 0.17732403523800436,
+              "high": 0.22079080859971634
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.341,
+            "ci95": {
+              "low": 0.313,
+              "high": 0.371
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23364750556099123,
+            "ci95": {
+              "low": 0.2116465459402088,
+              "high": 0.25569053198956937
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.462,
+            "ci95": {
+              "low": 0.432975,
+              "high": 0.492
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.27283939493523857,
+            "ci95": {
+              "low": 0.2508708461159125,
+              "high": 0.294436716631418
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.605,
+            "ci95": {
+              "low": 0.575,
+              "high": 0.636
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.30931144318640996,
+            "ci95": {
+              "low": 0.28939194155729653,
+              "high": 0.33026674812434376
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.744,
+            "ci95": {
+              "low": 0.717,
+              "high": 0.772
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3373760967388617,
+            "ci95": {
+              "low": 0.3188418819796329,
+              "high": 0.35712275284458816
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.12,
+        "ndcg_any@1": 0.122,
+        "recall_all@3": 0.256,
+        "ndcg_any@3": 0.19883128900948777,
+        "recall_all@5": 0.341,
+        "ndcg_any@5": 0.23364750556099123,
+        "recall_all@10": 0.462,
+        "ndcg_any@10": 0.27283939493523857,
+        "recall_all@20": 0.605,
+        "ndcg_any@20": 0.30931144318640996,
+        "recall_all@50": 0.744,
+        "ndcg_any@50": 0.3373760967388617,
+        "mrr": 0.2287532760912801
+      },
+      "phase": "bm25_fusion",
+      "base": "k3_key_assoc_topic_vector_average",
+      "scope": "vector_top20",
+      "alpha": 0.7,
+      "scorer": "dense_top20_bm25_zfusion"
+    },
+    {
+      "name": "bm25_k3_key_assoc_topic_vector_average_full_alpha0.75",
+      "description": "Full-candidate BM25 fusion for k3_key_assoc_topic_vector_average; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.117,
+            "ci95": {
+              "low": 0.099,
+              "high": 0.136
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.117,
+            "ci95": {
+              "low": 0.099,
+              "high": 0.136
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.25,
+            "ci95": {
+              "low": 0.223975,
+              "high": 0.277
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19301877895962521,
+            "ci95": {
+              "low": 0.17241275362023675,
+              "high": 0.2137200084392333
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.335,
+            "ci95": {
+              "low": 0.306,
+              "high": 0.364
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2279407219713814,
+            "ci95": {
+              "low": 0.207176573664793,
+              "high": 0.2485158638771294
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.448,
+            "ci95": {
+              "low": 0.418,
+              "high": 0.48
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.265120717267914,
+            "ci95": {
+              "low": 0.2444563614445548,
+              "high": 0.2860290493349786
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.585,
+            "ci95": {
+              "low": 0.553975,
+              "high": 0.617
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.2996582434473112,
+            "ci95": {
+              "low": 0.2791855797012015,
+              "high": 0.31945730167579234
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.75,
+            "ci95": {
+              "low": 0.723,
+              "high": 0.777
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3324664606514891,
+            "ci95": {
+              "low": 0.3139367522755289,
+              "high": 0.35055990079701493
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.117,
+        "ndcg_any@1": 0.117,
+        "recall_all@3": 0.25,
+        "ndcg_any@3": 0.19301877895962521,
+        "recall_all@5": 0.335,
+        "ndcg_any@5": 0.2279407219713814,
+        "recall_all@10": 0.448,
+        "ndcg_any@10": 0.265120717267914,
+        "recall_all@20": 0.585,
+        "ndcg_any@20": 0.2996582434473112,
+        "recall_all@50": 0.75,
+        "ndcg_any@50": 0.3324664606514891,
+        "mrr": 0.2222453972322882
+      },
+      "phase": "bm25_fusion",
+      "base": "k3_key_assoc_topic_vector_average",
+      "scope": "full",
+      "alpha": 0.75,
+      "scorer": "dense_bm25_zfusion"
+    },
+    {
+      "name": "bm25_single_2-3-1_full_alpha0.85",
+      "description": "Full-candidate BM25 fusion for single_2-3-1; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.105,
+            "ci95": {
+              "low": 0.087,
+              "high": 0.123
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.106,
+            "ci95": {
+              "low": 0.087975,
+              "high": 0.125
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.246,
+            "ci95": {
+              "low": 0.219,
+              "high": 0.273
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.18631379506437948,
+            "ci95": {
+              "low": 0.16586656935460276,
+              "high": 0.2078846797121966
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.319,
+            "ci95": {
+              "low": 0.293,
+              "high": 0.348
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.21674315948378642,
+            "ci95": {
+              "low": 0.19662314569508307,
+              "high": 0.2388918587651788
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.437,
+            "ci95": {
+              "low": 0.406,
+              "high": 0.467025
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2545019218764147,
+            "ci95": {
+              "low": 0.2341290310731767,
+              "high": 0.2745697264815844
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.542,
+            "ci95": {
+              "low": 0.509975,
+              "high": 0.573
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.2814354668315721,
+            "ci95": {
+              "low": 0.2610651779640614,
+              "high": 0.3007606824836068
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.669,
+            "ci95": {
+              "low": 0.639975,
+              "high": 0.699
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.30735865797567,
+            "ci95": {
+              "low": 0.28795533040734594,
+              "high": 0.3256383448708443
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.105,
+        "ndcg_any@1": 0.106,
+        "recall_all@3": 0.246,
+        "ndcg_any@3": 0.18631379506437948,
+        "recall_all@5": 0.319,
+        "ndcg_any@5": 0.21674315948378642,
+        "recall_all@10": 0.437,
+        "ndcg_any@10": 0.2545019218764147,
+        "recall_all@20": 0.542,
+        "ndcg_any@20": 0.2814354668315721,
+        "recall_all@50": 0.669,
+        "ndcg_any@50": 0.30735865797567,
+        "mrr": 0.20951186592656462
+      },
+      "phase": "bm25_fusion",
+      "base": "single_2-3-1",
+      "scope": "full",
+      "alpha": 0.85,
+      "scorer": "dense_bm25_zfusion"
+    },
+    {
+      "name": "bm25_single_2-3-1_full_alpha0.80",
+      "description": "Full-candidate BM25 fusion for single_2-3-1; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.106,
+            "ci95": {
+              "low": 0.088,
+              "high": 0.12402499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.107,
+            "ci95": {
+              "low": 0.089,
+              "high": 0.12502499999999997
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.242,
+            "ci95": {
+              "low": 0.216975,
+              "high": 0.268
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.18533751407866533,
+            "ci95": {
+              "low": 0.1649068558933937,
+              "high": 0.20619372258170318
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.317,
+            "ci95": {
+              "low": 0.29,
+              "high": 0.346
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2166720553650579,
+            "ci95": {
+              "low": 0.19618486624249362,
+              "high": 0.23793782562767749
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.436,
+            "ci95": {
+              "low": 0.405,
+              "high": 0.466
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2546488314734301,
+            "ci95": {
+              "low": 0.23310264344818102,
+              "high": 0.2754142964898978
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.547,
+            "ci95": {
+              "low": 0.514,
+              "high": 0.578
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.28295541869235274,
+            "ci95": {
+              "low": 0.2619232654511791,
+              "high": 0.30211753013784576
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.666,
+            "ci95": {
+              "low": 0.636975,
+              "high": 0.696
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3070003927821086,
+            "ci95": {
+              "low": 0.2876399276899807,
+              "high": 0.32520489199941216
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.106,
+        "ndcg_any@1": 0.107,
+        "recall_all@3": 0.242,
+        "ndcg_any@3": 0.18533751407866533,
+        "recall_all@5": 0.317,
+        "ndcg_any@5": 0.2166720553650579,
+        "recall_all@10": 0.436,
+        "ndcg_any@10": 0.2546488314734301,
+        "recall_all@20": 0.547,
+        "ndcg_any@20": 0.28295541869235274,
+        "recall_all@50": 0.666,
+        "ndcg_any@50": 0.3070003927821086,
+        "mrr": 0.2099729170487009
+      },
+      "phase": "bm25_fusion",
+      "base": "single_2-3-1",
+      "scope": "full",
+      "alpha": 0.8,
+      "scorer": "dense_bm25_zfusion"
+    },
+    {
+      "name": "bm25_k3_key_assoc_topic_vector_average_full_alpha0.70",
+      "description": "Full-candidate BM25 fusion for k3_key_assoc_topic_vector_average; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.124,
+            "ci95": {
+              "low": 0.105,
+              "high": 0.144
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.124,
+            "ci95": {
+              "low": 0.105,
+              "high": 0.144
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.242,
+            "ci95": {
+              "low": 0.216,
+              "high": 0.269
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19267664024163048,
+            "ci95": {
+              "low": 0.17072373039309258,
+              "high": 0.21393614712478679
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.315,
+            "ci95": {
+              "low": 0.285975,
+              "high": 0.344
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.22250871966746322,
+            "ci95": {
+              "low": 0.20012741769409637,
+              "high": 0.24404050615586662
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.439,
+            "ci95": {
+              "low": 0.409,
+              "high": 0.46902499999999997
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2632026340093178,
+            "ci95": {
+              "low": 0.24115106445516973,
+              "high": 0.28465354623971606
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.576,
+            "ci95": {
+              "low": 0.544,
+              "high": 0.608
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.2975062417832539,
+            "ci95": {
+              "low": 0.276316639934397,
+              "high": 0.3179508153484313
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.741,
+            "ci95": {
+              "low": 0.716,
+              "high": 0.768025
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.33019223459430985,
+            "ci95": {
+              "low": 0.31079838026005446,
+              "high": 0.34900524331394905
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.124,
+        "ndcg_any@1": 0.124,
+        "recall_all@3": 0.242,
+        "ndcg_any@3": 0.19267664024163048,
+        "recall_all@5": 0.315,
+        "ndcg_any@5": 0.22250871966746322,
+        "recall_all@10": 0.439,
+        "ndcg_any@10": 0.2632026340093178,
+        "recall_all@20": 0.576,
+        "ndcg_any@20": 0.2975062417832539,
+        "recall_all@50": 0.741,
+        "ndcg_any@50": 0.33019223459430985,
+        "mrr": 0.22267169341171905
+      },
+      "phase": "bm25_fusion",
+      "base": "k3_key_assoc_topic_vector_average",
+      "scope": "full",
+      "alpha": 0.7,
+      "scorer": "dense_bm25_zfusion"
+    },
+    {
+      "name": "bm25_single_2-3-1_top20_alpha0.70",
+      "description": "BM25 fusion inside dense top20 shortlist for single_2-3-1; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.105,
+            "ci95": {
+              "low": 0.087,
+              "high": 0.12302499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.106,
+            "ci95": {
+              "low": 0.088,
+              "high": 0.125
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.243,
+            "ci95": {
+              "low": 0.218,
+              "high": 0.271
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.18600994540732863,
+            "ci95": {
+              "low": 0.16483370858916016,
+              "high": 0.20760529045612566
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.315,
+            "ci95": {
+              "low": 0.289,
+              "high": 0.34402499999999997
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.21617524170416294,
+            "ci95": {
+              "low": 0.1959701716958565,
+              "high": 0.2385749602086855
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.432,
+            "ci95": {
+              "low": 0.401975,
+              "high": 0.464
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.25386527613912085,
+            "ci95": {
+              "low": 0.23336872843874262,
+              "high": 0.27496556063071637
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.545,
+            "ci95": {
+              "low": 0.515,
+              "high": 0.577
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.2828656737643861,
+            "ci95": {
+              "low": 0.26208809384204873,
+              "high": 0.3033722160441762
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.675,
+            "ci95": {
+              "low": 0.646,
+              "high": 0.706
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3087784610080555,
+            "ci95": {
+              "low": 0.29002974758426253,
+              "high": 0.32744361014879114
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.105,
+        "ndcg_any@1": 0.106,
+        "recall_all@3": 0.243,
+        "ndcg_any@3": 0.18600994540732863,
+        "recall_all@5": 0.315,
+        "ndcg_any@5": 0.21617524170416294,
+        "recall_all@10": 0.432,
+        "ndcg_any@10": 0.25386527613912085,
+        "recall_all@20": 0.545,
+        "ndcg_any@20": 0.2828656737643861,
+        "recall_all@50": 0.675,
+        "ndcg_any@50": 0.3087784610080555,
+        "mrr": 0.2103996042503428
+      },
+      "phase": "bm25_fusion",
+      "base": "single_2-3-1",
+      "scope": "vector_top20",
+      "alpha": 0.7,
+      "scorer": "dense_top20_bm25_zfusion"
+    },
+    {
+      "name": "bm25_single_2-3-1_full_alpha0.75",
+      "description": "Full-candidate BM25 fusion for single_2-3-1; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.104,
+            "ci95": {
+              "low": 0.086,
+              "high": 0.12202499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.104,
+            "ci95": {
+              "low": 0.086,
+              "high": 0.12202499999999998
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.237,
+            "ci95": {
+              "low": 0.212,
+              "high": 0.265
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.18083157762518548,
+            "ci95": {
+              "low": 0.15950872315455658,
+              "high": 0.20077108795541096
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.313,
+            "ci95": {
+              "low": 0.286,
+              "high": 0.343
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.21270252192990421,
+            "ci95": {
+              "low": 0.19280765417311502,
+              "high": 0.23342784391391433
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.417,
+            "ci95": {
+              "low": 0.385,
+              "high": 0.447025
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.24637989447290193,
+            "ci95": {
+              "low": 0.22557446475216603,
+              "high": 0.26742059989909345
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.546,
+            "ci95": {
+              "low": 0.514,
+              "high": 0.577
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.2793013180438702,
+            "ci95": {
+              "low": 0.2591451140604414,
+              "high": 0.298140056482111
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.661,
+            "ci95": {
+              "low": 0.63,
+              "high": 0.691
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.30235283038031674,
+            "ci95": {
+              "low": 0.28276433414141083,
+              "high": 0.3205409676145445
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.104,
+        "ndcg_any@1": 0.104,
+        "recall_all@3": 0.237,
+        "ndcg_any@3": 0.18083157762518548,
+        "recall_all@5": 0.313,
+        "ndcg_any@5": 0.21270252192990421,
+        "recall_all@10": 0.417,
+        "ndcg_any@10": 0.24637989447290193,
+        "recall_all@20": 0.546,
+        "ndcg_any@20": 0.2793013180438702,
+        "recall_all@50": 0.661,
+        "ndcg_any@50": 0.30235283038031674,
+        "mrr": 0.20558519565188965
+      },
+      "phase": "bm25_fusion",
+      "base": "single_2-3-1",
+      "scope": "full",
+      "alpha": 0.75,
+      "scorer": "dense_bm25_zfusion"
+    },
+    {
+      "name": "bm25_single_2-3-1_top20_alpha0.85",
+      "description": "BM25 fusion inside dense top20 shortlist for single_2-3-1; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.113,
+            "ci95": {
+              "low": 0.094,
+              "high": 0.132
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.114,
+            "ci95": {
+              "low": 0.095,
+              "high": 0.133
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.246,
+            "ci95": {
+              "low": 0.22,
+              "high": 0.273025
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19020064787161403,
+            "ci95": {
+              "low": 0.16852486298625777,
+              "high": 0.21170695342183873
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.312,
+            "ci95": {
+              "low": 0.285975,
+              "high": 0.342
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2178695323216857,
+            "ci95": {
+              "low": 0.1969592989603257,
+              "high": 0.24030381861631844
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.435,
+            "ci95": {
+              "low": 0.406,
+              "high": 0.465
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2575242840586514,
+            "ci95": {
+              "low": 0.23526489810623769,
+              "high": 0.27887144939169495
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.545,
+            "ci95": {
+              "low": 0.515,
+              "high": 0.577
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.2854992870021357,
+            "ci95": {
+              "low": 0.26464658012500153,
+              "high": 0.3053628478647006
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.675,
+            "ci95": {
+              "low": 0.646,
+              "high": 0.706
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.31141207424580514,
+            "ci95": {
+              "low": 0.2915543017354275,
+              "high": 0.3298468145176698
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.113,
+        "ndcg_any@1": 0.114,
+        "recall_all@3": 0.246,
+        "ndcg_any@3": 0.19020064787161403,
+        "recall_all@5": 0.312,
+        "ndcg_any@5": 0.2178695323216857,
+        "recall_all@10": 0.435,
+        "ndcg_any@10": 0.2575242840586514,
+        "recall_all@20": 0.545,
+        "ndcg_any@20": 0.2854992870021357,
+        "recall_all@50": 0.675,
+        "ndcg_any@50": 0.31141207424580514,
+        "mrr": 0.21406478887651814
+      },
+      "phase": "bm25_fusion",
+      "base": "single_2-3-1",
+      "scope": "vector_top20",
+      "alpha": 0.85,
+      "scorer": "dense_top20_bm25_zfusion"
+    },
+    {
+      "name": "bm25_single_2-3-1_full_alpha0.90",
+      "description": "Full-candidate BM25 fusion for single_2-3-1; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.107,
+            "ci95": {
+              "low": 0.088,
+              "high": 0.126
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.108,
+            "ci95": {
+              "low": 0.09,
+              "high": 0.127
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.25,
+            "ci95": {
+              "low": 0.224,
+              "high": 0.278
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.1897243668858999,
+            "ci95": {
+              "low": 0.1695194398652722,
+              "high": 0.21115327057273367
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.312,
+            "ci95": {
+              "low": 0.286,
+              "high": 0.34
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.21580201635619456,
+            "ci95": {
+              "low": 0.19559564636551194,
+              "high": 0.23703414247268917
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.439,
+            "ci95": {
+              "low": 0.408,
+              "high": 0.46902499999999997
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.25691170254087914,
+            "ci95": {
+              "low": 0.2360264951144413,
+              "high": 0.2764463211127234
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.551,
+            "ci95": {
+              "low": 0.52,
+              "high": 0.582
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.28521806594776283,
+            "ci95": {
+              "low": 0.264624869410214,
+              "high": 0.30483261305612475
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.679,
+            "ci95": {
+              "low": 0.650975,
+              "high": 0.708
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3107667629443538,
+            "ci95": {
+              "low": 0.2918433847984759,
+              "high": 0.3293925277387958
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.107,
+        "ndcg_any@1": 0.108,
+        "recall_all@3": 0.25,
+        "ndcg_any@3": 0.1897243668858999,
+        "recall_all@5": 0.312,
+        "ndcg_any@5": 0.21580201635619456,
+        "recall_all@10": 0.439,
+        "ndcg_any@10": 0.25691170254087914,
+        "recall_all@20": 0.551,
+        "ndcg_any@20": 0.28521806594776283,
+        "recall_all@50": 0.679,
+        "ndcg_any@50": 0.3107667629443538,
+        "mrr": 0.2118658181336341
+      },
+      "phase": "bm25_fusion",
+      "base": "single_2-3-1",
+      "scope": "full",
+      "alpha": 0.9,
+      "scorer": "dense_bm25_zfusion"
+    },
+    {
+      "name": "bm25_single_2-3-1_top20_alpha0.75",
+      "description": "BM25 fusion inside dense top20 shortlist for single_2-3-1; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.107,
+            "ci95": {
+              "low": 0.088,
+              "high": 0.126
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.108,
+            "ci95": {
+              "low": 0.089,
+              "high": 0.12702499999999997
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.241,
+            "ci95": {
+              "low": 0.216,
+              "high": 0.269
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.1850934371323284,
+            "ci95": {
+              "low": 0.16487145053987287,
+              "high": 0.20690328397255042
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.311,
+            "ci95": {
+              "low": 0.284975,
+              "high": 0.341
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.21474797031972678,
+            "ci95": {
+              "low": 0.1953854146436995,
+              "high": 0.23698822569661632
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.436,
+            "ci95": {
+              "low": 0.406975,
+              "high": 0.466025
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.25488807640351163,
+            "ci95": {
+              "low": 0.23403238048323596,
+              "high": 0.2769926234196494
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.545,
+            "ci95": {
+              "low": 0.515,
+              "high": 0.577
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.28287649188432906,
+            "ci95": {
+              "low": 0.26279084012279585,
+              "high": 0.3029548847482679
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.675,
+            "ci95": {
+              "low": 0.646,
+              "high": 0.706
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3087892791279986,
+            "ci95": {
+              "low": 0.2899310212110764,
+              "high": 0.3275773471688835
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.107,
+        "ndcg_any@1": 0.108,
+        "recall_all@3": 0.241,
+        "ndcg_any@3": 0.1850934371323284,
+        "recall_all@5": 0.311,
+        "ndcg_any@5": 0.21474797031972678,
+        "recall_all@10": 0.436,
+        "ndcg_any@10": 0.25488807640351163,
+        "recall_all@20": 0.545,
+        "ndcg_any@20": 0.28287649188432906,
+        "recall_all@50": 0.675,
+        "ndcg_any@50": 0.3087892791279986,
+        "mrr": 0.21048366664907234
+      },
+      "phase": "bm25_fusion",
+      "base": "single_2-3-1",
+      "scope": "vector_top20",
+      "alpha": 0.75,
+      "scorer": "dense_top20_bm25_zfusion"
+    },
+    {
+      "name": "bm25_single_2-3-1_top20_alpha0.80",
+      "description": "BM25 fusion inside dense top20 shortlist for single_2-3-1; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.109,
+            "ci95": {
+              "low": 0.09,
+              "high": 0.128
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.11,
+            "ci95": {
+              "low": 0.091975,
+              "high": 0.13
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.248,
+            "ci95": {
+              "low": 0.222975,
+              "high": 0.275025
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.18933157762518552,
+            "ci95": {
+              "low": 0.16884602621246092,
+              "high": 0.2113816156093856
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.308,
+            "ci95": {
+              "low": 0.282,
+              "high": 0.337
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2147231689826888,
+            "ci95": {
+              "low": 0.19386063538971363,
+              "high": 0.2372034418626471
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.437,
+            "ci95": {
+              "low": 0.408,
+              "high": 0.468025
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.25637797701281084,
+            "ci95": {
+              "low": 0.2346129725071566,
+              "high": 0.2775709604406024
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.545,
+            "ci95": {
+              "low": 0.515,
+              "high": 0.577
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.28388687675000246,
+            "ci95": {
+              "low": 0.2633272815340783,
+              "high": 0.3039459756200269
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.675,
+            "ci95": {
+              "low": 0.646,
+              "high": 0.706
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.30979966399367187,
+            "ci95": {
+              "low": 0.2903601268967996,
+              "high": 0.3284503859361289
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.109,
+        "ndcg_any@1": 0.11,
+        "recall_all@3": 0.248,
+        "ndcg_any@3": 0.18933157762518552,
+        "recall_all@5": 0.308,
+        "ndcg_any@5": 0.2147231689826888,
+        "recall_all@10": 0.437,
+        "ndcg_any@10": 0.25637797701281084,
+        "recall_all@20": 0.545,
+        "ndcg_any@20": 0.28388687675000246,
+        "recall_all@50": 0.675,
+        "ndcg_any@50": 0.30979966399367187,
+        "mrr": 0.21183837691129037
+      },
+      "phase": "bm25_fusion",
+      "base": "single_2-3-1",
+      "scope": "vector_top20",
+      "alpha": 0.8,
+      "scorer": "dense_top20_bm25_zfusion"
+    },
+    {
+      "name": "bm25_single_2-3-1_top20_alpha0.90",
+      "description": "BM25 fusion inside dense top20 shortlist for single_2-3-1; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.111,
+            "ci95": {
+              "low": 0.091,
+              "high": 0.12902499999999997
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.112,
+            "ci95": {
+              "low": 0.092,
+              "high": 0.131
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.251,
+            "ci95": {
+              "low": 0.225975,
+              "high": 0.279
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.1920934371323284,
+            "ci95": {
+              "low": 0.1717982043495604,
+              "high": 0.21344170957040712
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.305,
+            "ci95": {
+              "low": 0.279,
+              "high": 0.333
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.21481332163971364,
+            "ci95": {
+              "low": 0.19482612257776608,
+              "high": 0.23663044949004508
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.437,
+            "ci95": {
+              "low": 0.407,
+              "high": 0.468025
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2575339352944043,
+            "ci95": {
+              "low": 0.2361906090369559,
+              "high": 0.27857551176027556
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.545,
+            "ci95": {
+              "low": 0.515,
+              "high": 0.577
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.28483494724964137,
+            "ci95": {
+              "low": 0.26458048522361705,
+              "high": 0.3044627042376224
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.675,
+            "ci95": {
+              "low": 0.646,
+              "high": 0.706
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.31074773449331083,
+            "ci95": {
+              "low": 0.29158115270584567,
+              "high": 0.3291115875609681
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.111,
+        "ndcg_any@1": 0.112,
+        "recall_all@3": 0.251,
+        "ndcg_any@3": 0.1920934371323284,
+        "recall_all@5": 0.305,
+        "ndcg_any@5": 0.21481332163971364,
+        "recall_all@10": 0.437,
+        "ndcg_any@10": 0.2575339352944043,
+        "recall_all@20": 0.545,
+        "ndcg_any@20": 0.28483494724964137,
+        "recall_all@50": 0.675,
+        "ndcg_any@50": 0.31074773449331083,
+        "mrr": 0.21322736165805375
+      },
+      "phase": "bm25_fusion",
+      "base": "single_2-3-1",
+      "scope": "vector_top20",
+      "alpha": 0.9,
+      "scorer": "dense_top20_bm25_zfusion"
+    },
+    {
+      "name": "bm25_single_2-3-1_full_alpha0.70",
+      "description": "Full-candidate BM25 fusion for single_2-3-1; alpha weights dense",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.104,
+            "ci95": {
+              "low": 0.086,
+              "high": 0.12202499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.104,
+            "ci95": {
+              "low": 0.086,
+              "high": 0.12202499999999998
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.225,
+            "ci95": {
+              "low": 0.20195000000000002,
+              "high": 0.25
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.1744210058036651,
+            "ci95": {
+              "low": 0.15429685292866754,
+              "high": 0.1947018144267913
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.304,
+            "ci95": {
+              "low": 0.276,
+              "high": 0.332
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.20703128242939267,
+            "ci95": {
+              "low": 0.1866788865775922,
+              "high": 0.228077453252526
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.412,
+            "ci95": {
+              "low": 0.379975,
+              "high": 0.444
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.24185298345286793,
+            "ci95": {
+              "low": 0.2208850587490691,
+              "high": 0.262695424540515
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.532,
+            "ci95": {
+              "low": 0.498,
+              "high": 0.562
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.2722434875313436,
+            "ci95": {
+              "low": 0.25114812349319776,
+              "high": 0.2925645803526095
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.648,
+            "ci95": {
+              "low": 0.6179749999999999,
+              "high": 0.678
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.29558928944370555,
+            "ci95": {
+              "low": 0.27633505950478005,
+              "high": 0.31367528570041653
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.104,
+        "ndcg_any@1": 0.104,
+        "recall_all@3": 0.225,
+        "ndcg_any@3": 0.1744210058036651,
+        "recall_all@5": 0.304,
+        "ndcg_any@5": 0.20703128242939267,
+        "recall_all@10": 0.412,
+        "ndcg_any@10": 0.24185298345286793,
+        "recall_all@20": 0.532,
+        "ndcg_any@20": 0.2722434875313436,
+        "recall_all@50": 0.648,
+        "ndcg_any@50": 0.29558928944370555,
+        "mrr": 0.2007460009903818
+      },
+      "phase": "bm25_fusion",
+      "base": "single_2-3-1",
+      "scope": "full",
+      "alpha": 0.7,
+      "scorer": "dense_bm25_zfusion"
+    }
+  ],
+  "elapsed_seconds": 11.145608583989087,
+  "bm25_fusion": {
+    "alphas": [
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9
+    ],
+    "bases": [
+      "single_2-3-1",
+      "k3_key_assoc_topic_vector_average"
+    ],
+    "scopes": [
+      "full",
+      "vector_top20"
+    ]
+  }
+}

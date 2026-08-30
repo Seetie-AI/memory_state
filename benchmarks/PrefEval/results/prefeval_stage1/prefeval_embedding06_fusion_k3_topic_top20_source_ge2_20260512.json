@@ -1,0 +1,2178 @@
+{
+  "created_utc": "2026-05-13T02:02:35.194299+00:00",
+  "analysis": "prefeval_embedding_fusion",
+  "inputs": {
+    "prepared_jsonl": "/Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/data/implicit_persona_n1000_pruned_hidden_l28_l29_l30_l31_logits256_promptreps128_20260512.jsonl",
+    "hidden_tensor_dir": "/Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/tensors/hidden_implicit_persona_n1000_a3f7b8b21e_59d5500483_41ed8fec5e_logits256_promptreps1x128",
+    "hidden_model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-9B-MLX-4bit",
+    "hidden_cache_has_data_fingerprint": false,
+    "embedding_cache_dir": "/Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/tensors/qwen3_embedding_implicit_persona_n1000_d19e54c734",
+    "embedding_model_path": "models/Qwen3-Embedding-0.6B-4bit-DWQ",
+    "embedding_backend": "mlx",
+    "shortlist_size": 20,
+    "source_min": 2,
+    "bootstrap_samples": 1000,
+    "top_k": 50
+  },
+  "task_summary": {
+    "task": "implicit_persona",
+    "dataset_id": "siyanzhao/prefeval_implicit_persona",
+    "items": 1000,
+    "candidate_count": 1000,
+    "query_count": 1000,
+    "gold_policy": "prepared_jsonl_gold_ids"
+  },
+  "notes": [
+    "External embeddings are used only as a score matrix/source, not concatenated with 9B hidden vectors.",
+    "Primary K3 dense baseline is 2-3-1 + 2-5 + 2-1 with vector_average_component_norm.",
+    "source_count>=2 experiments use per-source top-k lists, with prompt components kept as separate sources."
+  ],
+  "rows": [
+    {
+      "name": "k3_bm25_embedding_full_d0.75_b0.20_e0.05",
+      "description": "Full-corpus z-score fusion: K3 dense 0.75 + BM25 0.20 + embedding 0.05.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.114,
+            "ci95": {
+              "low": 0.095,
+              "high": 0.133
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.114,
+            "ci95": {
+              "low": 0.095,
+              "high": 0.133
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.257,
+            "ci95": {
+              "low": 0.23,
+              "high": 0.284
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19558159102500225,
+            "ci95": {
+              "low": 0.17420023510401944,
+              "high": 0.21622748672161007
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.352,
+            "ci95": {
+              "low": 0.323975,
+              "high": 0.382025
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23456761900506512,
+            "ci95": {
+              "low": 0.21351563442927998,
+              "high": 0.25542924824783203
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.459,
+            "ci95": {
+              "low": 0.428,
+              "high": 0.49
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.26927288727443266,
+            "ci95": {
+              "low": 0.24838993302803525,
+              "high": 0.28956563319843837
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.599,
+            "ci95": {
+              "low": 0.568,
+              "high": 0.63
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.30447764696166985,
+            "ci95": {
+              "low": 0.2845304725345711,
+              "high": 0.3247164179972051
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.76,
+            "ci95": {
+              "low": 0.734,
+              "high": 0.787
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3368886429907832,
+            "ci95": {
+              "low": 0.31862022887553776,
+              "high": 0.3552805938157503
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.114,
+        "ndcg_any@1": 0.114,
+        "recall_all@3": 0.257,
+        "ndcg_any@3": 0.19558159102500225,
+        "recall_all@5": 0.352,
+        "ndcg_any@5": 0.23456761900506512,
+        "recall_all@10": 0.459,
+        "ndcg_any@10": 0.26927288727443266,
+        "recall_all@20": 0.599,
+        "ndcg_any@20": 0.30447764696166985,
+        "recall_all@50": 0.76,
+        "ndcg_any@50": 0.3368886429907832,
+        "mrr": 0.22537730938214146
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_score_fusion",
+      "scope": "full",
+      "dense_weight": 0.75,
+      "bm25_weight": 0.2,
+      "embedding_weight": 0.05
+    },
+    {
+      "name": "five_source_top20_source_ge2_rerank_d0.70_b0.20_e0.10",
+      "description": "Five-source candidate screening with same score rerank: source_count>=2, K3 dense 0.70 + BM25 0.20 + embedding 0.10.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.116,
+            "ci95": {
+              "low": 0.097,
+              "high": 0.13502499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.116,
+            "ci95": {
+              "low": 0.097,
+              "high": 0.13502499999999998
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.255,
+            "ci95": {
+              "low": 0.228,
+              "high": 0.283
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19531973151785934,
+            "ci95": {
+              "low": 0.1742690202454484,
+              "high": 0.21641520055035982
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.351,
+            "ci95": {
+              "low": 0.322,
+              "high": 0.382
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23469261230515673,
+            "ci95": {
+              "low": 0.21351689717051267,
+              "high": 0.2561162433037453
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.464,
+            "ci95": {
+              "low": 0.433,
+              "high": 0.493
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.27121595974417845,
+            "ci95": {
+              "low": 0.24955711251480064,
+              "high": 0.29152197834510524
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.61,
+            "ci95": {
+              "low": 0.582,
+              "high": 0.639
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.308014159353203,
+            "ci95": {
+              "low": 0.288285832540002,
+              "high": 0.32732880951929827
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.775,
+            "ci95": {
+              "low": 0.751,
+              "high": 0.801
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.34133018590568054,
+            "ci95": {
+              "low": 0.3233594452487073,
+              "high": 0.3591467688618985
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.116,
+        "ndcg_any@1": 0.116,
+        "recall_all@3": 0.255,
+        "ndcg_any@3": 0.19531973151785934,
+        "recall_all@5": 0.351,
+        "ndcg_any@5": 0.23469261230515673,
+        "recall_all@10": 0.464,
+        "ndcg_any@10": 0.27121595974417845,
+        "recall_all@20": 0.61,
+        "ndcg_any@20": 0.308014159353203,
+        "recall_all@50": 0.775,
+        "ndcg_any@50": 0.34133018590568054,
+        "mrr": 0.2272606915968362
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_topk_source_score_fusion",
+      "source_count": 5,
+      "source_rule": "source_ge2",
+      "shortlist_size": 20,
+      "dense_weight": 0.7,
+      "bm25_weight": 0.2,
+      "embedding_weight": 0.1,
+      "shortlist_stats": {
+        "avg_shortlist_size": 22.088,
+        "min_shortlist_size": 14,
+        "max_shortlist_size": 32,
+        "oracle_hit": 0.635,
+        "min_sources": 2,
+        "per_source_topk": 20
+      }
+    },
+    {
+      "name": "five_source_top20_source_ge2_rerank_d0.75_b0.20_e0.05",
+      "description": "Five-source candidate screening with same score rerank: source_count>=2, K3 dense 0.75 + BM25 0.20 + embedding 0.05.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.117,
+            "ci95": {
+              "low": 0.098,
+              "high": 0.136
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.117,
+            "ci95": {
+              "low": 0.098,
+              "high": 0.136
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.258,
+            "ci95": {
+              "low": 0.232,
+              "high": 0.28402499999999997
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19731973151785934,
+            "ci95": {
+              "low": 0.17605459876687715,
+              "high": 0.21856083688750214
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.348,
+            "ci95": {
+              "low": 0.319,
+              "high": 0.378025
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23424002420923296,
+            "ci95": {
+              "low": 0.21256256856004432,
+              "high": 0.25543437473190445
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.458,
+            "ci95": {
+              "low": 0.427,
+              "high": 0.489
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2699841730352982,
+            "ci95": {
+              "low": 0.24902974055297178,
+              "high": 0.2906111696751641
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.607,
+            "ci95": {
+              "low": 0.5779749999999999,
+              "high": 0.636
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.30763856851413607,
+            "ci95": {
+              "low": 0.28775674216253516,
+              "high": 0.3272071550083971
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.764,
+            "ci95": {
+              "low": 0.7399749999999999,
+              "high": 0.790025
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3394962266547436,
+            "ci95": {
+              "low": 0.3217047637048523,
+              "high": 0.35724953031842793
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.117,
+        "ndcg_any@1": 0.117,
+        "recall_all@3": 0.258,
+        "ndcg_any@3": 0.19731973151785934,
+        "recall_all@5": 0.348,
+        "ndcg_any@5": 0.23424002420923296,
+        "recall_all@10": 0.458,
+        "ndcg_any@10": 0.2699841730352982,
+        "recall_all@20": 0.607,
+        "ndcg_any@20": 0.30763856851413607,
+        "recall_all@50": 0.764,
+        "ndcg_any@50": 0.3394962266547436,
+        "mrr": 0.2274761667271971
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_topk_source_score_fusion",
+      "source_count": 5,
+      "source_rule": "source_ge2",
+      "shortlist_size": 20,
+      "dense_weight": 0.75,
+      "bm25_weight": 0.2,
+      "embedding_weight": 0.05,
+      "shortlist_stats": {
+        "avg_shortlist_size": 22.088,
+        "min_shortlist_size": 14,
+        "max_shortlist_size": 32,
+        "oracle_hit": 0.635,
+        "min_sources": 2,
+        "per_source_topk": 20
+      }
+    },
+    {
+      "name": "k3_bm25_embedding_full_d0.70_b0.20_e0.10",
+      "description": "Full-corpus z-score fusion: K3 dense 0.70 + BM25 0.20 + embedding 0.10.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.116,
+            "ci95": {
+              "low": 0.097,
+              "high": 0.135
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.116,
+            "ci95": {
+              "low": 0.097,
+              "high": 0.135
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.257,
+            "ci95": {
+              "low": 0.23,
+              "high": 0.285
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.1964506612714308,
+            "ci95": {
+              "low": 0.17542575630643065,
+              "high": 0.21784404350750228
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.348,
+            "ci95": {
+              "low": 0.318,
+              "high": 0.378
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23375780677003893,
+            "ci95": {
+              "low": 0.21200860304381514,
+              "high": 0.2548541927203555
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.464,
+            "ci95": {
+              "low": 0.433,
+              "high": 0.494
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.27144665913580135,
+            "ci95": {
+              "low": 0.2504881836176594,
+              "high": 0.2921382393573745
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.606,
+            "ci95": {
+              "low": 0.5759749999999999,
+              "high": 0.637
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3069649575670484,
+            "ci95": {
+              "low": 0.28744729455559864,
+              "high": 0.32719980200088555
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.775,
+            "ci95": {
+              "low": 0.751975,
+              "high": 0.8
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3408510787471123,
+            "ci95": {
+              "low": 0.3227153583903711,
+              "high": 0.3590700259817769
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.116,
+        "ndcg_any@1": 0.116,
+        "recall_all@3": 0.257,
+        "ndcg_any@3": 0.1964506612714308,
+        "recall_all@5": 0.348,
+        "ndcg_any@5": 0.23375780677003893,
+        "recall_all@10": 0.464,
+        "ndcg_any@10": 0.27144665913580135,
+        "recall_all@20": 0.606,
+        "ndcg_any@20": 0.3069649575670484,
+        "recall_all@50": 0.775,
+        "ndcg_any@50": 0.3408510787471123,
+        "mrr": 0.22704238688585088
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_score_fusion",
+      "scope": "full",
+      "dense_weight": 0.7,
+      "bm25_weight": 0.2,
+      "embedding_weight": 0.1
+    },
+    {
+      "name": "k3_bm25_dense_top20_d0.75_b0.25",
+      "description": "Dense top-20 shortlist reranked by K3 dense 0.75 + BM25 0.25.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.122,
+            "ci95": {
+              "low": 0.102,
+              "high": 0.14102499999999996
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.122,
+            "ci95": {
+              "low": 0.102,
+              "high": 0.14102499999999996
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.264,
+            "ci95": {
+              "low": 0.236975,
+              "high": 0.292
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.2025578720107164,
+            "ci95": {
+              "low": 0.17994888234535933,
+              "high": 0.22360680435705596
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.344,
+            "ci95": {
+              "low": 0.315,
+              "high": 0.372025
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23521522287219493,
+            "ci95": {
+              "low": 0.2122991406692877,
+              "high": 0.25675740173500566
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.461,
+            "ci95": {
+              "low": 0.431,
+              "high": 0.491
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.27302354114521615,
+            "ci95": {
+              "low": 0.2516555521394538,
+              "high": 0.29362649738768737
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.605,
+            "ci95": {
+              "low": 0.575,
+              "high": 0.636
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3093752050089921,
+            "ci95": {
+              "low": 0.2892328663356779,
+              "high": 0.33022268724771914
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.744,
+            "ci95": {
+              "low": 0.717,
+              "high": 0.772
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.33743985856144376,
+            "ci95": {
+              "low": 0.3186914430321878,
+              "high": 0.35685822348418145
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.122,
+        "ndcg_any@1": 0.122,
+        "recall_all@3": 0.264,
+        "ndcg_any@3": 0.2025578720107164,
+        "recall_all@5": 0.344,
+        "ndcg_any@5": 0.23521522287219493,
+        "recall_all@10": 0.461,
+        "ndcg_any@10": 0.27302354114521615,
+        "recall_all@20": 0.605,
+        "ndcg_any@20": 0.3093752050089921,
+        "recall_all@50": 0.744,
+        "ndcg_any@50": 0.33743985856144376,
+        "mrr": 0.22970036449908832
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_fusion_reference",
+      "scope": "dense_topk",
+      "shortlist_size": 20,
+      "dense_weight": 0.75,
+      "bm25_weight": 0.25
+    },
+    {
+      "name": "k3_key_assoc_topic_vector_average",
+      "description": "Current clean K3 dense baseline: 2-3-1 + 2-5 + 2-1, vector_average_component_norm.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.126,
+            "ci95": {
+              "low": 0.105,
+              "high": 0.146
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.126,
+            "ci95": {
+              "low": 0.105,
+              "high": 0.146
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.265,
+            "ci95": {
+              "low": 0.239,
+              "high": 0.292
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.20466508275000206,
+            "ci95": {
+              "low": 0.1830903440962517,
+              "high": 0.226867169546431
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.339,
+            "ci95": {
+              "low": 0.309975,
+              "high": 0.367
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23491366926639562,
+            "ci95": {
+              "low": 0.2126950341674781,
+              "high": 0.2570224396945432
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.462,
+            "ci95": {
+              "low": 0.43195,
+              "high": 0.493
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2746550697472455,
+            "ci95": {
+              "low": 0.2528079730566589,
+              "high": 0.29540245173672613
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.605,
+            "ci95": {
+              "low": 0.575,
+              "high": 0.636
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.31054422438571255,
+            "ci95": {
+              "low": 0.29028033296328115,
+              "high": 0.33153970350562856
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.744,
+            "ci95": {
+              "low": 0.717,
+              "high": 0.772
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.33860887793816424,
+            "ci95": {
+              "low": 0.3187082322644213,
+              "high": 0.3579451953192427
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.126,
+        "ndcg_any@1": 0.126,
+        "recall_all@3": 0.265,
+        "ndcg_any@3": 0.20466508275000206,
+        "recall_all@5": 0.339,
+        "ndcg_any@5": 0.23491366926639562,
+        "recall_all@10": 0.462,
+        "ndcg_any@10": 0.2746550697472455,
+        "recall_all@20": 0.605,
+        "ndcg_any@20": 0.31054422438571255,
+        "recall_all@50": 0.744,
+        "ndcg_any@50": 0.33860887793816424,
+        "mrr": 0.23144255533199123
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_fusion_reference",
+      "scorer": "vector_average_component_norm"
+    },
+    {
+      "name": "five_source_top20_source_ge2_rerank_d0.75_b0.25",
+      "description": "Five-source candidate screening: 3 prompt sources + BM25 + external embedding, source_count>=2, rerank=K3/BM25.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.119,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.138
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.119,
+            "ci95": {
+              "low": 0.1,
+              "high": 0.138
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.255,
+            "ci95": {
+              "low": 0.228975,
+              "high": 0.283
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19629601250357348,
+            "ci95": {
+              "low": 0.174760979440002,
+              "high": 0.21732032449321648
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.339,
+            "ci95": {
+              "low": 0.31,
+              "high": 0.369
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23067606959734563,
+            "ci95": {
+              "low": 0.21034458417748206,
+              "high": 0.25222713413152875
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.454,
+            "ci95": {
+              "low": 0.423975,
+              "high": 0.486
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.26780271875514744,
+            "ci95": {
+              "low": 0.24641328351400973,
+              "high": 0.2886723638612946
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.605,
+            "ci95": {
+              "low": 0.575,
+              "high": 0.634025
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3058193529795881,
+            "ci95": {
+              "low": 0.2858232058429914,
+              "high": 0.3250537949973026
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.755,
+            "ci95": {
+              "low": 0.73,
+              "high": 0.782025
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.33605498235414927,
+            "ci95": {
+              "low": 0.3176408587131312,
+              "high": 0.3543154681203161
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.119,
+        "ndcg_any@1": 0.119,
+        "recall_all@3": 0.255,
+        "ndcg_any@3": 0.19629601250357348,
+        "recall_all@5": 0.339,
+        "ndcg_any@5": 0.23067606959734563,
+        "recall_all@10": 0.454,
+        "ndcg_any@10": 0.26780271875514744,
+        "recall_all@20": 0.605,
+        "ndcg_any@20": 0.3058193529795881,
+        "recall_all@50": 0.755,
+        "ndcg_any@50": 0.33605498235414927,
+        "mrr": 0.22578187098954794
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_topk_source",
+      "source_count": 5,
+      "source_rule": "source_ge2",
+      "shortlist_size": 20,
+      "shortlist_stats": {
+        "avg_shortlist_size": 22.088,
+        "min_shortlist_size": 14,
+        "max_shortlist_size": 32,
+        "oracle_hit": 0.635,
+        "min_sources": 2,
+        "per_source_topk": 20
+      }
+    },
+    {
+      "name": "four_source_top20_source_ge2_rerank_d0.75_b0.25",
+      "description": "Four-source candidate screening: 3 prompt sources + BM25, source_count>=2, rerank=K3/BM25.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.117,
+            "ci95": {
+              "low": 0.098,
+              "high": 0.137
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.117,
+            "ci95": {
+              "low": 0.098,
+              "high": 0.137
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.254,
+            "ci95": {
+              "low": 0.227975,
+              "high": 0.281
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19479601250357348,
+            "ci95": {
+              "low": 0.17394335649053738,
+              "high": 0.21506173822991287
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.337,
+            "ci95": {
+              "low": 0.307,
+              "high": 0.366
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2289206880426276,
+            "ci95": {
+              "low": 0.207469448273856,
+              "high": 0.24989442630239248
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.446,
+            "ci95": {
+              "low": 0.415975,
+              "high": 0.476
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.26441775608014934,
+            "ci95": {
+              "low": 0.24347404074660406,
+              "high": 0.2850333344421462
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.58,
+            "ci95": {
+              "low": 0.551975,
+              "high": 0.61
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.29872919089786953,
+            "ci95": {
+              "low": 0.27856085325026003,
+              "high": 0.31879796127459215
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.75,
+            "ci95": {
+              "low": 0.723,
+              "high": 0.777
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.332729374281297,
+            "ci95": {
+              "low": 0.3137497073429537,
+              "high": 0.35133748356327305
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.117,
+        "ndcg_any@1": 0.117,
+        "recall_all@3": 0.254,
+        "ndcg_any@3": 0.19479601250357348,
+        "recall_all@5": 0.337,
+        "ndcg_any@5": 0.2289206880426276,
+        "recall_all@10": 0.446,
+        "ndcg_any@10": 0.26441775608014934,
+        "recall_all@20": 0.58,
+        "ndcg_any@20": 0.29872919089786953,
+        "recall_all@50": 0.75,
+        "ndcg_any@50": 0.332729374281297,
+        "mrr": 0.2233891772860598
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_topk_source_baseline",
+      "source_count": 4,
+      "source_rule": "source_ge2",
+      "shortlist_size": 20,
+      "shortlist_stats": {
+        "avg_shortlist_size": 17.946,
+        "min_shortlist_size": 9,
+        "max_shortlist_size": 25,
+        "oracle_hit": 0.568,
+        "min_sources": 2,
+        "per_source_topk": 20
+      }
+    },
+    {
+      "name": "five_source_top20_source_ge2_rerank_d0.65_b0.25_e0.10",
+      "description": "Five-source candidate screening with same score rerank: source_count>=2, K3 dense 0.65 + BM25 0.25 + embedding 0.10.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.123,
+            "ci95": {
+              "low": 0.103975,
+              "high": 0.143
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.123,
+            "ci95": {
+              "low": 0.103975,
+              "high": 0.143
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.254,
+            "ci95": {
+              "low": 0.227,
+              "high": 0.281
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19766508275000202,
+            "ci95": {
+              "low": 0.17614077076035906,
+              "high": 0.2186809500354491
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.336,
+            "ci95": {
+              "low": 0.308,
+              "high": 0.366
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2310523154751108,
+            "ci95": {
+              "low": 0.21014883707838558,
+              "high": 0.25257788510880036
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.462,
+            "ci95": {
+              "low": 0.431,
+              "high": 0.492
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2719848689596451,
+            "ci95": {
+              "low": 0.25073200873265555,
+              "high": 0.2932521984672945
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.61,
+            "ci95": {
+              "low": 0.58,
+              "high": 0.64
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3092607817743026,
+            "ci95": {
+              "low": 0.2892354370445956,
+              "high": 0.3287683049425174
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.774,
+            "ci95": {
+              "low": 0.749,
+              "high": 0.799
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3421488223010499,
+            "ci95": {
+              "low": 0.324092603692096,
+              "high": 0.3607451268928256
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.123,
+        "ndcg_any@1": 0.123,
+        "recall_all@3": 0.254,
+        "ndcg_any@3": 0.19766508275000202,
+        "recall_all@5": 0.336,
+        "ndcg_any@5": 0.2310523154751108,
+        "recall_all@10": 0.462,
+        "ndcg_any@10": 0.2719848689596451,
+        "recall_all@20": 0.61,
+        "ndcg_any@20": 0.3092607817743026,
+        "recall_all@50": 0.774,
+        "ndcg_any@50": 0.3421488223010499,
+        "mrr": 0.22919277374431501
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_topk_source_score_fusion",
+      "source_count": 5,
+      "source_rule": "source_ge2",
+      "shortlist_size": 20,
+      "dense_weight": 0.65,
+      "bm25_weight": 0.25,
+      "embedding_weight": 0.1,
+      "shortlist_stats": {
+        "avg_shortlist_size": 22.088,
+        "min_shortlist_size": 14,
+        "max_shortlist_size": 32,
+        "oracle_hit": 0.635,
+        "min_sources": 2,
+        "per_source_topk": 20
+      }
+    },
+    {
+      "name": "k3_bm25_embedding_full_d0.65_b0.25_e0.10",
+      "description": "Full-corpus z-score fusion: K3 dense 0.65 + BM25 0.25 + embedding 0.10.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.121,
+            "ci95": {
+              "low": 0.102,
+              "high": 0.141
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.121,
+            "ci95": {
+              "low": 0.102,
+              "high": 0.141
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.254,
+            "ci95": {
+              "low": 0.227975,
+              "high": 0.281
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19666508275000205,
+            "ci95": {
+              "low": 0.17537891125321614,
+              "high": 0.21763261066446674
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.336,
+            "ci95": {
+              "low": 0.307,
+              "high": 0.365
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.23000849172427196,
+            "ci95": {
+              "low": 0.20880107267766018,
+              "high": 0.2517377006010266
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.455,
+            "ci95": {
+              "low": 0.424,
+              "high": 0.485025
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.26877606906707985,
+            "ci95": {
+              "low": 0.24733637350561752,
+              "high": 0.290185573183169
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.598,
+            "ci95": {
+              "low": 0.5679749999999999,
+              "high": 0.63
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.30460945220670227,
+            "ci95": {
+              "low": 0.28486760356541374,
+              "high": 0.32460739513935405
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.773,
+            "ci95": {
+              "low": 0.748,
+              "high": 0.8
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3395175217853988,
+            "ci95": {
+              "low": 0.32187068735324714,
+              "high": 0.35791557952588604
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.121,
+        "ndcg_any@1": 0.121,
+        "recall_all@3": 0.254,
+        "ndcg_any@3": 0.19666508275000205,
+        "recall_all@5": 0.336,
+        "ndcg_any@5": 0.23000849172427196,
+        "recall_all@10": 0.455,
+        "ndcg_any@10": 0.26877606906707985,
+        "recall_all@20": 0.598,
+        "ndcg_any@20": 0.30460945220670227,
+        "recall_all@50": 0.773,
+        "ndcg_any@50": 0.3395175217853988,
+        "mrr": 0.22674485246908818
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_score_fusion",
+      "scope": "full",
+      "dense_weight": 0.65,
+      "bm25_weight": 0.25,
+      "embedding_weight": 0.1
+    },
+    {
+      "name": "k3_bm25_full_d0.75_b0.25",
+      "description": "Full-corpus z-score fusion: K3 dense 0.75 + BM25 0.25.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.117,
+            "ci95": {
+              "low": 0.099,
+              "high": 0.136
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.117,
+            "ci95": {
+              "low": 0.099,
+              "high": 0.136
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.251,
+            "ci95": {
+              "low": 0.225,
+              "high": 0.278
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.1930341529964306,
+            "ci95": {
+              "low": 0.17237264937384117,
+              "high": 0.21405905796143074
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.335,
+            "ci95": {
+              "low": 0.306,
+              "high": 0.364
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2275018575918804,
+            "ci95": {
+              "low": 0.20704862315215014,
+              "high": 0.24801536617744885
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.449,
+            "ci95": {
+              "low": 0.418,
+              "high": 0.481
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2645964689127952,
+            "ci95": {
+              "low": 0.24409301692605437,
+              "high": 0.28566480680107953
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.586,
+            "ci95": {
+              "low": 0.555,
+              "high": 0.618
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.298981566024667,
+            "ci95": {
+              "low": 0.2786471393691073,
+              "high": 0.31884229510713596
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.75,
+            "ci95": {
+              "low": 0.723,
+              "high": 0.777
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.33165228875753094,
+            "ci95": {
+              "low": 0.31322440418408576,
+              "high": 0.34955588994623144
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.117,
+        "ndcg_any@1": 0.117,
+        "recall_all@3": 0.251,
+        "ndcg_any@3": 0.1930341529964306,
+        "recall_all@5": 0.335,
+        "ndcg_any@5": 0.2275018575918804,
+        "recall_all@10": 0.449,
+        "ndcg_any@10": 0.2645964689127952,
+        "recall_all@20": 0.586,
+        "ndcg_any@20": 0.298981566024667,
+        "recall_all@50": 0.75,
+        "ndcg_any@50": 0.33165228875753094,
+        "mrr": 0.2222453972322882
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_fusion_reference",
+      "scope": "full",
+      "dense_weight": 0.75,
+      "bm25_weight": 0.25
+    },
+    {
+      "name": "k3_bm25_embedding_full_d0.60_b0.25_e0.15",
+      "description": "Full-corpus z-score fusion: K3 dense 0.60 + BM25 0.25 + embedding 0.15.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.121,
+            "ci95": {
+              "low": 0.101,
+              "high": 0.14002499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.121,
+            "ci95": {
+              "low": 0.101,
+              "high": 0.14002499999999998
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.251,
+            "ci95": {
+              "low": 0.224,
+              "high": 0.28
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19477229348928768,
+            "ci95": {
+              "low": 0.17372098924151957,
+              "high": 0.21569088905741288
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.333,
+            "ci95": {
+              "low": 0.304975,
+              "high": 0.364
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.22811570246355756,
+            "ci95": {
+              "low": 0.20676469050447147,
+              "high": 0.2495576583084822
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.453,
+            "ci95": {
+              "low": 0.423,
+              "high": 0.484
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.26738679336931737,
+            "ci95": {
+              "low": 0.24586570734925187,
+              "high": 0.2884877819468246
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.602,
+            "ci95": {
+              "low": 0.571,
+              "high": 0.634
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3048651143377846,
+            "ci95": {
+              "low": 0.2843606857951133,
+              "high": 0.32435110142332324
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.785,
+            "ci95": {
+              "low": 0.76,
+              "high": 0.811
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.34143740983703436,
+            "ci95": {
+              "low": 0.32340830144560745,
+              "high": 0.36011257003581415
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.121,
+        "ndcg_any@1": 0.121,
+        "recall_all@3": 0.251,
+        "ndcg_any@3": 0.19477229348928768,
+        "recall_all@5": 0.333,
+        "ndcg_any@5": 0.22811570246355756,
+        "recall_all@10": 0.453,
+        "ndcg_any@10": 0.26738679336931737,
+        "recall_all@20": 0.602,
+        "ndcg_any@20": 0.3048651143377846,
+        "recall_all@50": 0.785,
+        "ndcg_any@50": 0.34143740983703436,
+        "mrr": 0.22638036611361131
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_score_fusion",
+      "scope": "full",
+      "dense_weight": 0.6,
+      "bm25_weight": 0.25,
+      "embedding_weight": 0.15
+    },
+    {
+      "name": "five_source_top20_source_ge2_rerank_d0.60_b0.25_e0.15",
+      "description": "Five-source candidate screening with same score rerank: source_count>=2, K3 dense 0.60 + BM25 0.25 + embedding 0.15.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.119,
+            "ci95": {
+              "low": 0.09997500000000001,
+              "high": 0.13802499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.119,
+            "ci95": {
+              "low": 0.09997500000000001,
+              "high": 0.13802499999999998
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.254,
+            "ci95": {
+              "low": 0.228,
+              "high": 0.282
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19553415299643057,
+            "ci95": {
+              "low": 0.1742447082558054,
+              "high": 0.2162436876229488
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.333,
+            "ci95": {
+              "low": 0.304,
+              "high": 0.364
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2275855322964803,
+            "ci95": {
+              "low": 0.20554715726864253,
+              "high": 0.2494661563743512
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.459,
+            "ci95": {
+              "low": 0.428,
+              "high": 0.489
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2687709786156013,
+            "ci95": {
+              "low": 0.24743478024096152,
+              "high": 0.28920253454109845
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.614,
+            "ci95": {
+              "low": 0.585,
+              "high": 0.643025
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.30795296881490364,
+            "ci95": {
+              "low": 0.28825661260561325,
+              "high": 0.327863974623779
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.784,
+            "ci95": {
+              "low": 0.759,
+              "high": 0.81
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.34190798749375595,
+            "ci95": {
+              "low": 0.324122813249195,
+              "high": 0.3608965729510646
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.119,
+        "ndcg_any@1": 0.119,
+        "recall_all@3": 0.254,
+        "ndcg_any@3": 0.19553415299643057,
+        "recall_all@5": 0.333,
+        "ndcg_any@5": 0.2275855322964803,
+        "recall_all@10": 0.459,
+        "ndcg_any@10": 0.2687709786156013,
+        "recall_all@20": 0.614,
+        "ndcg_any@20": 0.30795296881490364,
+        "recall_all@50": 0.784,
+        "ndcg_any@50": 0.34190798749375595,
+        "mrr": 0.2265383540659775
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_topk_source_score_fusion",
+      "source_count": 5,
+      "source_rule": "source_ge2",
+      "shortlist_size": 20,
+      "dense_weight": 0.6,
+      "bm25_weight": 0.25,
+      "embedding_weight": 0.15,
+      "shortlist_stats": {
+        "avg_shortlist_size": 22.088,
+        "min_shortlist_size": 14,
+        "max_shortlist_size": 32,
+        "oracle_hit": 0.635,
+        "min_sources": 2,
+        "per_source_topk": 20
+      }
+    },
+    {
+      "name": "five_source_top20_source_ge2_rerank_d0.50_b0.25_e0.25",
+      "description": "Five-source candidate screening with same score rerank: source_count>=2, K3 dense 0.50 + BM25 0.25 + embedding 0.25.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.115,
+            "ci95": {
+              "low": 0.096,
+              "high": 0.134
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.115,
+            "ci95": {
+              "low": 0.096,
+              "high": 0.134
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.251,
+            "ci95": {
+              "low": 0.224,
+              "high": 0.279025
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19281973151785933,
+            "ci95": {
+              "low": 0.17163481724803764,
+              "high": 0.21415988753089543
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.326,
+            "ci95": {
+              "low": 0.296,
+              "high": 0.357
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.22327987583813202,
+            "ci95": {
+              "low": 0.20134986839653354,
+              "high": 0.2454696736262127
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.455,
+            "ci95": {
+              "low": 0.424,
+              "high": 0.485
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2654501479810999,
+            "ci95": {
+              "low": 0.24383466264982256,
+              "high": 0.2859276581949237
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.619,
+            "ci95": {
+              "low": 0.5909749999999999,
+              "high": 0.648025
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.30706862514472494,
+            "ci95": {
+              "low": 0.28739812366015255,
+              "high": 0.3270223163312968
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.797,
+            "ci95": {
+              "low": 0.774,
+              "high": 0.823
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.34262010594750725,
+            "ci95": {
+              "low": 0.32469697315266555,
+              "high": 0.36103026160317075
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.115,
+        "ndcg_any@1": 0.115,
+        "recall_all@3": 0.251,
+        "ndcg_any@3": 0.19281973151785933,
+        "recall_all@5": 0.326,
+        "ndcg_any@5": 0.22327987583813202,
+        "recall_all@10": 0.455,
+        "ndcg_any@10": 0.2654501479810999,
+        "recall_all@20": 0.619,
+        "ndcg_any@20": 0.30706862514472494,
+        "recall_all@50": 0.797,
+        "ndcg_any@50": 0.34262010594750725,
+        "mrr": 0.22443845214153374
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_topk_source_score_fusion",
+      "source_count": 5,
+      "source_rule": "source_ge2",
+      "shortlist_size": 20,
+      "dense_weight": 0.5,
+      "bm25_weight": 0.25,
+      "embedding_weight": 0.25,
+      "shortlist_stats": {
+        "avg_shortlist_size": 22.088,
+        "min_shortlist_size": 14,
+        "max_shortlist_size": 32,
+        "oracle_hit": 0.635,
+        "min_sources": 2,
+        "per_source_topk": 20
+      }
+    },
+    {
+      "name": "k3_bm25_embedding_full_d0.50_b0.25_e0.25",
+      "description": "Full-corpus z-score fusion: K3 dense 0.50 + BM25 0.25 + embedding 0.25.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.117,
+            "ci95": {
+              "low": 0.098,
+              "high": 0.13602499999999998
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.117,
+            "ci95": {
+              "low": 0.098,
+              "high": 0.13602499999999998
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.25,
+            "ci95": {
+              "low": 0.224,
+              "high": 0.278
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19318880176428785,
+            "ci95": {
+              "low": 0.1716365961741091,
+              "high": 0.21489088856071684
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.323,
+            "ci95": {
+              "low": 0.294,
+              "high": 0.354
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.22291906422093036,
+            "ci95": {
+              "low": 0.20171352868439593,
+              "high": 0.24599225066123873
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.452,
+            "ci95": {
+              "low": 0.422,
+              "high": 0.482
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2651173735993719,
+            "ci95": {
+              "low": 0.24309257506883108,
+              "high": 0.2855711221599837
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.603,
+            "ci95": {
+              "low": 0.573,
+              "high": 0.636
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.30332992249864754,
+            "ci95": {
+              "low": 0.282731445749524,
+              "high": 0.32276383145447146
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.799,
+            "ci95": {
+              "low": 0.776975,
+              "high": 0.825
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3428750790098552,
+            "ci95": {
+              "low": 0.3247014780838952,
+              "high": 0.3620160605098106
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.117,
+        "ndcg_any@1": 0.117,
+        "recall_all@3": 0.25,
+        "ndcg_any@3": 0.19318880176428785,
+        "recall_all@5": 0.323,
+        "ndcg_any@5": 0.22291906422093036,
+        "recall_all@10": 0.452,
+        "ndcg_any@10": 0.2651173735993719,
+        "recall_all@20": 0.603,
+        "ndcg_any@20": 0.30332992249864754,
+        "recall_all@50": 0.799,
+        "ndcg_any@50": 0.3428750790098552,
+        "mrr": 0.22477887298266389
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_score_fusion",
+      "scope": "full",
+      "dense_weight": 0.5,
+      "bm25_weight": 0.25,
+      "embedding_weight": 0.25
+    },
+    {
+      "name": "external_embedding",
+      "description": "External Qwen embedding standalone reference loaded from cache.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.084,
+            "ci95": {
+              "low": 0.068,
+              "high": 0.101
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.084,
+            "ci95": {
+              "low": 0.068,
+              "high": 0.101
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.207,
+            "ci95": {
+              "low": 0.182975,
+              "high": 0.232
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.15466508275000207,
+            "ci95": {
+              "low": 0.13527079917151982,
+              "high": 0.17412962202893106
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.287,
+            "ci95": {
+              "low": 0.26,
+              "high": 0.314
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.18732243361148057,
+            "ci95": {
+              "low": 0.16703529722012134,
+              "high": 0.20699020963043172
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.41,
+            "ci95": {
+              "low": 0.381975,
+              "high": 0.440025
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.22689706162698775,
+            "ci95": {
+              "low": 0.20730920395515492,
+              "high": 0.2469837321001497
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.567,
+            "ci95": {
+              "low": 0.536,
+              "high": 0.5990249999999999
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.26635790038793866,
+            "ci95": {
+              "low": 0.24778034083152156,
+              "high": 0.28526633279549946
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.802,
+            "ci95": {
+              "low": 0.779,
+              "high": 0.8260249999999999
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.31330574383147586,
+            "ci95": {
+              "low": 0.2966949097154179,
+              "high": 0.3295076836522883
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.084,
+        "ndcg_any@1": 0.084,
+        "recall_all@3": 0.207,
+        "ndcg_any@3": 0.15466508275000207,
+        "recall_all@5": 0.287,
+        "ndcg_any@5": 0.18732243361148057,
+        "recall_all@10": 0.41,
+        "ndcg_any@10": 0.22689706162698775,
+        "recall_all@20": 0.567,
+        "ndcg_any@20": 0.26635790038793866,
+        "recall_all@50": 0.802,
+        "ndcg_any@50": 0.31330574383147586,
+        "mrr": 0.18920664928282907
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_fusion_reference",
+      "scorer": "embedding_dot"
+    },
+    {
+      "name": "bm25",
+      "description": "BM25 standalone reference.",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.035,
+            "ci95": {
+              "low": 0.024,
+              "high": 0.047
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.035,
+            "ci95": {
+              "low": 0.024,
+              "high": 0.047
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.074,
+            "ci95": {
+              "low": 0.058975,
+              "high": 0.09
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.05777324383928644,
+            "ci95": {
+              "low": 0.044618002096072015,
+              "high": 0.07069302535812592
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.094,
+            "ci95": {
+              "low": 0.076,
+              "high": 0.113
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.06581706623984923,
+            "ci95": {
+              "low": 0.05261426097728542,
+              "high": 0.07952149602467329
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.121,
+            "ci95": {
+              "low": 0.101,
+              "high": 0.142
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.07472469996464448,
+            "ci95": {
+              "low": 0.06146302357263317,
+              "high": 0.08869012114401516
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.165,
+            "ci95": {
+              "low": 0.143,
+              "high": 0.189
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.08592678591997195,
+            "ci95": {
+              "low": 0.07229760241057961,
+              "high": 0.10028474923371118
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.262,
+            "ci95": {
+              "low": 0.236975,
+              "high": 0.289
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.10520055184376463,
+            "ci95": {
+              "low": 0.0917305431219664,
+              "high": 0.11859585408802609
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.035,
+        "ndcg_any@1": 0.035,
+        "recall_all@3": 0.074,
+        "ndcg_any@3": 0.05777324383928644,
+        "recall_all@5": 0.094,
+        "ndcg_any@5": 0.06581706623984923,
+        "recall_all@10": 0.121,
+        "ndcg_any@10": 0.07472469996464448,
+        "recall_all@20": 0.165,
+        "ndcg_any@20": 0.08592678591997195,
+        "recall_all@50": 0.262,
+        "ndcg_any@50": 0.10520055184376463,
+        "mrr": 0.06652798987665966
+      },
+      "gold_evaluation": {
+        "mode": "any_equivalent_preference",
+        "equivalent_gold_queries": 19,
+        "note": "Duplicate preference strings are treated as equivalent by collapsing a query's duplicate gold ids to one canonical id before LongMemEval-style recall_all/NDCG scoring."
+      },
+      "phase": "embedding_fusion_reference",
+      "scorer": "bm25"
+    }
+  ],
+  "elapsed_seconds": 24.107935624953825
+}

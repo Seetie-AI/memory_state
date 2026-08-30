@@ -1,0 +1,166 @@
+records=24796 cells=54 bootstrap=1000
+[1/54] P0|layer29|last
+timing P0|layer29|last: load=102.8s pca=23.9s score_centered=0.4s eval_centered=0.4s score_qpca=0.5s eval_qpca=0.4s score_apca=0.6s eval_apca=0.3s total=129.4s
+  done in 2m09s
+[2/54] P0|layer30|last
+timing P0|layer30|last: load=148.7s pca=23.8s score_centered=0.2s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.4s eval_apca=0.2s total=173.9s
+  done in 2m54s
+[3/54] P0|layer31|last
+timing P0|layer31|last: load=204.8s pca=23.8s score_centered=0.2s eval_centered=0.2s score_qpca=0.2s eval_qpca=0.2s score_apca=0.3s eval_apca=0.2s total=229.9s
+  done in 3m50s
+[4/54] 1-1_CN|layer29|last
+timing 1-1_CN|layer29|last: load=173.3s pca=26.3s score_centered=0.6s eval_centered=0.3s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=201.2s
+  done in 3m21s
+[5/54] 1-1_CN|layer30|last
+timing 1-1_CN|layer30|last: load=164.0s pca=23.5s score_centered=0.2s eval_centered=0.2s score_qpca=0.2s eval_qpca=0.3s score_apca=0.3s eval_apca=0.2s total=188.9s
+  done in 3m09s
+[6/54] 1-1_CN|layer31|last
+timing 1-1_CN|layer31|last: load=136.4s pca=23.6s score_centered=0.2s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=161.2s
+  done in 2m41s
+[7/54] 1-1_CN_ASCII|layer29|last
+timing 1-1_CN_ASCII|layer29|last: load=173.8s pca=21.4s score_centered=0.2s eval_centered=0.2s score_qpca=0.2s eval_qpca=0.3s score_apca=0.3s eval_apca=0.2s total=196.6s
+  done in 3m17s
+[8/54] 1-1_CN_ASCII|layer30|last
+timing 1-1_CN_ASCII|layer30|last: load=139.5s pca=32.2s score_centered=0.4s eval_centered=0.3s score_qpca=0.2s eval_qpca=0.2s score_apca=0.4s eval_apca=0.2s total=173.3s
+  done in 2m53s
+[9/54] 1-1_CN_ASCII|layer31|last
+timing 1-1_CN_ASCII|layer31|last: load=156.4s pca=24.3s score_centered=0.2s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.4s eval_apca=0.2s total=182.1s
+  done in 3m02s
+[10/54] 1-1_EN|layer29|last
+timing 1-1_EN|layer29|last: load=203.7s pca=23.6s score_centered=0.2s eval_centered=0.2s score_qpca=0.2s eval_qpca=0.2s score_apca=0.3s eval_apca=0.2s total=228.6s
+  done in 3m49s
+[11/54] 1-1_EN|layer30|last
+timing 1-1_EN|layer30|last: load=235.7s pca=24.2s score_centered=0.2s eval_centered=0.2s score_qpca=0.2s eval_qpca=0.2s score_apca=0.3s eval_apca=0.2s total=261.2s
+  done in 4m21s
+[12/54] 1-1_EN|layer31|last
+timing 1-1_EN|layer31|last: load=155.3s pca=23.7s score_centered=0.2s eval_centered=0.2s score_qpca=0.2s eval_qpca=0.2s score_apca=0.4s eval_apca=0.2s total=180.3s
+  done in 3m00s
+[13/54] 1-2|layer29|last
+timing 1-2|layer29|last: load=179.7s pca=26.4s score_centered=0.2s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.3s eval_apca=0.2s total=207.4s
+  done in 3m27s
+[14/54] 1-2|layer30|last
+timing 1-2|layer30|last: load=169.0s pca=23.8s score_centered=0.2s eval_centered=0.3s score_qpca=0.2s eval_qpca=0.2s score_apca=0.3s eval_apca=0.2s total=194.3s
+  done in 3m14s
+[15/54] 1-2|layer31|last
+timing 1-2|layer31|last: load=148.1s pca=23.5s score_centered=0.2s eval_centered=0.2s score_qpca=0.2s eval_qpca=0.2s score_apca=0.3s eval_apca=0.2s total=173.0s
+  done in 2m53s
+[16/54] 1-3|layer29|last
+timing 1-3|layer29|last: load=143.1s pca=17.7s score_centered=0.2s eval_centered=0.2s score_qpca=0.2s eval_qpca=0.2s score_apca=0.3s eval_apca=0.2s total=162.1s
+  done in 2m42s
+[17/54] 1-3|layer30|last
+timing 1-3|layer30|last: load=181.5s pca=23.7s score_centered=0.2s eval_centered=0.2s score_qpca=0.2s eval_qpca=0.2s score_apca=0.3s eval_apca=0.2s total=206.6s
+  done in 3m27s
+[18/54] 1-3|layer31|last
+timing 1-3|layer31|last: load=147.4s pca=26.9s score_centered=0.3s eval_centered=0.2s score_qpca=0.2s eval_qpca=0.2s score_apca=0.5s eval_apca=0.3s total=176.1s
+  done in 2m56s
+[19/54] 2-1|layer29|last
+timing 2-1|layer29|last: load=142.8s pca=24.3s score_centered=0.2s eval_centered=0.2s score_qpca=0.2s eval_qpca=0.2s score_apca=0.4s eval_apca=0.2s total=168.5s
+  done in 2m48s
+[20/54] 2-1|layer30|last
+timing 2-1|layer30|last: load=159.5s pca=23.6s score_centered=0.2s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.3s eval_apca=0.2s total=184.4s
+  done in 3m04s
+[21/54] 2-1|layer31|last
+timing 2-1|layer31|last: load=151.7s pca=35.9s score_centered=0.5s eval_centered=0.3s score_qpca=0.3s eval_qpca=0.3s score_apca=0.6s eval_apca=0.3s total=189.9s
+  done in 3m10s
+[22/54] 2-3-1|layer29|last
+timing 2-3-1|layer29|last: load=103.0s pca=16.9s score_centered=0.2s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=120.8s
+  done in 2m01s
+[23/54] 2-3-1|layer30|last
+timing 2-3-1|layer30|last: load=117.2s pca=15.9s score_centered=0.2s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=134.1s
+  done in 2m14s
+[24/54] 2-3-1|layer31|last
+timing 2-3-1|layer31|last: load=112.0s pca=15.8s score_centered=0.2s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=128.6s
+  done in 2m09s
+[25/54] 2-3-2_mem|layer29|last
+timing 2-3-2_mem|layer29|last: load=101.5s pca=14.8s score_centered=0.2s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=117.4s
+  done in 1m57s
+[26/54] 2-3-2_mem|layer30|last
+timing 2-3-2_mem|layer30|last: load=95.8s pca=13.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=109.7s
+  done in 1m50s
+[27/54] 2-3-2_mem|layer31|last
+timing 2-3-2_mem|layer31|last: load=11.1s pca=12.1s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=24.0s
+  done in 24s
+[28/54] 2-3-2_query|layer29|last
+timing 2-3-2_query|layer29|last: load=10.8s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[29/54] 2-3-2_query|layer30|last
+timing 2-3-2_query|layer30|last: load=10.7s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[30/54] 2-3-2_query|layer31|last
+timing 2-3-2_query|layer31|last: load=10.7s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.6s
+  done in 24s
+[31/54] 2-4-1|layer29|last
+timing 2-4-1|layer29|last: load=10.8s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[32/54] 2-4-1|layer30|last
+timing 2-4-1|layer30|last: load=10.7s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[33/54] 2-4-1|layer31|last
+timing 2-4-1|layer31|last: load=11.6s pca=12.1s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=24.6s
+  done in 25s
+[34/54] 2-4-1_user_word|layer29|last
+timing 2-4-1_user_word|layer29|last: load=10.7s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.6s
+  done in 24s
+[35/54] 2-4-1_user_word|layer30|last
+timing 2-4-1_user_word|layer30|last: load=10.7s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.6s
+  done in 24s
+[36/54] 2-4-1_user_word|layer31|last
+timing 2-4-1_user_word|layer31|last: load=10.8s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.6s
+  done in 24s
+[37/54] 2-4-2|layer29|last
+timing 2-4-2|layer29|last: load=10.8s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[38/54] 2-4-2|layer30|last
+timing 2-4-2|layer30|last: load=10.8s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[39/54] 2-4-2|layer31|last
+timing 2-4-2|layer31|last: load=10.8s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[40/54] 2-5|layer29|last
+timing 2-5|layer29|last: load=10.7s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[41/54] 2-5|layer30|last
+timing 2-5|layer30|last: load=10.8s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[42/54] 2-5|layer31|last
+timing 2-5|layer31|last: load=10.8s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[43/54] 2-6|layer29|last
+timing 2-6|layer29|last: load=10.8s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.6s
+  done in 24s
+[44/54] 2-6|layer30|last
+timing 2-6|layer30|last: load=10.9s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[45/54] 2-6|layer31|last
+timing 2-6|layer31|last: load=10.8s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.7s
+  done in 24s
+[46/54] 2-7|layer29|last
+timing 2-7|layer29|last: load=10.9s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.8s
+  done in 24s
+[47/54] 2-7|layer30|last
+timing 2-7|layer30|last: load=10.5s pca=12.2s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.6s
+  done in 24s
+[48/54] 2-7|layer31|last
+timing 2-7|layer31|last: load=10.8s pca=14.8s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=26.5s
+  done in 26s
+[49/54] 2-8|layer29|last
+timing 2-8|layer29|last: load=11.5s pca=13.9s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=26.3s
+  done in 26s
+[50/54] 2-8|layer30|last
+timing 2-8|layer30|last: load=11.0s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.8s
+  done in 24s
+[51/54] 2-8|layer31|last
+timing 2-8|layer31|last: load=11.0s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=23.9s
+  done in 24s
+[52/54] 2-3-2_mem->2-3-2_query|layer29|last
+timing 2-3-2_mem->2-3-2_query|layer29|last: load=22.3s pca=12.1s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=35.3s
+  done in 35s
+[53/54] 2-3-2_mem->2-3-2_query|layer30|last
+timing 2-3-2_mem->2-3-2_query|layer30|last: load=22.0s pca=12.2s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=35.1s
+  done in 35s
+[54/54] 2-3-2_mem->2-3-2_query|layer31|last
+timing 2-3-2_mem->2-3-2_query|layer31|last: load=22.0s pca=12.0s score_centered=0.1s eval_centered=0.2s score_qpca=0.1s eval_qpca=0.2s score_apca=0.2s eval_apca=0.2s total=35.0s
+  done in 35s
+wrote /Users/gordonxiong/Desktop/Repos/memory_state/results/stage3/offline_prompt_sweep/merged_subset0-100_hidden_only.json
+wrote /Users/gordonxiong/Desktop/Repos/memory_state/results/stage3/offline_prompt_sweep/merged_subset0-100_hidden_only.md
+elapsed 1h28m09s

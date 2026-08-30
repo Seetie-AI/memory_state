@@ -1,0 +1,186 @@
+warning: using legacy hidden tensor cache without data_fingerprint; item_ids/task/dataset matched, but text/gold binding is not available in this old manifest
+PrefEval external embedding fusion
+prepared=/Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/data/implicit_persona_n1000_pruned_hidden_l28_l29_l30_l31_logits256_promptreps128_20260512.jsonl
+hidden_tensor_dirs=benchmarks/PrefEval/tensors/hidden_implicit_persona_n1000_a3f7b8b21e_59d5500483_41ed8fec5e_logits256_promptreps1x128, benchmarks/PrefEval/tensors/hidden_implicit_persona_n1000_d19e54c734_5eed9a11ea_10337ed144_logits0_promptreps0x128
+embedding_cache_dir=benchmarks/PrefEval/tensors/qwen3_embedding_implicit_persona_n1000_d19e54c734
+loading 1 dense spec(s) from benchmarks/PrefEval/tensors/hidden_implicit_persona_n1000_a3f7b8b21e_59d5500483_41ed8fec5e_logits256_promptreps1x128
+loaded dense spec 2-3-1_L28_both_k15: 2-3-1|L28|anti_pca_both_k15 -> anti_pca_both k=15
+loading 2 dense spec(s) from benchmarks/PrefEval/tensors/hidden_implicit_persona_n1000_d19e54c734_5eed9a11ea_10337ed144_logits0_promptreps0x128
+loaded dense spec 2-5_token_L28_both_k15: 2-5_token|L28|anti_pca_both_k15 -> anti_pca_both k=15
+loaded dense spec 2-8_emoji_L28_both_k15: 2-8_emoji|L28|anti_pca_both_k15 -> anti_pca_both k=15
+scoring BM25
+  bm25 1/1000
+  bm25 50/1000
+  bm25 100/1000
+  bm25 150/1000
+  bm25 200/1000
+  bm25 250/1000
+  bm25 300/1000
+  bm25 350/1000
+  bm25 400/1000
+  bm25 450/1000
+  bm25 500/1000
+  bm25 550/1000
+  bm25 600/1000
+  bm25 650/1000
+  bm25 700/1000
+  bm25 750/1000
+  bm25 800/1000
+  bm25 850/1000
+  bm25 900/1000
+  bm25 950/1000
+  bm25 1000/1000
+k3_custom_vector_average: R@1=0.106 R@3=0.240 R@5=0.314 NDCG@5=0.213 MRR=0.208
+bm25: R@1=0.035 R@3=0.074 R@5=0.094 NDCG@5=0.066 MRR=0.067
+external_embedding: R@1=0.084 R@3=0.207 R@5=0.287 NDCG@5=0.187 MRR=0.189
+k3_bm25_full_d0.75_b0.25: R@1=0.109 R@3=0.237 R@5=0.305 NDCG@5=0.211 MRR=0.208
+k3_bm25_dense_top20_d0.75_b0.25: R@1=0.109 R@3=0.239 R@5=0.305 NDCG@5=0.212 MRR=0.211
+result_fusion_k3bm25_075_025_slots_1_2_4_5_embedding_slot3: R@1=0.109 R@3=0.236 R@5=0.312 NDCG@5=0.214 MRR=0.209
+embedding_only_top20_rerank_k3bm25_075_025: R@1=0.012 R@3=0.044 R@5=0.073 NDCG@5=0.041 MRR=0.080
+source_ge3_plus_embedding_only_top20_rerank_k3bm25_075_025: R@1=0.112 R@3=0.238 R@5=0.312 NDCG@5=0.214 MRR=0.214
+result_fusion_k3bm25_ratio60_10_slots_1_2_4_5_embedding_slot3: R@1=0.111 R@3=0.248 R@5=0.318 NDCG@5=0.219 MRR=0.216
+embedding_only_top20_rerank_k3bm25_ratio60_10: R@1=0.011 R@3=0.043 R@5=0.073 NDCG@5=0.041 MRR=0.080
+source_ge3_plus_embedding_only_top20_rerank_k3bm25_ratio60_10: R@1=0.110 R@3=0.249 R@5=0.316 NDCG@5=0.217 MRR=0.216
+five_source_top3_union_ge1_score_fusion_k0.60_e0.30_b0.10: R@1=0.119 R@3=0.245 R@5=0.311 NDCG@5=0.220 MRR=0.223
+five_source_top5_union_ge1_score_fusion_k0.60_e0.30_b0.10: R@1=0.121 R@3=0.255 R@5=0.320 NDCG@5=0.225 MRR=0.227
+five_source_top10_union_ge1_score_fusion_k0.60_e0.30_b0.10: R@1=0.124 R@3=0.250 R@5=0.320 NDCG@5=0.225 MRR=0.228
+four_source_top20_source_ge2_rerank_d0.75_b0.25: R@1=0.111 R@3=0.236 R@5=0.308 NDCG@5=0.212 MRR=0.209
+five_source_top20_source_ge2_rerank_d0.75_b0.25: R@1=0.109 R@3=0.237 R@5=0.307 NDCG@5=0.211 MRR=0.211
+k3_bm25_embedding_full_d0.75_b0.20_e0.05: R@1=0.112 R@3=0.244 R@5=0.313 NDCG@5=0.216 MRR=0.214
+five_source_top20_source_ge2_rerank_d0.75_b0.20_e0.05: R@1=0.109 R@3=0.243 R@5=0.315 NDCG@5=0.215 MRR=0.213
+k3_bm25_embedding_full_d0.70_b0.20_e0.10: R@1=0.112 R@3=0.243 R@5=0.315 NDCG@5=0.217 MRR=0.215
+five_source_top20_source_ge2_rerank_d0.70_b0.20_e0.10: R@1=0.113 R@3=0.242 R@5=0.318 NDCG@5=0.218 MRR=0.217
+k3_bm25_embedding_full_d0.65_b0.25_e0.10: R@1=0.111 R@3=0.241 R@5=0.314 NDCG@5=0.216 MRR=0.213
+five_source_top20_source_ge2_rerank_d0.65_b0.25_e0.10: R@1=0.109 R@3=0.246 R@5=0.316 NDCG@5=0.216 MRR=0.214
+k3_bm25_embedding_full_d0.60_b0.25_e0.15: R@1=0.109 R@3=0.243 R@5=0.313 NDCG@5=0.215 MRR=0.213
+five_source_top20_source_ge2_rerank_d0.60_b0.25_e0.15: R@1=0.109 R@3=0.244 R@5=0.316 NDCG@5=0.216 MRR=0.216
+k3_bm25_embedding_full_d0.50_b0.25_e0.25: R@1=0.112 R@3=0.241 R@5=0.316 NDCG@5=0.217 MRR=0.217
+five_source_top20_source_ge2_rerank_d0.50_b0.25_e0.25: R@1=0.112 R@3=0.243 R@5=0.319 NDCG@5=0.219 MRR=0.219
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.90_e0.10_b0.00: R@1=0.114 R@3=0.241 R@5=0.329 NDCG@5=0.223 MRR=0.221
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.90_e0.10_b0.00: R@1=0.111 R@3=0.245 R@5=0.326 NDCG@5=0.221 MRR=0.221
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.90_e0.10_b0.00: R@1=0.112 R@3=0.241 R@5=0.328 NDCG@5=0.222 MRR=0.220
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.85_e0.15_b0.00: R@1=0.113 R@3=0.245 R@5=0.330 NDCG@5=0.223 MRR=0.221
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.85_e0.15_b0.00: R@1=0.112 R@3=0.243 R@5=0.331 NDCG@5=0.224 MRR=0.222
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.85_e0.15_b0.00: R@1=0.112 R@3=0.242 R@5=0.331 NDCG@5=0.224 MRR=0.221
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.80_e0.20_b0.00: R@1=0.112 R@3=0.245 R@5=0.330 NDCG@5=0.224 MRR=0.222
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.80_e0.20_b0.00: R@1=0.115 R@3=0.246 R@5=0.331 NDCG@5=0.226 MRR=0.225
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.80_e0.20_b0.00: R@1=0.113 R@3=0.246 R@5=0.330 NDCG@5=0.224 MRR=0.223
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.75_e0.25_b0.00: R@1=0.114 R@3=0.248 R@5=0.334 NDCG@5=0.227 MRR=0.225
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.75_e0.25_b0.00: R@1=0.115 R@3=0.251 R@5=0.332 NDCG@5=0.225 MRR=0.224
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.75_e0.25_b0.00: R@1=0.114 R@3=0.251 R@5=0.329 NDCG@5=0.224 MRR=0.224
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.70_e0.30_b0.00: R@1=0.117 R@3=0.247 R@5=0.335 NDCG@5=0.228 MRR=0.226
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.70_e0.30_b0.00: R@1=0.115 R@3=0.250 R@5=0.329 NDCG@5=0.225 MRR=0.226
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.70_e0.30_b0.00: R@1=0.112 R@3=0.247 R@5=0.334 NDCG@5=0.226 MRR=0.224
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.35_b0.00: R@1=0.116 R@3=0.251 R@5=0.333 NDCG@5=0.228 MRR=0.228
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.35_b0.00: R@1=0.122 R@3=0.253 R@5=0.330 NDCG@5=0.229 MRR=0.231
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.65_e0.35_b0.00: R@1=0.112 R@3=0.253 R@5=0.328 NDCG@5=0.224 MRR=0.224
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.85_e0.10_b0.05: R@1=0.113 R@3=0.244 R@5=0.324 NDCG@5=0.222 MRR=0.222
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.85_e0.10_b0.05: R@1=0.112 R@3=0.248 R@5=0.320 NDCG@5=0.220 MRR=0.222
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.85_e0.10_b0.05: R@1=0.111 R@3=0.243 R@5=0.324 NDCG@5=0.221 MRR=0.221
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.80_e0.15_b0.05: R@1=0.118 R@3=0.247 R@5=0.328 NDCG@5=0.225 MRR=0.225
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.80_e0.15_b0.05: R@1=0.113 R@3=0.251 R@5=0.324 NDCG@5=0.222 MRR=0.224
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.80_e0.15_b0.05: R@1=0.113 R@3=0.245 R@5=0.325 NDCG@5=0.222 MRR=0.223
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.75_e0.20_b0.05: R@1=0.110 R@3=0.247 R@5=0.332 NDCG@5=0.224 MRR=0.222
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.75_e0.20_b0.05: R@1=0.116 R@3=0.250 R@5=0.328 NDCG@5=0.225 MRR=0.226
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.75_e0.20_b0.05: R@1=0.115 R@3=0.249 R@5=0.329 NDCG@5=0.225 MRR=0.225
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.70_e0.25_b0.05: R@1=0.117 R@3=0.249 R@5=0.321 NDCG@5=0.223 MRR=0.226
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.70_e0.25_b0.05: R@1=0.117 R@3=0.251 R@5=0.329 NDCG@5=0.226 MRR=0.228
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.70_e0.25_b0.05: R@1=0.111 R@3=0.251 R@5=0.324 NDCG@5=0.222 MRR=0.223
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.30_b0.05: R@1=0.119 R@3=0.250 R@5=0.326 NDCG@5=0.226 MRR=0.229
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.30_b0.05: R@1=0.118 R@3=0.251 R@5=0.329 NDCG@5=0.228 MRR=0.229
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.65_e0.30_b0.05: R@1=0.119 R@3=0.253 R@5=0.328 NDCG@5=0.227 MRR=0.229
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.35_b0.05: R@1=0.119 R@3=0.253 R@5=0.328 NDCG@5=0.228 MRR=0.230
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.35_b0.05: R@1=0.116 R@3=0.256 R@5=0.331 NDCG@5=0.228 MRR=0.230
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.60_e0.35_b0.05: R@1=0.118 R@3=0.252 R@5=0.325 NDCG@5=0.226 MRR=0.229
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.80_e0.10_b0.10: R@1=0.112 R@3=0.247 R@5=0.324 NDCG@5=0.222 MRR=0.222
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.80_e0.10_b0.10: R@1=0.114 R@3=0.244 R@5=0.324 NDCG@5=0.222 MRR=0.223
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.80_e0.10_b0.10: R@1=0.115 R@3=0.247 R@5=0.324 NDCG@5=0.222 MRR=0.222
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.75_e0.15_b0.10: R@1=0.107 R@3=0.248 R@5=0.326 NDCG@5=0.221 MRR=0.220
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.75_e0.15_b0.10: R@1=0.112 R@3=0.251 R@5=0.319 NDCG@5=0.220 MRR=0.223
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.75_e0.15_b0.10: R@1=0.111 R@3=0.249 R@5=0.322 NDCG@5=0.221 MRR=0.222
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.70_e0.20_b0.10: R@1=0.114 R@3=0.248 R@5=0.325 NDCG@5=0.223 MRR=0.225
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.70_e0.20_b0.10: R@1=0.109 R@3=0.249 R@5=0.331 NDCG@5=0.224 MRR=0.223
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.70_e0.20_b0.10: R@1=0.112 R@3=0.249 R@5=0.327 NDCG@5=0.223 MRR=0.223
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.25_b0.10: R@1=0.115 R@3=0.245 R@5=0.326 NDCG@5=0.224 MRR=0.225
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.25_b0.10: R@1=0.119 R@3=0.252 R@5=0.325 NDCG@5=0.226 MRR=0.229
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.65_e0.25_b0.10: R@1=0.114 R@3=0.245 R@5=0.329 NDCG@5=0.225 MRR=0.225
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.30_b0.10: R@1=0.118 R@3=0.251 R@5=0.327 NDCG@5=0.226 MRR=0.228
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.30_b0.10: R@1=0.118 R@3=0.252 R@5=0.326 NDCG@5=0.225 MRR=0.228
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.60_e0.30_b0.10: R@1=0.119 R@3=0.252 R@5=0.331 NDCG@5=0.228 MRR=0.228
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.55_e0.35_b0.10: R@1=0.120 R@3=0.253 R@5=0.328 NDCG@5=0.227 MRR=0.230
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.55_e0.35_b0.10: R@1=0.121 R@3=0.249 R@5=0.333 NDCG@5=0.229 MRR=0.231
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.55_e0.35_b0.10: R@1=0.116 R@3=0.252 R@5=0.329 NDCG@5=0.226 MRR=0.227
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.75_e0.10_b0.15: R@1=0.110 R@3=0.246 R@5=0.329 NDCG@5=0.222 MRR=0.220
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.75_e0.10_b0.15: R@1=0.111 R@3=0.249 R@5=0.328 NDCG@5=0.222 MRR=0.221
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.75_e0.10_b0.15: R@1=0.111 R@3=0.246 R@5=0.329 NDCG@5=0.223 MRR=0.221
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.70_e0.15_b0.15: R@1=0.112 R@3=0.248 R@5=0.327 NDCG@5=0.223 MRR=0.222
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.70_e0.15_b0.15: R@1=0.112 R@3=0.243 R@5=0.327 NDCG@5=0.223 MRR=0.222
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.70_e0.15_b0.15: R@1=0.114 R@3=0.240 R@5=0.330 NDCG@5=0.223 MRR=0.221
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.20_b0.15: R@1=0.115 R@3=0.244 R@5=0.329 NDCG@5=0.224 MRR=0.224
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.20_b0.15: R@1=0.114 R@3=0.244 R@5=0.329 NDCG@5=0.224 MRR=0.224
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.65_e0.20_b0.15: R@1=0.111 R@3=0.241 R@5=0.331 NDCG@5=0.223 MRR=0.221
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.25_b0.15: R@1=0.115 R@3=0.245 R@5=0.332 NDCG@5=0.226 MRR=0.225
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.25_b0.15: R@1=0.118 R@3=0.252 R@5=0.330 NDCG@5=0.226 MRR=0.227
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.60_e0.25_b0.15: R@1=0.115 R@3=0.245 R@5=0.326 NDCG@5=0.223 MRR=0.224
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.55_e0.30_b0.15: R@1=0.117 R@3=0.253 R@5=0.333 NDCG@5=0.227 MRR=0.227
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.55_e0.30_b0.15: R@1=0.118 R@3=0.252 R@5=0.335 NDCG@5=0.228 MRR=0.227
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.55_e0.30_b0.15: R@1=0.116 R@3=0.249 R@5=0.323 NDCG@5=0.222 MRR=0.225
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.50_e0.35_b0.15: R@1=0.118 R@3=0.251 R@5=0.333 NDCG@5=0.227 MRR=0.227
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.50_e0.35_b0.15: R@1=0.119 R@3=0.253 R@5=0.328 NDCG@5=0.227 MRR=0.229
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.50_e0.35_b0.15: R@1=0.117 R@3=0.254 R@5=0.328 NDCG@5=0.226 MRR=0.227
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.70_e0.10_b0.20: R@1=0.112 R@3=0.243 R@5=0.331 NDCG@5=0.223 MRR=0.220
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.70_e0.10_b0.20: R@1=0.113 R@3=0.239 R@5=0.325 NDCG@5=0.220 MRR=0.220
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.70_e0.10_b0.20: R@1=0.115 R@3=0.241 R@5=0.323 NDCG@5=0.221 MRR=0.221
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.15_b0.20: R@1=0.110 R@3=0.240 R@5=0.326 NDCG@5=0.220 MRR=0.219
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.15_b0.20: R@1=0.112 R@3=0.240 R@5=0.327 NDCG@5=0.222 MRR=0.221
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.65_e0.15_b0.20: R@1=0.111 R@3=0.242 R@5=0.325 NDCG@5=0.220 MRR=0.219
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.20_b0.20: R@1=0.111 R@3=0.243 R@5=0.325 NDCG@5=0.220 MRR=0.221
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.20_b0.20: R@1=0.113 R@3=0.242 R@5=0.325 NDCG@5=0.222 MRR=0.223
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.60_e0.20_b0.20: R@1=0.107 R@3=0.243 R@5=0.328 NDCG@5=0.220 MRR=0.218
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.55_e0.25_b0.20: R@1=0.113 R@3=0.243 R@5=0.327 NDCG@5=0.223 MRR=0.223
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.55_e0.25_b0.20: R@1=0.118 R@3=0.250 R@5=0.327 NDCG@5=0.225 MRR=0.226
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.55_e0.25_b0.20: R@1=0.110 R@3=0.243 R@5=0.327 NDCG@5=0.221 MRR=0.220
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.50_e0.30_b0.20: R@1=0.117 R@3=0.246 R@5=0.329 NDCG@5=0.225 MRR=0.226
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.50_e0.30_b0.20: R@1=0.119 R@3=0.248 R@5=0.332 NDCG@5=0.228 MRR=0.229
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.50_e0.30_b0.20: R@1=0.115 R@3=0.249 R@5=0.321 NDCG@5=0.221 MRR=0.224
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.45_e0.35_b0.20: R@1=0.121 R@3=0.246 R@5=0.329 NDCG@5=0.227 MRR=0.229
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.45_e0.35_b0.20: R@1=0.124 R@3=0.249 R@5=0.331 NDCG@5=0.229 MRR=0.231
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.45_e0.35_b0.20: R@1=0.118 R@3=0.244 R@5=0.326 NDCG@5=0.224 MRR=0.225
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.10_b0.25: R@1=0.108 R@3=0.238 R@5=0.321 NDCG@5=0.217 MRR=0.217
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.65_e0.10_b0.25: R@1=0.109 R@3=0.241 R@5=0.319 NDCG@5=0.216 MRR=0.217
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.65_e0.10_b0.25: R@1=0.106 R@3=0.239 R@5=0.323 NDCG@5=0.217 MRR=0.216
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.15_b0.25: R@1=0.113 R@3=0.239 R@5=0.319 NDCG@5=0.218 MRR=0.220
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.15_b0.25: R@1=0.109 R@3=0.241 R@5=0.314 NDCG@5=0.215 MRR=0.218
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.60_e0.15_b0.25: R@1=0.108 R@3=0.237 R@5=0.316 NDCG@5=0.215 MRR=0.217
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.55_e0.20_b0.25: R@1=0.110 R@3=0.244 R@5=0.316 NDCG@5=0.216 MRR=0.219
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.55_e0.20_b0.25: R@1=0.116 R@3=0.248 R@5=0.323 NDCG@5=0.222 MRR=0.224
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.55_e0.20_b0.25: R@1=0.110 R@3=0.239 R@5=0.318 NDCG@5=0.216 MRR=0.218
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.50_e0.25_b0.25: R@1=0.114 R@3=0.248 R@5=0.318 NDCG@5=0.220 MRR=0.223
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.50_e0.25_b0.25: R@1=0.118 R@3=0.245 R@5=0.319 NDCG@5=0.221 MRR=0.225
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.50_e0.25_b0.25: R@1=0.110 R@3=0.242 R@5=0.311 NDCG@5=0.214 MRR=0.219
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.45_e0.30_b0.25: R@1=0.120 R@3=0.247 R@5=0.322 NDCG@5=0.223 MRR=0.226
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.45_e0.30_b0.25: R@1=0.119 R@3=0.241 R@5=0.323 NDCG@5=0.222 MRR=0.225
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.45_e0.30_b0.25: R@1=0.110 R@3=0.242 R@5=0.321 NDCG@5=0.218 MRR=0.219
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.40_e0.35_b0.25: R@1=0.116 R@3=0.245 R@5=0.320 NDCG@5=0.221 MRR=0.224
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.40_e0.35_b0.25: R@1=0.114 R@3=0.241 R@5=0.316 NDCG@5=0.218 MRR=0.223
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.40_e0.35_b0.25: R@1=0.115 R@3=0.240 R@5=0.311 NDCG@5=0.216 MRR=0.221
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.10_b0.30: R@1=0.108 R@3=0.238 R@5=0.315 NDCG@5=0.214 MRR=0.216
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.60_e0.10_b0.30: R@1=0.108 R@3=0.245 R@5=0.315 NDCG@5=0.214 MRR=0.216
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.60_e0.10_b0.30: R@1=0.110 R@3=0.240 R@5=0.310 NDCG@5=0.213 MRR=0.217
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.55_e0.15_b0.30: R@1=0.110 R@3=0.242 R@5=0.312 NDCG@5=0.214 MRR=0.217
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.55_e0.15_b0.30: R@1=0.113 R@3=0.243 R@5=0.315 NDCG@5=0.217 MRR=0.220
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.55_e0.15_b0.30: R@1=0.111 R@3=0.238 R@5=0.313 NDCG@5=0.214 MRR=0.217
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.50_e0.20_b0.30: R@1=0.110 R@3=0.244 R@5=0.313 NDCG@5=0.214 MRR=0.218
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.50_e0.20_b0.30: R@1=0.108 R@3=0.241 R@5=0.314 NDCG@5=0.214 MRR=0.217
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.50_e0.20_b0.30: R@1=0.107 R@3=0.232 R@5=0.310 NDCG@5=0.211 MRR=0.214
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.45_e0.25_b0.30: R@1=0.109 R@3=0.242 R@5=0.315 NDCG@5=0.215 MRR=0.218
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.45_e0.25_b0.30: R@1=0.110 R@3=0.241 R@5=0.315 NDCG@5=0.216 MRR=0.219
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.45_e0.25_b0.30: R@1=0.105 R@3=0.235 R@5=0.308 NDCG@5=0.210 MRR=0.213
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.40_e0.30_b0.30: R@1=0.107 R@3=0.240 R@5=0.311 NDCG@5=0.213 MRR=0.217
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.40_e0.30_b0.30: R@1=0.109 R@3=0.243 R@5=0.312 NDCG@5=0.214 MRR=0.218
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.40_e0.30_b0.30: R@1=0.106 R@3=0.235 R@5=0.307 NDCG@5=0.209 MRR=0.213
+k3_embedding_concat_norm_first_bm25_source_ge3_plus_embedding_top20_k0.35_e0.35_b0.30: R@1=0.110 R@3=0.242 R@5=0.313 NDCG@5=0.215 MRR=0.218
+k3_embedding_concat_concat_first_bm25_source_ge3_plus_embedding_top20_k0.35_e0.35_b0.30: R@1=0.109 R@3=0.239 R@5=0.313 NDCG@5=0.214 MRR=0.217
+k3_embedding_score_zfusion_bm25_source_ge3_plus_embedding_top20_k0.35_e0.35_b0.30: R@1=0.104 R@3=0.230 R@5=0.307 NDCG@5=0.207 MRR=0.210
+wrote benchmarks/PrefEval/results/prefeval_stage1_1_more_prompts/k3_231_25token_28emoji_sameL28_embedding06_bm25_sota_20260513.json
+wrote benchmarks/PrefEval/results/prefeval_stage1_1_more_prompts/k3_231_25token_28emoji_sameL28_embedding06_bm25_sota_20260513.md

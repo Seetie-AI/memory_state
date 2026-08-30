@@ -1,0 +1,153 @@
+{
+  "created_utc": "2026-05-12T00:49:17.521852+00:00",
+  "analysis": "prefeval_automatic_retrieval",
+  "inputs": {
+    "task": "implicit_persona",
+    "dataset_id": "siyanzhao/prefeval_implicit_persona",
+    "split": "train",
+    "limit": 30,
+    "shuffle_seed": null,
+    "retrievers": [
+      "bm25"
+    ],
+    "top_k": 50,
+    "gold_policy": "same_preference_text",
+    "hidden_model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-9B-MLX-4bit",
+    "embedding_model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3-Embedding-8B-4bit-DWQ",
+    "embedding_alpha": 0.75,
+    "synthetic_smoke": false
+  },
+  "task_summary": {
+    "items": 30,
+    "candidate_count": 30,
+    "query_count": 30,
+    "duplicate_preference_strings": 0,
+    "topics": [
+      "education_learning_styles"
+    ],
+    "preference_types": [
+      "implicit_persona"
+    ]
+  },
+  "prompt_notes": {
+    "2-7": "\n用一个词标记上面这段对话的互动模式，这个词是：“",
+    "2-8": "\n用一个词标记回答上面这段对话中的对方时最该采用的策略，这个词是：“",
+    "note": "2-7 and 2-8 use 标记 in this benchmark; Stage 3 historical scripts are unchanged."
+  },
+  "rows": [
+    {
+      "name": "bm25",
+      "description": "BM25 over preference memory strings",
+      "metrics": {
+        "n_total": 30,
+        "n_scored": 30,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.03333333333333333,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.13333333333333333
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.03333333333333333,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.13333333333333333
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.2,
+            "ci95": {
+              "low": 0.06666666666666667,
+              "high": 0.36666666666666664
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.12975964202381243,
+            "ci95": {
+              "low": 0.03333333333333333,
+              "high": 0.25515495892857626
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.23333333333333334,
+            "ci95": {
+              "low": 0.06666666666666667,
+              "high": 0.4
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.14265473559829717,
+            "ci95": {
+              "low": 0.046124265824408366,
+              "high": 0.25597085192293395
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.4666666666666667,
+            "ci95": {
+              "low": 0.3,
+              "high": 0.6341666666666669
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2157789567686658,
+            "ci95": {
+              "low": 0.13813103796092926,
+              "high": 0.3265791318904742
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.8,
+            "ci95": {
+              "low": 0.6666666666666666,
+              "high": 0.9333333333333333
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.2995317589107129,
+            "ci95": {
+              "low": 0.2287038026357114,
+              "high": 0.3902441884065532
+            }
+          },
+          "recall_all@50": {
+            "mean": 1.0,
+            "ci95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.34234493418971007,
+            "ci95": {
+              "low": 0.2837251814318475,
+              "high": 0.42230342996194314
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.03333333333333333,
+        "ndcg_any@1": 0.03333333333333333,
+        "recall_all@3": 0.2,
+        "ndcg_any@3": 0.12975964202381243,
+        "recall_all@5": 0.23333333333333334,
+        "ndcg_any@5": 0.14265473559829717,
+        "recall_all@10": 0.4666666666666667,
+        "ndcg_any@10": 0.2157789567686658,
+        "recall_all@20": 0.8,
+        "ndcg_any@20": 0.2995317589107129,
+        "recall_all@50": 1.0,
+        "ndcg_any@50": 0.34234493418971007,
+        "mrr": 0.17188609354000922
+      }
+    }
+  ],
+  "elapsed_seconds": 5.76437645801343
+}

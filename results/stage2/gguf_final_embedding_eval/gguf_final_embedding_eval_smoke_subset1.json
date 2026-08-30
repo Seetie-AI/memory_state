@@ -1,0 +1,345 @@
+{
+  "created_utc": "2026-05-09T02:47:06.805816+00:00",
+  "analysis": "gguf_final_embedding_eval",
+  "scope": {
+    "model": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-9B-Base.i1-Q4_K_M.gguf",
+    "data": "/Users/gordonxiong/Desktop/Repos/memory_state/data/longmemeval_s_cleaned.json",
+    "subset": 1,
+    "prompt_variant": "P0",
+    "pooling": "llama.cpp final embedding with --pooling last",
+    "embedding_normalization": "raw output via --embd-normalize -1; retrieval code normalizes for scoring",
+    "approximation_limits": [
+      "Base model, not the stronger Instruct model used in Stage 2.",
+      "Final model embedding, not the internal layer-30 hidden state.",
+      "llama.cpp GGUF path, not the MLX hidden-state extractor."
+    ]
+  },
+  "llama_cpp": {
+    "binary": "llama-embedding",
+    "ctx_size": 2048,
+    "prompt_batch_size": 128,
+    "device": "none",
+    "op_offload": false,
+    "fit": false,
+    "gpu_layers": 0
+  },
+  "prompt_count": 274,
+  "instance_count": 1,
+  "embedding_dim": 4096,
+  "metrics_by_mode": {
+    "cosine": {
+      "n_total": 1,
+      "n_scored": 1,
+      "ignored_abstention_count": 0,
+      "ignored_abstention_ids": [],
+      "ignored_no_target_count": 0,
+      "ignored_no_target_ids": [],
+      "metrics": {
+        "recall_all@1": {
+          "mean": 0.0,
+          "ci95": {
+            "low": 0.0,
+            "high": 0.0
+          }
+        },
+        "ndcg_any@1": {
+          "mean": 0.0,
+          "ci95": {
+            "low": 0.0,
+            "high": 0.0
+          }
+        },
+        "recall_all@3": {
+          "mean": 0.0,
+          "ci95": {
+            "low": 0.0,
+            "high": 0.0
+          }
+        },
+        "ndcg_any@3": {
+          "mean": 0.0,
+          "ci95": {
+            "low": 0.0,
+            "high": 0.0
+          }
+        },
+        "recall_all@5": {
+          "mean": 1.0,
+          "ci95": {
+            "low": 1.0,
+            "high": 1.0
+          }
+        },
+        "ndcg_any@5": {
+          "mean": 0.43067655807339306,
+          "ci95": {
+            "low": 0.43067655807339306,
+            "high": 0.43067655807339306
+          }
+        },
+        "recall_all@10": {
+          "mean": 1.0,
+          "ci95": {
+            "low": 1.0,
+            "high": 1.0
+          }
+        },
+        "ndcg_any@10": {
+          "mean": 0.43067655807339306,
+          "ci95": {
+            "low": 0.43067655807339306,
+            "high": 0.43067655807339306
+          }
+        },
+        "recall_all@30": {
+          "mean": 1.0,
+          "ci95": {
+            "low": 1.0,
+            "high": 1.0
+          }
+        },
+        "ndcg_any@30": {
+          "mean": 0.43067655807339306,
+          "ci95": {
+            "low": 0.43067655807339306,
+            "high": 0.43067655807339306
+          }
+        },
+        "recall_all@50": {
+          "mean": 1.0,
+          "ci95": {
+            "low": 1.0,
+            "high": 1.0
+          }
+        },
+        "ndcg_any@50": {
+          "mean": 0.43067655807339306,
+          "ci95": {
+            "low": 0.43067655807339306,
+            "high": 0.43067655807339306
+          }
+        }
+      }
+    },
+    "centered_cosine": {
+      "n_total": 1,
+      "n_scored": 1,
+      "ignored_abstention_count": 0,
+      "ignored_abstention_ids": [],
+      "ignored_no_target_count": 0,
+      "ignored_no_target_ids": [],
+      "metrics": {
+        "recall_all@1": {
+          "mean": 0.0,
+          "ci95": {
+            "low": 0.0,
+            "high": 0.0
+          }
+        },
+        "ndcg_any@1": {
+          "mean": 0.0,
+          "ci95": {
+            "low": 0.0,
+            "high": 0.0
+          }
+        },
+        "recall_all@3": {
+          "mean": 0.0,
+          "ci95": {
+            "low": 0.0,
+            "high": 0.0
+          }
+        },
+        "ndcg_any@3": {
+          "mean": 0.0,
+          "ci95": {
+            "low": 0.0,
+            "high": 0.0
+          }
+        },
+        "recall_all@5": {
+          "mean": 1.0,
+          "ci95": {
+            "low": 1.0,
+            "high": 1.0
+          }
+        },
+        "ndcg_any@5": {
+          "mean": 0.43067655807339306,
+          "ci95": {
+            "low": 0.43067655807339306,
+            "high": 0.43067655807339306
+          }
+        },
+        "recall_all@10": {
+          "mean": 1.0,
+          "ci95": {
+            "low": 1.0,
+            "high": 1.0
+          }
+        },
+        "ndcg_any@10": {
+          "mean": 0.43067655807339306,
+          "ci95": {
+            "low": 0.43067655807339306,
+            "high": 0.43067655807339306
+          }
+        },
+        "recall_all@30": {
+          "mean": 1.0,
+          "ci95": {
+            "low": 1.0,
+            "high": 1.0
+          }
+        },
+        "ndcg_any@30": {
+          "mean": 0.43067655807339306,
+          "ci95": {
+            "low": 0.43067655807339306,
+            "high": 0.43067655807339306
+          }
+        },
+        "recall_all@50": {
+          "mean": 1.0,
+          "ci95": {
+            "low": 1.0,
+            "high": 1.0
+          }
+        },
+        "ndcg_any@50": {
+          "mean": 0.43067655807339306,
+          "ci95": {
+            "low": 0.43067655807339306,
+            "high": 0.43067655807339306
+          }
+        }
+      }
+    }
+  },
+  "predictions_by_mode": {
+    "cosine": [
+      {
+        "question_id": "e47becba",
+        "retrieved_ids": [
+          "sharegpt_8dJs7Ai_0_5",
+          "sharegpt_DGTCD7D_0_3",
+          "sharegpt_8dJs7Ai_0_11",
+          "answer_280352e9_5",
+          "sharegpt_8dJs7Ai_0_7",
+          "sharegpt_T1EiHWI_13_8",
+          "sharegpt_UnjngE7_65_2",
+          "ultrachat_422229_5",
+          "sharegpt_8dJs7Ai_0_3",
+          "sharegpt_8dJs7Ai_0_9",
+          "sharegpt_Jcy1CVN_0_5",
+          "sharegpt_Jcy1CVN_0_3",
+          "f6859b48_2_1",
+          "d414cac5_4_1",
+          "sharegpt_PdnvIns_0_7",
+          "d414cac5_4_11",
+          "d414cac5_4_3",
+          "sharegpt_T1EiHWI_13_12",
+          "sharegpt_T1EiHWI_13_6",
+          "sharegpt_BvwQVCO_0_1",
+          "sharegpt_Jcy1CVN_0_7",
+          "noans_280352e9_3",
+          "sharegpt_gTknhGs_0_1",
+          "d414cac5_4_9",
+          "sharegpt_gTknhGs_0_3",
+          "sharegpt_qRdLQvN_7_8",
+          "sharegpt_qRdLQvN_7_6",
+          "sharegpt_qRdLQvN_7_4",
+          "sharegpt_T1EiHWI_13_2",
+          "sharegpt_QZMeA7V_17_6",
+          "d94b721b_11",
+          "ultrachat_458322_13",
+          "ultrachat_57566_1",
+          "sharegpt_PdnvIns_0_3",
+          "3b3a77d9_5",
+          "noans_280352e9_1",
+          "d414cac5_4_5",
+          "ultrachat_574556_3",
+          "d414cac5_4_7",
+          "ultrachat_574556_5",
+          "e348269f_1_7",
+          "a041cdd4_3_11",
+          "ultrachat_422229_7",
+          "85a1be56_1_1",
+          "sharegpt_DGTCD7D_0_1",
+          "f6859b48_2_5",
+          "ultrachat_574556_7",
+          "sharegpt_UnjngE7_65_6",
+          "sharegpt_UnjngE7_65_14",
+          "noans_280352e9_7"
+        ],
+        "gold_ids": [
+          "answer_280352e9_5"
+        ],
+        "is_abstention": false,
+        "has_target": true
+      }
+    ],
+    "centered_cosine": [
+      {
+        "question_id": "e47becba",
+        "retrieved_ids": [
+          "sharegpt_8dJs7Ai_0_5",
+          "sharegpt_8dJs7Ai_0_11",
+          "sharegpt_8dJs7Ai_0_9",
+          "answer_280352e9_5",
+          "sharegpt_8dJs7Ai_0_7",
+          "sharegpt_Jcy1CVN_0_7",
+          "sharegpt_8dJs7Ai_0_3",
+          "sharegpt_Jcy1CVN_0_5",
+          "sharegpt_T1EiHWI_13_8",
+          "sharegpt_DGTCD7D_0_3",
+          "ultrachat_530213_1",
+          "sharegpt_Jcy1CVN_0_3",
+          "sharegpt_Jcy1CVN_0_1",
+          "sharegpt_UnjngE7_65_2",
+          "sharegpt_BvwQVCO_0_1",
+          "ultrachat_458322_13",
+          "sharegpt_gTknhGs_0_3",
+          "d414cac5_4_1",
+          "ultrachat_214101_1",
+          "sharegpt_jVow2vn_0_1",
+          "sharegpt_8dJs7Ai_0_13",
+          "sharegpt_T1EiHWI_13_2",
+          "sharegpt_gTknhGs_0_1",
+          "sharegpt_Cr2tc1f_0_5",
+          "sharegpt_UnjngE7_65_10",
+          "d94b721b_1",
+          "sharegpt_8dJs7Ai_0_15",
+          "ultrachat_214101_3",
+          "sharegpt_T1EiHWI_13_6",
+          "sharegpt_UnjngE7_65_4",
+          "sharegpt_PdnvIns_0_7",
+          "ultrachat_57566_1",
+          "d414cac5_4_9",
+          "sharegpt_QZMeA7V_17_6",
+          "d94b721b_9",
+          "sharegpt_T1EiHWI_13_4",
+          "ultrachat_422229_5",
+          "ultrachat_530213_3",
+          "d414cac5_4_11",
+          "ultrachat_214101_5",
+          "d414cac5_4_3",
+          "sharegpt_UnjngE7_65_14",
+          "e348269f_1_7",
+          "ultrachat_422229_1",
+          "d414cac5_4_5",
+          "d414cac5_4_7",
+          "ultrachat_486410_1",
+          "sharegpt_UnjngE7_65_6",
+          "ultrachat_336116_1",
+          "ultrachat_286075_1"
+        ],
+        "gold_ids": [
+          "answer_280352e9_5"
+        ],
+        "is_abstention": false,
+        "has_target": true
+      }
+    ]
+  }
+}

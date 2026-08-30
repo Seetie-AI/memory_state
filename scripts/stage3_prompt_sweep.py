@@ -112,6 +112,8 @@ PROMPT_VARIANTS.update(
         "2-1": "\n用一个词代表上面这段对话中的话题，这个词是：“",
         # 2-3-1: object->recall-keyword step from anchor; symmetric retrieval-key projection.
         "2-3-1": "\n用一个词代表上面这段对话最该让我想起的关键词，这个词是：“",
+        # 2-3-1_mark: PrefEval final config variant; 标记 verb matches the companion-memory prompt family.
+        "2-3-1_mark": "\n用一个词标记上面这段对话最该让我想起的关键词，这个词是：“",
         # 2-3-2_mem: asymmetric pair memory side; stores what this memory should recall later.
         "2-3-2_mem": "\n用一个词代表上面这段对话最该让我下次聊到相关话题时想起的关键词，这个词是：“",
         # 2-3-2_query: asymmetric pair query side; asks what current context should retrieve now.
@@ -124,12 +126,16 @@ PROMPT_VARIANTS.update(
         "2-4-2": "\n用一个词代表上面这段对话中的对方的需求，这个词是：“",
         # 2-5: object->association step from anchor; projects into free-association/pattern space.
         "2-5": "\n用一个词代表上面这段对话让我产生的联想，这个词是：“",
+        # 2-5_token: PrefEval final config association-token variant.
+        "2-5_token": "\n用一个token标记上面这段对话让我产生的联想，这个token是：“",
         # 2-6: object->impression step from anchor; projects into metacognitive impression space.
         "2-6": "\n用一个词代表上面这段对话给我的印象，这个词是：“",
         # 2-7: object->interaction-pattern step from anchor; Chinese replacement for dynamics.
         "2-7": "\n用一个词代表上面这段对话的互动模式，这个词是：“",
         # 2-8: object->answer-strategy step from anchor; 对方 anchors to the transcript counterpart without live-user drift.
         "2-8": "\n用一个词代表回答上面这段对话中的对方时最该采用的策略，这个词是：“",
+        # 2-8_emoji: PrefEval final config emotion-anchor variant.
+        "2-8_emoji": "\n用一个emoji标记上面这段对话的情绪，这个emoji是：“",
     }
 )
 DEFAULT_POSITIONS = ["last"]

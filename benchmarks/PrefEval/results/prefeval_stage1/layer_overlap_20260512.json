@@ -1,0 +1,437 @@
+{
+  "created_utc": "2026-05-12T18:52:06.278006+00:00",
+  "analysis": "prefeval_stage1_layer_overlap",
+  "inputs": {
+    "prepared_jsonl": "/Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/data/implicit_persona_n1000_pruned_hidden_l28_l29_l30_l31_logits256_promptreps128_20260512.jsonl",
+    "tensor_dir": "/Users/gordonxiong/Desktop/Repos/memory_state/benchmarks/PrefEval/tensors/hidden_implicit_persona_n1000_a3f7b8b21e_59d5500483_41ed8fec5e_logits256_promptreps1x128",
+    "top_k": 50,
+    "bootstrap_samples": 1000,
+    "phase": "layer_overlap"
+  },
+  "task_summary": {
+    "task": "implicit_persona",
+    "dataset_id": "siyanzhao/prefeval_implicit_persona",
+    "items": 1000,
+    "candidate_count": 1000,
+    "query_count": 1000,
+    "gold_policy": "prepared_jsonl_gold_ids"
+  },
+  "notes": [
+    "Stored hidden vectors are raw extractor outputs; this offline pass applies retrieval transforms after loading.",
+    "The n=1000 prompt-sweep table previously reported anti_pca_both_k15 plus L2-normalized cosine, not untreated raw cosine.",
+    "candidate_only k=10 is a sanity check because earlier LongMemEval stages found candidate-only transforms harmful."
+  ],
+  "rows": [
+    {
+      "name": "layer_overlap_2-3-1_L29_L30_zsum",
+      "description": "Layer z-sum diagnostic for 2-3-1_L29_L30",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.111,
+            "ci95": {
+              "low": 0.091975,
+              "high": 0.13
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.112,
+            "ci95": {
+              "low": 0.092,
+              "high": 0.131
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.245,
+            "ci95": {
+              "low": 0.22,
+              "high": 0.271025
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.19011365501676855,
+            "ci95": {
+              "low": 0.1690159322840702,
+              "high": 0.21239120658467278
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.311,
+            "ci95": {
+              "low": 0.284,
+              "high": 0.338025
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.21713274415457257,
+            "ci95": {
+              "low": 0.19559990721658826,
+              "high": 0.2393386424340675
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.426,
+            "ci95": {
+              "low": 0.395975,
+              "high": 0.456
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2549024467031268,
+            "ci95": {
+              "low": 0.23309953387301507,
+              "high": 0.2757248037514033
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.547,
+            "ci95": {
+              "low": 0.516,
+              "high": 0.578
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.28574947349158325,
+            "ci95": {
+              "low": 0.2645427850560716,
+              "high": 0.305928390819689
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.68,
+            "ci95": {
+              "low": 0.651975,
+              "high": 0.711
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3124007874977967,
+            "ci95": {
+              "low": 0.29310405502580467,
+              "high": 0.3316248567096413
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.111,
+        "ndcg_any@1": 0.112,
+        "recall_all@3": 0.245,
+        "ndcg_any@3": 0.19011365501676855,
+        "recall_all@5": 0.311,
+        "ndcg_any@5": 0.21713274415457257,
+        "recall_all@10": 0.426,
+        "ndcg_any@10": 0.2549024467031268,
+        "recall_all@20": 0.547,
+        "ndcg_any@20": 0.28574947349158325,
+        "recall_all@50": 0.68,
+        "ndcg_any@50": 0.3124007874977967,
+        "mrr": 0.21408811780007034
+      },
+      "phase": "layer_overlap",
+      "layer_set": "2-3-1_L29_L30",
+      "scorer": "zsum",
+      "cells": [
+        "2-3-1_L29_both_k15",
+        "2-3-1_L30_both_k15"
+      ]
+    },
+    {
+      "name": "layer_overlap_2-3-1_L28_L29_L30_L31_zsum",
+      "description": "Layer z-sum diagnostic for 2-3-1_L28_L29_L30_L31",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.107,
+            "ci95": {
+              "low": 0.088,
+              "high": 0.126
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.107,
+            "ci95": {
+              "low": 0.088,
+              "high": 0.126
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.248,
+            "ci95": {
+              "low": 0.223,
+              "high": 0.275
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.18930708142038583,
+            "ci95": {
+              "low": 0.16817089587033737,
+              "high": 0.2108806725210439
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.307,
+            "ci95": {
+              "low": 0.28,
+              "high": 0.335
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2135743771567092,
+            "ci95": {
+              "low": 0.19212584457215848,
+              "high": 0.23455762032436392
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.426,
+            "ci95": {
+              "low": 0.397,
+              "high": 0.456
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2522925211418311,
+            "ci95": {
+              "low": 0.23111981860308892,
+              "high": 0.27345361320528355
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.546,
+            "ci95": {
+              "low": 0.517,
+              "high": 0.5770249999999999
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.2826837164485557,
+            "ci95": {
+              "low": 0.26296866982939227,
+              "high": 0.3032999743887031
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.676,
+            "ci95": {
+              "low": 0.647975,
+              "high": 0.704
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3086597090708339,
+            "ci95": {
+              "low": 0.2892806685716337,
+              "high": 0.32740027670328303
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.107,
+        "ndcg_any@1": 0.107,
+        "recall_all@3": 0.248,
+        "ndcg_any@3": 0.18930708142038583,
+        "recall_all@5": 0.307,
+        "ndcg_any@5": 0.2135743771567092,
+        "recall_all@10": 0.426,
+        "ndcg_any@10": 0.2522925211418311,
+        "recall_all@20": 0.546,
+        "ndcg_any@20": 0.2826837164485557,
+        "recall_all@50": 0.676,
+        "ndcg_any@50": 0.3086597090708339,
+        "mrr": 0.21032028243682602
+      },
+      "phase": "layer_overlap",
+      "layer_set": "2-3-1_L28_L29_L30_L31",
+      "scorer": "zsum",
+      "cells": [
+        "2-3-1_L28_both_k15",
+        "2-3-1_L29_both_k15",
+        "2-3-1_L30_both_k15",
+        "2-3-1_L31_both_k15"
+      ]
+    },
+    {
+      "name": "layer_overlap_2-3-1_L28_L29_L30_zsum",
+      "description": "Layer z-sum diagnostic for 2-3-1_L28_L29_L30",
+      "metrics": {
+        "n_total": 1000,
+        "n_scored": 1000,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.107,
+            "ci95": {
+              "low": 0.087975,
+              "high": 0.12602499999999997
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.107,
+            "ci95": {
+              "low": 0.087975,
+              "high": 0.12602499999999997
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.243,
+            "ci95": {
+              "low": 0.217,
+              "high": 0.269025
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.18654522191324288,
+            "ci95": {
+              "low": 0.16436849507033222,
+              "high": 0.20847844791395762
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.306,
+            "ci95": {
+              "low": 0.27997500000000003,
+              "high": 0.333025
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.2123161051276656,
+            "ci95": {
+              "low": 0.1916677362718138,
+              "high": 0.23317048764589657
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.426,
+            "ci95": {
+              "low": 0.396,
+              "high": 0.456025
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.2517131186118308,
+            "ci95": {
+              "low": 0.23067918568620677,
+              "high": 0.27162510278299334
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.546,
+            "ci95": {
+              "low": 0.516,
+              "high": 0.5770249999999999
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.2822186805986314,
+            "ci95": {
+              "low": 0.26232893748348396,
+              "high": 0.3018235869248411
+            }
+          },
+          "recall_all@50": {
+            "mean": 0.684,
+            "ci95": {
+              "low": 0.656,
+              "high": 0.714
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3099363003483223,
+            "ci95": {
+              "low": 0.2912739113009039,
+              "high": 0.32853325647065434
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.107,
+        "ndcg_any@1": 0.107,
+        "recall_all@3": 0.243,
+        "ndcg_any@3": 0.18654522191324288,
+        "recall_all@5": 0.306,
+        "ndcg_any@5": 0.2123161051276656,
+        "recall_all@10": 0.426,
+        "ndcg_any@10": 0.2517131186118308,
+        "recall_all@20": 0.546,
+        "ndcg_any@20": 0.2822186805986314,
+        "recall_all@50": 0.684,
+        "ndcg_any@50": 0.3099363003483223,
+        "mrr": 0.2099707815970305
+      },
+      "phase": "layer_overlap",
+      "layer_set": "2-3-1_L28_L29_L30",
+      "scorer": "zsum",
+      "cells": [
+        "2-3-1_L28_both_k15",
+        "2-3-1_L29_both_k15",
+        "2-3-1_L30_both_k15"
+      ]
+    }
+  ],
+  "elapsed_seconds": 4.0054557920084335,
+  "layer_overlap_rows": [
+    {
+      "combo": "2-3-1_L29_L30",
+      "split": "all",
+      "cells": [
+        "2-3-1_L29_both_k15",
+        "2-3-1_L30_both_k15"
+      ],
+      "n_queries": 1000,
+      "oracle_any_hit_at5": 0.327,
+      "oracle_recall_all_at5": 0.327,
+      "best_component_any_hit_at5": 0.312,
+      "oracle_any_gain_vs_best_component": 0.015,
+      "mean_pairwise_jaccard_at5": 0.814595238095238
+    },
+    {
+      "combo": "2-3-1_L28_L29_L30",
+      "split": "all",
+      "cells": [
+        "2-3-1_L28_both_k15",
+        "2-3-1_L29_both_k15",
+        "2-3-1_L30_both_k15"
+      ],
+      "n_queries": 1000,
+      "oracle_any_hit_at5": 0.337,
+      "oracle_recall_all_at5": 0.337,
+      "best_component_any_hit_at5": 0.312,
+      "oracle_any_gain_vs_best_component": 0.025,
+      "mean_pairwise_jaccard_at5": 0.7897817460317459
+    },
+    {
+      "combo": "2-3-1_L28_L29_L30_L31",
+      "split": "all",
+      "cells": [
+        "2-3-1_L28_both_k15",
+        "2-3-1_L29_both_k15",
+        "2-3-1_L30_both_k15",
+        "2-3-1_L31_both_k15"
+      ],
+      "n_queries": 1000,
+      "oracle_any_hit_at5": 0.357,
+      "oracle_recall_all_at5": 0.356,
+      "best_component_any_hit_at5": 0.312,
+      "oracle_any_gain_vs_best_component": 0.045,
+      "mean_pairwise_jaccard_at5": 0.6890972222222221
+    }
+  ]
+}

@@ -1,0 +1,412 @@
+{
+  "config": {
+    "method": "hidden_state",
+    "data": "data/longmemeval_s_cleaned.json",
+    "subset": 5,
+    "granularity": "round",
+    "top_k": 50,
+    "bootstrap_samples": 1000,
+    "hidden_state_model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-2B-bf16",
+    "hidden_state_layer_index_raw": -9,
+    "hidden_state_layer_index_resolved": 15,
+    "hidden_state_num_layers": 24,
+    "hidden_state_norm": "none_for_intermediate"
+  },
+  "official_anchor": null,
+  "metrics": {
+    "n_total": 5,
+    "n_scored": 5,
+    "ignored_abstention_count": 0,
+    "ignored_abstention_ids": [],
+    "ignored_no_target_count": 0,
+    "ignored_no_target_ids": [],
+    "metrics": {
+      "recall_all@1": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@1": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@3": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@3": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@5": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "ndcg_any@5": {
+        "mean": 0.0,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.0
+        }
+      },
+      "recall_all@10": {
+        "mean": 0.2,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.6
+        }
+      },
+      "ndcg_any@10": {
+        "mean": 0.06020599913279624,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.1806179973983887
+        }
+      },
+      "recall_all@30": {
+        "mean": 0.2,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.6
+        }
+      },
+      "ndcg_any@30": {
+        "mean": 0.06020599913279624,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.1806179973983887
+        }
+      },
+      "recall_all@50": {
+        "mean": 0.2,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.6
+        }
+      },
+      "ndcg_any@50": {
+        "mean": 0.06020599913279624,
+        "ci95": {
+          "low": 0.0,
+          "high": 0.1806179973983887
+        }
+      }
+    }
+  },
+  "predictions": [
+    {
+      "question_id": "e47becba",
+      "retrieved_ids": [
+        "sharegpt_8dJs7Ai_0_5",
+        "ultrachat_574556_5",
+        "sharegpt_jVow2vn_0_1",
+        "sharegpt_T1EiHWI_13_8",
+        "sharegpt_gTknhGs_0_3",
+        "sharegpt_8dJs7Ai_0_3",
+        "sharegpt_T1EiHWI_13_4",
+        "ultrachat_336116_3",
+        "52c34859_1_7",
+        "ultrachat_45576_5",
+        "sharegpt_8dJs7Ai_0_9",
+        "52c34859_1_5",
+        "0586f435_3_7",
+        "ultrachat_45576_3",
+        "sharegpt_8dJs7Ai_0_11",
+        "52c34859_1_11",
+        "ultrachat_574556_7",
+        "sharegpt_T1EiHWI_13_6",
+        "sharegpt_T1EiHWI_13_2",
+        "e27891d3_2_9",
+        "3b3a77d9_5",
+        "52c34859_1_9",
+        "0586f435_3_11",
+        "0586f435_3_9",
+        "ultrachat_45576_13",
+        "ultrachat_45576_7",
+        "ultrachat_45576_9",
+        "sharegpt_gTknhGs_0_1",
+        "sharegpt_8dJs7Ai_0_13",
+        "ultrachat_45576_1",
+        "ultrachat_57566_3",
+        "sharegpt_Jcy1CVN_0_7",
+        "85a1be56_1_7",
+        "a041cdd4_3_7",
+        "sharegpt_8dJs7Ai_0_7",
+        "7045db85_1_9",
+        "978c0e70_3",
+        "ultrachat_57566_5",
+        "ultrachat_514031_13",
+        "d94b721b_1",
+        "02bd2b90_3_1",
+        "5dac7cc2_1_7",
+        "sharegpt_T1EiHWI_13_12",
+        "ultrachat_286075_1",
+        "aae4411b_2_7",
+        "sharegpt_QZMeA7V_17_2",
+        "ultrachat_45576_11",
+        "ec6ca9ef_11",
+        "c3cd646c_1_11",
+        "ultrachat_215809_5"
+      ],
+      "gold_ids": [
+        "answer_280352e9_5"
+      ],
+      "is_abstention": false,
+      "has_target": true
+    },
+    {
+      "question_id": "118b2229",
+      "retrieved_ids": [
+        "sharegpt_brc2wJS_109_2",
+        "sharegpt_brc2wJS_109_14",
+        "sharegpt_brc2wJS_109_10",
+        "d600c646_3",
+        "ultrachat_368854_3",
+        "sharegpt_brc2wJS_109_18",
+        "sharegpt_brc2wJS_109_4",
+        "ultrachat_20736_1",
+        "answer_40a90d51_9",
+        "ultrachat_88420_3",
+        "f0fc84ea_5",
+        "728deb4d_5_11",
+        "ultrachat_498215_5",
+        "sharegpt_brc2wJS_109_16",
+        "3ea9f765_9",
+        "sharegpt_brc2wJS_109_6",
+        "5dce60dd_5",
+        "ultrachat_577747_5",
+        "ultrachat_368854_11",
+        "004edb32_5",
+        "ultrachat_246088_1",
+        "ultrachat_577747_11",
+        "c22571ff_2_9",
+        "ultrachat_577747_1",
+        "ultrachat_116883_3",
+        "ultrachat_88420_11",
+        "sharegpt_i1iuP70_0_7",
+        "004edb32_3",
+        "79f74d4e_1_3",
+        "d600c646_9",
+        "db50c0f6_5",
+        "sharegpt_M3x4mZx_0_11",
+        "ultrachat_88420_5",
+        "ultrachat_20736_7",
+        "db73b7e4_4_5",
+        "sharegpt_M3x4mZx_0_1",
+        "5dce60dd_7",
+        "ultrachat_311002_3",
+        "728deb4d_5_7",
+        "ultrachat_368854_7",
+        "ultrachat_88420_9",
+        "ultrachat_88420_7",
+        "c22571ff_2_5",
+        "sharegpt_brc2wJS_109_8",
+        "ultrachat_246088_3",
+        "ultrachat_423307_3",
+        "noans_40a90d51_3",
+        "9ee69ca6_2_3",
+        "ultrachat_577747_13",
+        "5dce60dd_1"
+      ],
+      "gold_ids": [
+        "answer_40a90d51_9"
+      ],
+      "is_abstention": false,
+      "has_target": true
+    },
+    {
+      "question_id": "51a45a95",
+      "retrieved_ids": [
+        "sharegpt_EYVyehy_0_3",
+        "cd90590d_9",
+        "ultrachat_181873_3",
+        "c133623d_9",
+        "ultrachat_202740_5",
+        "747abd56_2_9",
+        "f32d1ccf_1_11",
+        "ultrachat_254165_3",
+        "ultrachat_104948_5",
+        "4679a05c_7",
+        "c133623d_5",
+        "ultrachat_261438_5",
+        "f32d1ccf_1_5",
+        "sharegpt_MKMWjX0_25_6",
+        "6e0b1800_2_7",
+        "sharegpt_CyJ3dal_0_17",
+        "ultrachat_254165_1",
+        "747abd56_2_11",
+        "55e0c6db_2_5",
+        "ultrachat_202740_3",
+        "ultrachat_202740_7",
+        "747abd56_2_1",
+        "sharegpt_MKMWjX0_25_10",
+        "sharegpt_MKMWjX0_25_8",
+        "83addb61_4_5",
+        "c133623d_3",
+        "f32d1ccf_1_7",
+        "sharegpt_hChsWOp_128_9",
+        "4679a05c_3",
+        "83addb61_4_9",
+        "4f435d20_2_11",
+        "217debf7_9",
+        "07d1915d_1_9",
+        "ultrachat_261438_3",
+        "07d1915d_1_7",
+        "07d1915d_1_11",
+        "4679a05c_9",
+        "217debf7_11",
+        "83addb61_4_7",
+        "ultrachat_181873_1",
+        "6dfb33f1_1_7",
+        "6e0b1800_2_11",
+        "83addb61_4_11",
+        "cd90590d_5",
+        "ultrachat_261438_1",
+        "ultrachat_174711_3",
+        "f32d1ccf_1_3",
+        "ultrachat_181873_5",
+        "6e0b1800_2_5",
+        "b35610f4_3_3"
+      ],
+      "gold_ids": [
+        "answer_d61669c7_5"
+      ],
+      "is_abstention": false,
+      "has_target": true
+    },
+    {
+      "question_id": "58bf7951",
+      "retrieved_ids": [
+        "sharegpt_PancT1q_0_7",
+        "sharegpt_RkFlOeC_19_4",
+        "ultrachat_196312_7",
+        "ultrachat_304942_1",
+        "ultrachat_283755_1",
+        "ultrachat_446004_3",
+        "1587bd78_1_9",
+        "sharegpt_RkFlOeC_19_2",
+        "ultrachat_196312_1",
+        "ultrachat_377566_1",
+        "ultrachat_45704_5",
+        "ultrachat_71618_9",
+        "ultrachat_278141_1",
+        "ultrachat_446004_1",
+        "sharegpt_PancT1q_0_1",
+        "ultrachat_71618_7",
+        "sharegpt_OFiElWf_37_38",
+        "sharegpt_LG0uJvY_0_5",
+        "ultrachat_155546_1",
+        "ultrachat_71618_3",
+        "sharegpt_gTiQ90w_0_1",
+        "sharegpt_OFiElWf_37_2",
+        "ultrachat_366731_11",
+        "ultrachat_268434_3",
+        "ultrachat_278141_9",
+        "ultrachat_366731_3",
+        "ultrachat_155546_13",
+        "ultrachat_377566_7",
+        "28f15385_9",
+        "5b83c26e_1_3",
+        "1587bd78_1_7",
+        "sharegpt_OFiElWf_37_44",
+        "ultrachat_365156_1",
+        "sharegpt_OFiElWf_37_18",
+        "sharegpt_OFiElWf_37_4",
+        "793382f9_2_7",
+        "ultrachat_196312_5",
+        "1587bd78_1_3",
+        "ultrachat_278141_5",
+        "sharegpt_OFiElWf_37_12",
+        "ultrachat_45704_1",
+        "sharegpt_M84blrA_53_2",
+        "ultrachat_71618_5",
+        "ab19e1c9_2_3",
+        "sharegpt_PancT1q_0_3",
+        "ultrachat_45704_7",
+        "e40d733b_3_5",
+        "ultrachat_377566_3",
+        "ultrachat_346947_1",
+        "ultrachat_346947_3"
+      ],
+      "gold_ids": [
+        "answer_355c48bb_5"
+      ],
+      "is_abstention": false,
+      "has_target": true
+    },
+    {
+      "question_id": "1e043500",
+      "retrieved_ids": [
+        "ultrachat_149462_1",
+        "d8a6c437_7",
+        "a5959675_2_1",
+        "4d0d7984_1",
+        "ultrachat_459237_1",
+        "ultrachat_271928_9",
+        "ultrachat_373118_7",
+        "7b1d1f43_1_11",
+        "01bd9def_3",
+        "a61d06f2_5",
+        "7201d752_7",
+        "ultrachat_134775_7",
+        "sharegpt_Clr6oyu_0_13",
+        "8020d945_2_3",
+        "ultrachat_199191_1",
+        "ultrachat_43823_9",
+        "ultrachat_199191_3",
+        "4d0d7984_3",
+        "7201d752_11",
+        "e132259f_9",
+        "d5d1f9c4_5",
+        "d5d1f9c4_5",
+        "ultrachat_227993_3",
+        "ultrachat_59272_3",
+        "e132259f_1",
+        "8020d945_2_7",
+        "ultrachat_271928_11",
+        "1bec0a8b_2_5",
+        "sharegpt_6QUDIXG_24_3",
+        "d5d1f9c4_11",
+        "d5d1f9c4_11",
+        "0363e91f_5",
+        "ultrachat_227993_1",
+        "ultrachat_134775_9",
+        "e132259f_11",
+        "3548cae3_5",
+        "ultrachat_266656_3",
+        "ultrachat_199191_5",
+        "ultrachat_271928_7",
+        "7201d752_5",
+        "0363e91f_9",
+        "ultrachat_377198_5",
+        "2d0d0004_5",
+        "7201d752_3",
+        "ultrachat_266656_1",
+        "sharegpt_bph7DTk_7_8",
+        "7b1d1f43_1_3",
+        "c3991c02_2_9",
+        "1bec0a8b_2_3",
+        "1bec0a8b_2_11"
+      ],
+      "gold_ids": [
+        "answer_3e012175_3"
+      ],
+      "is_abstention": false,
+      "has_target": true
+    }
+  ]
+}

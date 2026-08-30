@@ -131,7 +131,7 @@ saved compact vectors from `tensors/stage2/9b_4bit_100_p0/` and recomputes
 offline analyses.
 
 ```bash
-cd /Users/gordonxiong/Desktop/Repos/memory_state
+cd /path/to/memory_state
 source .venv/bin/activate
 
 python scripts/stage2_offline_analyze.py \
@@ -166,7 +166,7 @@ This reruns model inference. It is slower and requires Apple Silicon + MLX.
 Environment setup:
 
 ```bash
-cd /Users/gordonxiong/Desktop/Repos/memory_state
+cd /path/to/memory_state
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip

@@ -1,0 +1,952 @@
+{
+  "layer22_center_instance": {
+    "gold_margin_best_gold_minus_best_non_gold": {
+      "mean": -0.010285432826965413,
+      "std": 0.12859655337349157,
+      "min": -0.4014938697218895,
+      "max": 0.3496443033218384
+    },
+    "same_session_top1_false_positive_rate": 0.4666666666666667,
+    "same_day_top1_false_positive_rate": 0.4666666666666667,
+    "token_count_vs_rank_spearman": 0.14939294019154067,
+    "top_false_positive_examples": [
+      {
+        "question_id": "e47becba",
+        "top_candidate_id": "sharegpt_8dJs7Ai_0_5",
+        "top_candidate_text": "What math problem do they solve?",
+        "top_score": 0.4153182804584503,
+        "gold_candidate_ids": [
+          "answer_280352e9_5"
+        ],
+        "gold_texts": [
+          "I graduated with a degree in Business Administration, which has definitely helped me in my new role."
+        ],
+        "best_gold_score": 0.12583956122398376,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "58ef2f1c",
+        "top_candidate_id": "ultrachat_246324_11",
+        "top_candidate_text": "I think I'm going to start by volunteering with the Dayton Foodbank. Do you know if they have any up",
+        "top_score": 0.603365421295166,
+        "gold_candidate_ids": [
+          "answer_59547700_9"
+        ],
+        "gold_texts": [
+          "I'm really looking forward to the silent auction and raffles at \"Strut Your Mutt\". I've had a great "
+        ],
+        "best_gold_score": 0.25758877396583557,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "f8c5f88b",
+        "top_candidate_id": "noans_c3567066_7",
+        "top_candidate_text": "I'm planning to buy new tennis balls this weekend. Do you know any good brands or types of tennis ba",
+        "top_score": 0.5642112493515015,
+        "gold_candidate_ids": [
+          "answer_c3567066_5"
+        ],
+        "gold_texts": [
+          "I'll definitely do those exercises before playing tennis. By the way, I'm really happy with my new t"
+        ],
+        "best_gold_score": 0.49333125352859497,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "5d3d2817",
+        "top_candidate_id": "sharegpt_0OYTYWn_15_4",
+        "top_candidate_text": "Use the grid model please",
+        "top_score": 0.3360444903373718,
+        "gold_candidate_ids": [
+          "answer_235eb6fb_5"
+        ],
+        "gold_texts": [
+          "I've used Trello in my previous role as a marketing specialist at a small startup and I'm familiar w"
+        ],
+        "best_gold_score": -0.06544937938451767,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "c960da58",
+        "top_candidate_id": "noans_e05e4612_7",
+        "top_candidate_text": "That's a great idea about using emojis or keywords in playlist names. I think I'll start doing that ",
+        "top_score": 0.5232947468757629,
+        "gold_candidate_ids": [
+          "answer_e05e4612_3"
+        ],
+        "gold_texts": [
+          "I've been listening to a mix of Lo-Fi hip hop beats and Tameca Jones' album on repeat lately, and I "
+        ],
+        "best_gold_score": 0.38094353675842285,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "3b6f954b",
+        "top_candidate_id": "ultrachat_294369_5",
+        "top_candidate_text": "Can students from other faculties, who are not involved in varsity sports, still use the athletic fa",
+        "top_score": 0.271218866109848,
+        "gold_candidate_ids": [
+          "answer_94030872_9"
+        ],
+        "gold_texts": [
+          "That sounds amazing! I've been to the Great Ocean Road before, and it's definitely a must-see in Aus"
+        ],
+        "best_gold_score": 0.22659200429916382,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "94f70d80",
+        "top_candidate_id": "noans_c63c0458_7",
+        "top_candidate_text": "I think I'll also stop by IKEA while I'm out to check out their coffee tables with storage, since I ",
+        "top_score": 0.6303965449333191,
+        "gold_candidate_ids": [
+          "answer_c63c0458_3"
+        ],
+        "gold_texts": [
+          "I've been leaning towards a wooden top, but now I'm considering the glass top option too. Do you thi"
+        ],
+        "best_gold_score": 0.3755643963813782,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "66f24dbb",
+        "top_candidate_id": "noans_fea2e4d3_3",
+        "top_candidate_text": "Here's a start - I've bought gifts for my sister's birthday, my mom, my neighbor Mrs. Johnson, cowor",
+        "top_score": 0.6493728756904602,
+        "gold_candidate_ids": [
+          "answer_fea2e4d3_5"
+        ],
+        "gold_texts": [
+          "For my sister's birthday, I got her a yellow dress and a pair of earrings to match."
+        ],
+        "best_gold_score": 0.5575230717658997,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "af8d2e46",
+        "top_candidate_id": "noans_82a04f59_5",
+        "top_candidate_text": "I'm still trying to figure out how to pack clothes more strategically. Do you have any tips on how t",
+        "top_score": 0.5811468958854675,
+        "gold_candidate_ids": [
+          "answer_82a04f59_7"
+        ],
+        "gold_texts": [
+          "That's really helpful! I've been trying to get better at packing, but I still tend to overpack. Like"
+        ],
+        "best_gold_score": 0.5082565546035767,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "8ebdbe50",
+        "top_candidate_id": "b53f447a_1_5",
+        "top_candidate_text": "I'd like to know more about the food safety certification program. How long does it take to complete",
+        "top_score": 0.4740537106990814,
+        "gold_candidate_ids": [
+          "answer_8ad8a34f_3"
+        ],
+        "gold_texts": [
+          "I need to add my latest certification in Data Science, which I completed last month, to my profile. "
+        ],
+        "best_gold_score": 0.36863696575164795,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "0862e8bf",
+        "top_candidate_id": "sharegpt_MTUnqho_0_9",
+        "top_candidate_text": "Remove all the spaces",
+        "top_score": 0.3711589574813843,
+        "gold_candidate_ids": [
+          "answer_c6fd8ebd_11"
+        ],
+        "gold_texts": [
+          "By the way, my cat's name is Luna, and she's been such a sweetie throughout all the changes we've be"
+        ],
+        "best_gold_score": 0.23736436665058136,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "853b0a1d",
+        "top_candidate_id": "noans_69811d4a_11",
+        "top_candidate_text": "I think I'll add the gold chain with the tiny diamond cross pendant that I borrowed from my mom. I n",
+        "top_score": 0.4750094711780548,
+        "gold_candidate_ids": [
+          "answer_69811d4a_5"
+        ],
+        "gold_texts": [
+          "I like the idea of a \"Provenance/Story\" column. It'll be nice to have a record of the stories behind"
+        ],
+        "best_gold_score": 0.22268334031105042,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "b86304ba",
+        "top_candidate_id": "noans_645b0329_5",
+        "top_candidate_text": "That's really interesting. Speaking of which, I've been meaning to ask, what's the general rule of t",
+        "top_score": 0.4338720440864563,
+        "gold_candidate_ids": [
+          "answer_645b0329_7"
+        ],
+        "gold_texts": [
+          "That's really helpful. I was thinking about my flea market find, and I realized that it's actually w"
+        ],
+        "best_gold_score": 0.38615554571151733,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "d52b4f67",
+        "top_candidate_id": "ultrachat_481735_5",
+        "top_candidate_text": "That's great to hear! I'll definitely try to visit Cakebread Cellars while I'm in Napa Valley. Any o",
+        "top_score": 0.2851197123527527,
+        "gold_candidate_ids": [
+          "answer_0df6aa4b_5"
+        ],
+        "gold_texts": [
+          "I think the Lavender Dreams Skincare Set sounds like a great idea. I was just at my cousin's wedding"
+        ],
+        "best_gold_score": 0.13185249269008636,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "25e5aa4f",
+        "top_candidate_id": "48f804a3_7",
+        "top_candidate_text": "I'm coming from the Bay Area in California.",
+        "top_score": 0.33524808287620544,
+        "gold_candidate_ids": [
+          "answer_986de8c3_5"
+        ],
+        "gold_texts": [
+          "I'm still leaning towards Stanford, but I'm concerned about the cost. I've been working in the tech "
+        ],
+        "best_gold_score": 0.252170592546463,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "caf9ead2",
+        "top_candidate_id": "noans_0714183a_7",
+        "top_candidate_text": "I'm actually in the city, and my new apartment is about 20 minutes away from my old place. I've been",
+        "top_score": 0.5228150486946106,
+        "gold_candidate_ids": [
+          "answer_0714183a_9"
+        ],
+        "gold_texts": [
+          "I didn't think about asking the baristas for recommendations. That's a great idea! By the way, it to"
+        ],
+        "best_gold_score": 0.4229413866996765,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "8550ddae",
+        "top_candidate_id": "71cf5aeb_3_9",
+        "top_candidate_text": "I'm thinking of serving some savory items alongside my quinoa salad and roasted vegetables, like egg",
+        "top_score": 0.4863453805446625,
+        "gold_candidate_ids": [
+          "answer_c8354ae9_3"
+        ],
+        "gold_texts": [
+          "That's a lot of great ideas! I'm particularly interested in the Lavender Dream, as I've been experim"
+        ],
+        "best_gold_score": 0.3771730661392212,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "86b68151",
+        "top_candidate_id": "4e671700_7",
+        "top_candidate_text": "I'm also thinking of getting new lamp shades for the table lamps in my dining room. Can you recommen",
+        "top_score": 0.4053071141242981,
+        "gold_candidate_ids": [
+          "answer_dc11c1eb_9"
+        ],
+        "gold_texts": [
+          "I just kind of went for it and started moving things around until it felt right. I wanted to create "
+        ],
+        "best_gold_score": 0.36808717250823975,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "577d4d32",
+        "top_candidate_id": "ultrachat_489067_3",
+        "top_candidate_text": "I'll make sure to limit my screen time and take breaks from my phone throughout the day.",
+        "top_score": 0.5058844089508057,
+        "gold_candidate_ids": [
+          "answer_0dd4d99a_5"
+        ],
+        "gold_texts": [
+          "I've heard that this book is a great choice for a evening read, something to unwind with after a lon"
+        ],
+        "best_gold_score": 0.1900096833705902,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "15745da0",
+        "top_candidate_id": "noans_586de428_1",
+        "top_candidate_text": "I'm looking for some advice on how to properly store and maintain my growing collection of vintage c",
+        "top_score": 0.5138659477233887,
+        "gold_candidate_ids": [
+          "answer_586de428_5"
+        ],
+        "gold_texts": [
+          "I've been collecting vintage cameras for three months now, and I've already amassed a pretty impress"
+        ],
+        "best_gold_score": 0.5011343955993652,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "e01b8e2f",
+        "top_candidate_id": "86c5d31d_7",
+        "top_candidate_text": "Let me think about the next trip... Ah yes, about a month after that mountain trip, I took a solo tr",
+        "top_score": 0.5097532272338867,
+        "gold_candidate_ids": [
+          "answer_5ca6cd28_3"
+        ],
+        "gold_texts": [
+          "I'm actually thinking of going back to Hawaii, I loved it so much when I went with my family for a w"
+        ],
+        "best_gold_score": 0.4045080542564392,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "bc8a6e93",
+        "top_candidate_id": "noans_e6143162_7",
+        "top_candidate_text": "That's really helpful, thanks! I've been experimenting with different types of flour lately, and I'v",
+        "top_score": 0.3877415955066681,
+        "gold_candidate_ids": [
+          "answer_e6143162_3"
+        ],
+        "gold_texts": [
+          "That's really helpful, thanks! I've actually had a lot of success with lemon-based desserts in the p"
+        ],
+        "best_gold_score": 0.2733308672904968,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "b320f3f8",
+        "top_candidate_id": "sharegpt_o0MporM_0_5",
+        "top_candidate_text": "What was the decision in the above case?",
+        "top_score": 0.29431140422821045,
+        "gold_candidate_ids": [
+          "answer_5cc9b056_1"
+        ],
+        "gold_texts": [
+          "I'm trying to find a good way to display my vintage watch collection. Do you have any recommendation"
+        ],
+        "best_gold_score": 0.2517111897468567,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "8a137a7f",
+        "top_candidate_id": "noans_15d63a22_11",
+        "top_candidate_text": "I think I'll start with some warm white bulbs for my kitchen and see how that goes. I've been using ",
+        "top_score": 0.4766036570072174,
+        "gold_candidate_ids": [
+          "answer_15d63a22_3"
+        ],
+        "gold_texts": [
+          "I like those ideas, especially the layered lighting concept. I think I'll try placing a floor lamp b"
+        ],
+        "best_gold_score": 0.40376409888267517,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "86f00804",
+        "top_candidate_id": "noans_96b8c9ee_5",
+        "top_candidate_text": "I think I'll check out Libib and StoryGraph. I'm actually curious about tracking my reading speed an",
+        "top_score": 0.3340601325035095,
+        "gold_candidate_ids": [
+          "answer_96b8c9ee_1"
+        ],
+        "gold_texts": [
+          "I'm trying to figure out how to fit more reading time into my daily routine. Do you have any tips on"
+        ],
+        "best_gold_score": 0.263701856136322,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "c19f7a0b",
+        "top_candidate_id": "58ab5fc5_1",
+        "top_candidate_text": "I need help organizing my schedule for the week. Can you remind me what day I have puppy training cl",
+        "top_score": 0.3149486184120178,
+        "gold_candidate_ids": [
+          "answer_f442ccbe_9"
+        ],
+        "gold_texts": [
+          "I've been trying to make language learning a habit by doing it at the same time every week, and it s"
+        ],
+        "best_gold_score": 0.21837645769119263,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "1faac195",
+        "top_candidate_id": "sharegpt_wgTTTPq_0_27",
+        "top_candidate_text": "Where did you learn his name?",
+        "top_score": 0.45760953426361084,
+        "gold_candidate_ids": [
+          "answer_d01949bf_3"
+        ],
+        "gold_texts": [
+          "I'm thinking of visiting my sister Emily in Denver soon, and I was wondering if you knew any kid-fri"
+        ],
+        "best_gold_score": 0.2717478573322296,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "f4f1d8a4",
+        "top_candidate_id": "3aac691d_2_1",
+        "top_candidate_text": "I'm looking for some gift ideas for my neighbor who's moving into a new place. Do you have any sugge",
+        "top_score": 0.39984551072120667,
+        "gold_candidate_ids": [
+          "answer_f5b33470_5"
+        ],
+        "gold_texts": [
+          "I actually got my new stand mixer as a birthday gift from my sister last month, and it's been a game"
+        ],
+        "best_gold_score": 0.3886216878890991,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "6d550036",
+        "top_candidate_id": "2e4430d8_2_5",
+        "top_candidate_text": "I'll use a combination of these methods to estimate the duration of each task. Since I've been leadi",
+        "top_score": 0.40643128752708435,
+        "gold_candidate_ids": [
+          "answer_ec904b3c_1_1",
+          "answer_ec904b3c_4_1",
+          "answer_ec904b3c_3_1",
+          "answer_ec904b3c_2_3"
+        ],
+        "gold_texts": [
+          "I'm working on a project that involves analyzing customer data to identify trends and patterns. I wa",
+          "I'm looking for some help with data visualization tools. I recently participated in a case competiti",
+          "I'm looking for some research on consumer behavior and social media. I recently presented a poster o",
+          "I've been working on a solo project for my Data Mining class, and I'm really interested in applying "
+        ],
+        "best_gold_score": 0.09755553305149078,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "b5ef892d",
+        "top_candidate_id": "noans_a8b4290f_3_7",
+        "top_candidate_text": "I'm also interested in visiting some of the nearby national parks. Can you recommend some day trips ",
+        "top_score": 0.4112215042114258,
+        "gold_candidate_ids": [
+          "answer_a8b4290f_1_1",
+          "answer_a8b4290f_2_1"
+        ],
+        "gold_texts": [
+          "I'm planning a trip to the Rocky Mountains in Colorado and I was wondering if you could recommend so",
+          "I'm looking for some new hiking boots. Do you have any recommendations for waterproof boots that are"
+        ],
+        "best_gold_score": 0.36643391847610474,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      }
+    ]
+  },
+  "layer22_anti_pca_global_k10": {
+    "gold_margin_best_gold_minus_best_non_gold": {
+      "mean": 0.0033052195101342303,
+      "std": 0.12465143267206506,
+      "min": -0.3431924879550934,
+      "max": 0.39327192306518555
+    },
+    "same_session_top1_false_positive_rate": 0.6222222222222222,
+    "same_day_top1_false_positive_rate": 0.6222222222222222,
+    "token_count_vs_rank_spearman": 0.05075425401973778,
+    "top_false_positive_examples": [
+      {
+        "question_id": "e47becba",
+        "top_candidate_id": "sharegpt_8dJs7Ai_0_5",
+        "top_candidate_text": "What math problem do they solve?",
+        "top_score": 0.2370501607656479,
+        "gold_candidate_ids": [
+          "answer_280352e9_5"
+        ],
+        "gold_texts": [
+          "I graduated with a degree in Business Administration, which has definitely helped me in my new role."
+        ],
+        "best_gold_score": 0.18136602640151978,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "58ef2f1c",
+        "top_candidate_id": "ultrachat_246324_11",
+        "top_candidate_text": "I think I'm going to start by volunteering with the Dayton Foodbank. Do you know if they have any up",
+        "top_score": 0.613666296005249,
+        "gold_candidate_ids": [
+          "answer_59547700_9"
+        ],
+        "gold_texts": [
+          "I'm really looking forward to the silent auction and raffles at \"Strut Your Mutt\". I've had a great "
+        ],
+        "best_gold_score": 0.27047380805015564,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "f8c5f88b",
+        "top_candidate_id": "noans_c3567066_7",
+        "top_candidate_text": "I'm planning to buy new tennis balls this weekend. Do you know any good brands or types of tennis ba",
+        "top_score": 0.6292726993560791,
+        "gold_candidate_ids": [
+          "answer_c3567066_5"
+        ],
+        "gold_texts": [
+          "I'll definitely do those exercises before playing tennis. By the way, I'm really happy with my new t"
+        ],
+        "best_gold_score": 0.5274157524108887,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "5d3d2817",
+        "top_candidate_id": "ultrachat_371333_1",
+        "top_candidate_text": "How can international students gain experience in their field of study if they are unable to secure ",
+        "top_score": 0.21411415934562683,
+        "gold_candidate_ids": [
+          "answer_235eb6fb_5"
+        ],
+        "gold_texts": [
+          "I've used Trello in my previous role as a marketing specialist at a small startup and I'm familiar w"
+        ],
+        "best_gold_score": -0.04153142124414444,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "c960da58",
+        "top_candidate_id": "noans_e05e4612_7",
+        "top_candidate_text": "That's a great idea about using emojis or keywords in playlist names. I think I'll start doing that ",
+        "top_score": 0.5584969520568848,
+        "gold_candidate_ids": [
+          "answer_e05e4612_3"
+        ],
+        "gold_texts": [
+          "I've been listening to a mix of Lo-Fi hip hop beats and Tameca Jones' album on repeat lately, and I "
+        ],
+        "best_gold_score": 0.45498335361480713,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "3b6f954b",
+        "top_candidate_id": "c271c071_5",
+        "top_candidate_text": "I'm also interested in attending cultural events related to language and cultural exchange. Can you ",
+        "top_score": 0.21287840604782104,
+        "gold_candidate_ids": [
+          "answer_94030872_9"
+        ],
+        "gold_texts": [
+          "That sounds amazing! I've been to the Great Ocean Road before, and it's definitely a must-see in Aus"
+        ],
+        "best_gold_score": 0.09030595421791077,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "94f70d80",
+        "top_candidate_id": "noans_c63c0458_7",
+        "top_candidate_text": "I think I'll also stop by IKEA while I'm out to check out their coffee tables with storage, since I ",
+        "top_score": 0.6011331081390381,
+        "gold_candidate_ids": [
+          "answer_c63c0458_3"
+        ],
+        "gold_texts": [
+          "I've been leaning towards a wooden top, but now I'm considering the glass top option too. Do you thi"
+        ],
+        "best_gold_score": 0.2752436101436615,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "66f24dbb",
+        "top_candidate_id": "noans_fea2e4d3_3",
+        "top_candidate_text": "Here's a start - I've bought gifts for my sister's birthday, my mom, my neighbor Mrs. Johnson, cowor",
+        "top_score": 0.5791375637054443,
+        "gold_candidate_ids": [
+          "answer_fea2e4d3_5"
+        ],
+        "gold_texts": [
+          "For my sister's birthday, I got her a yellow dress and a pair of earrings to match."
+        ],
+        "best_gold_score": 0.42678508162498474,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "af8d2e46",
+        "top_candidate_id": "noans_82a04f59_5",
+        "top_candidate_text": "I'm still trying to figure out how to pack clothes more strategically. Do you have any tips on how t",
+        "top_score": 0.5389801263809204,
+        "gold_candidate_ids": [
+          "answer_82a04f59_7"
+        ],
+        "gold_texts": [
+          "That's really helpful! I've been trying to get better at packing, but I still tend to overpack. Like"
+        ],
+        "best_gold_score": 0.4904809296131134,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "8ebdbe50",
+        "top_candidate_id": "b53f447a_1_5",
+        "top_candidate_text": "I'd like to know more about the food safety certification program. How long does it take to complete",
+        "top_score": 0.5084642171859741,
+        "gold_candidate_ids": [
+          "answer_8ad8a34f_3"
+        ],
+        "gold_texts": [
+          "I need to add my latest certification in Data Science, which I completed last month, to my profile. "
+        ],
+        "best_gold_score": 0.4165691137313843,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "21436231",
+        "top_candidate_id": "noans_1e6d4567_1",
+        "top_candidate_text": "I'm planning a fishing trip to Lake Michigan with my friends and I was wondering if you can give me ",
+        "top_score": 0.587498128414154,
+        "gold_candidate_ids": [
+          "answer_1e6d4567_3"
+        ],
+        "gold_texts": [
+          "By the way, I've had some experience with fishing in Lake Michigan, and I've found that spinner lure"
+        ],
+        "best_gold_score": 0.5200912952423096,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "853b0a1d",
+        "top_candidate_id": "noans_69811d4a_7",
+        "top_candidate_text": "I'm going to start by adding the silver necklace my grandma gave me on my 18th birthday. I'll write ",
+        "top_score": 0.41437673568725586,
+        "gold_candidate_ids": [
+          "answer_69811d4a_5"
+        ],
+        "gold_texts": [
+          "I like the idea of a \"Provenance/Story\" column. It'll be nice to have a record of the stories behind"
+        ],
+        "best_gold_score": 0.2092406153678894,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "b86304ba",
+        "top_candidate_id": "noans_645b0329_5",
+        "top_candidate_text": "That's really interesting. Speaking of which, I've been meaning to ask, what's the general rule of t",
+        "top_score": 0.3570461869239807,
+        "gold_candidate_ids": [
+          "answer_645b0329_7"
+        ],
+        "gold_texts": [
+          "That's really helpful. I was thinking about my flea market find, and I realized that it's actually w"
+        ],
+        "best_gold_score": 0.33495238423347473,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "d52b4f67",
+        "top_candidate_id": "noans_0df6aa4b_11",
+        "top_candidate_text": "I'll also ask my friend Emily for advice, she's been into skincare lately and might have some recomm",
+        "top_score": 0.32159411907196045,
+        "gold_candidate_ids": [
+          "answer_0df6aa4b_5"
+        ],
+        "gold_texts": [
+          "I think the Lavender Dreams Skincare Set sounds like a great idea. I was just at my cousin's wedding"
+        ],
+        "best_gold_score": 0.16553989052772522,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "25e5aa4f",
+        "top_candidate_id": "noans_986de8c3_3",
+        "top_candidate_text": "I'm leaning towards Stanford, but I'm concerned about the cost. Can you tell me about the average sa",
+        "top_score": 0.2533596158027649,
+        "gold_candidate_ids": [
+          "answer_986de8c3_5"
+        ],
+        "gold_texts": [
+          "I'm still leaning towards Stanford, but I'm concerned about the cost. I've been working in the tech "
+        ],
+        "best_gold_score": 0.22179409861564636,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "caf9ead2",
+        "top_candidate_id": "noans_0714183a_7",
+        "top_candidate_text": "I'm actually in the city, and my new apartment is about 20 minutes away from my old place. I've been",
+        "top_score": 0.45885178446769714,
+        "gold_candidate_ids": [
+          "answer_0714183a_9"
+        ],
+        "gold_texts": [
+          "I didn't think about asking the baristas for recommendations. That's a great idea! By the way, it to"
+        ],
+        "best_gold_score": 0.41059327125549316,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "8550ddae",
+        "top_candidate_id": "noans_c8354ae9_1",
+        "top_candidate_text": "I'm planning a summer dinner party and want to create a signature cocktail for the event. Can you su",
+        "top_score": 0.37292200326919556,
+        "gold_candidate_ids": [
+          "answer_c8354ae9_3"
+        ],
+        "gold_texts": [
+          "That's a lot of great ideas! I'm particularly interested in the Lavender Dream, as I've been experim"
+        ],
+        "best_gold_score": 0.2968885898590088,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "86b68151",
+        "top_candidate_id": "noans_dc11c1eb_11",
+        "top_candidate_text": "I think I'll just stick with reading for now, but it's good to know those options are out there. I'm",
+        "top_score": 0.3652370870113373,
+        "gold_candidate_ids": [
+          "answer_dc11c1eb_9"
+        ],
+        "gold_texts": [
+          "I just kind of went for it and started moving things around until it felt right. I wanted to create "
+        ],
+        "best_gold_score": 0.35453635454177856,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "577d4d32",
+        "top_candidate_id": "ultrachat_489067_3",
+        "top_candidate_text": "I'll make sure to limit my screen time and take breaks from my phone throughout the day.",
+        "top_score": 0.37910717725753784,
+        "gold_candidate_ids": [
+          "answer_0dd4d99a_5"
+        ],
+        "gold_texts": [
+          "I've heard that this book is a great choice for a evening read, something to unwind with after a lon"
+        ],
+        "best_gold_score": 0.2002383917570114,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "15745da0",
+        "top_candidate_id": "noans_586de428_1",
+        "top_candidate_text": "I'm looking for some advice on how to properly store and maintain my growing collection of vintage c",
+        "top_score": 0.5043641328811646,
+        "gold_candidate_ids": [
+          "answer_586de428_5"
+        ],
+        "gold_texts": [
+          "I've been collecting vintage cameras for three months now, and I've already amassed a pretty impress"
+        ],
+        "best_gold_score": 0.4524293541908264,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "e01b8e2f",
+        "top_candidate_id": "86c5d31d_7",
+        "top_candidate_text": "Let me think about the next trip... Ah yes, about a month after that mountain trip, I took a solo tr",
+        "top_score": 0.2785365581512451,
+        "gold_candidate_ids": [
+          "answer_5ca6cd28_3"
+        ],
+        "gold_texts": [
+          "I'm actually thinking of going back to Hawaii, I loved it so much when I went with my family for a w"
+        ],
+        "best_gold_score": 0.25413501262664795,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "bc8a6e93",
+        "top_candidate_id": "noans_e6143162_7",
+        "top_candidate_text": "That's really helpful, thanks! I've been experimenting with different types of flour lately, and I'v",
+        "top_score": 0.2315094769001007,
+        "gold_candidate_ids": [
+          "answer_e6143162_3"
+        ],
+        "gold_texts": [
+          "That's really helpful, thanks! I've actually had a lot of success with lemon-based desserts in the p"
+        ],
+        "best_gold_score": 0.08467596769332886,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "b320f3f8",
+        "top_candidate_id": "sharegpt_o0MporM_0_1",
+        "top_candidate_text": "What do I do if I become aware of animal cruelty in the UK?",
+        "top_score": 0.19721539318561554,
+        "gold_candidate_ids": [
+          "answer_5cc9b056_1"
+        ],
+        "gold_texts": [
+          "I'm trying to find a good way to display my vintage watch collection. Do you have any recommendation"
+        ],
+        "best_gold_score": 0.10366474837064743,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "8a137a7f",
+        "top_candidate_id": "noans_15d63a22_11",
+        "top_candidate_text": "I think I'll start with some warm white bulbs for my kitchen and see how that goes. I've been using ",
+        "top_score": 0.4688778817653656,
+        "gold_candidate_ids": [
+          "answer_15d63a22_3"
+        ],
+        "gold_texts": [
+          "I like those ideas, especially the layered lighting concept. I think I'll try placing a floor lamp b"
+        ],
+        "best_gold_score": 0.382778137922287,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "86f00804",
+        "top_candidate_id": "noans_96b8c9ee_7",
+        "top_candidate_text": "I've actually already started a book club with some friends, and our first meeting is scheduled for ",
+        "top_score": 0.38535910844802856,
+        "gold_candidate_ids": [
+          "answer_96b8c9ee_1"
+        ],
+        "gold_texts": [
+          "I'm trying to figure out how to fit more reading time into my daily routine. Do you have any tips on"
+        ],
+        "best_gold_score": 0.3654042184352875,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "1faac195",
+        "top_candidate_id": "sharegpt_wgTTTPq_0_27",
+        "top_candidate_text": "Where did you learn his name?",
+        "top_score": 0.44538724422454834,
+        "gold_candidate_ids": [
+          "answer_d01949bf_3"
+        ],
+        "gold_texts": [
+          "I'm thinking of visiting my sister Emily in Denver soon, and I was wondering if you knew any kid-fri"
+        ],
+        "best_gold_score": 0.23522917926311493,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "6d550036",
+        "top_candidate_id": "2e4430d8_2_1",
+        "top_candidate_text": "I'm planning to launch a new product feature in June and I need to create a project timeline. Can yo",
+        "top_score": 0.3243531584739685,
+        "gold_candidate_ids": [
+          "answer_ec904b3c_1_1",
+          "answer_ec904b3c_4_1",
+          "answer_ec904b3c_3_1",
+          "answer_ec904b3c_2_3"
+        ],
+        "gold_texts": [
+          "I'm working on a project that involves analyzing customer data to identify trends and patterns. I wa",
+          "I'm looking for some help with data visualization tools. I recently participated in a case competiti",
+          "I'm looking for some research on consumer behavior and social media. I recently presented a poster o",
+          "I've been working on a solo project for my Data Mining class, and I'm really interested in applying "
+        ],
+        "best_gold_score": -0.0035782158374786377,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "b5ef892d",
+        "top_candidate_id": "12cff183_1_11",
+        "top_candidate_text": "The total cost of the books was $50.",
+        "top_score": 0.3086634874343872,
+        "gold_candidate_ids": [
+          "answer_a8b4290f_1_1",
+          "answer_a8b4290f_2_1"
+        ],
+        "gold_texts": [
+          "I'm planning a trip to the Rocky Mountains in Colorado and I was wondering if you could recommend so",
+          "I'm looking for some new hiking boots. Do you have any recommendations for waterproof boots that are"
+        ],
+        "best_gold_score": 0.18601484596729279,
+        "same_session_as_any_gold": false,
+        "same_day_as_any_gold": false
+      },
+      {
+        "question_id": "3a704032",
+        "top_candidate_id": "noans_c2204106_2_7",
+        "top_candidate_text": "I've been using a plant tracking app to keep track of my watering schedule and fertilization reminde",
+        "top_score": 0.34908100962638855,
+        "gold_candidate_ids": [
+          "answer_c2204106_2_3",
+          "answer_c2204106_1_5"
+        ],
+        "gold_texts": [
+          "I actually use a mixture of water and fertilizer when I water my plants, which I got from the nurser",
+          "I'm also wondering if I should repot my snake plant, which I got from my sister last month. Do you t"
+        ],
+        "best_gold_score": 0.28385987877845764,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      },
+      {
+        "question_id": "gpt4_d84a3211",
+        "top_candidate_id": "noans_2880eb6c_3_3",
+        "top_candidate_text": "I've been keeping track of my bike mileage and I'm currently at 347 miles since the start of the yea",
+        "top_score": 0.3852945864200592,
+        "gold_candidate_ids": [
+          "answer_2880eb6c_2_3",
+          "answer_2880eb6c_4_7",
+          "answer_2880eb6c_1_7",
+          "answer_2880eb6c_3_9"
+        ],
+        "gold_texts": [
+          "Actually, I remember taking my bike in for a tune-up on April 20th because the gears were getting st",
+          "That's great information about bike insurance. I'll definitely look into it. Speaking of my bike, I ",
+          "I've had good experiences with the local bike shop downtown where I bought my Bell Zephyr helmet for",
+          "That's a great list of tips! I'd like to add that I recently got a new set of bike lights installed,"
+        ],
+        "best_gold_score": 0.3661094605922699,
+        "same_session_as_any_gold": true,
+        "same_day_as_any_gold": true
+      }
+    ]
+  }
+}

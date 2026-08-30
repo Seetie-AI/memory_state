@@ -1,0 +1,169 @@
+{
+  "created_utc": "2026-05-12T00:50:45.773363+00:00",
+  "analysis": "prefeval_automatic_retrieval",
+  "inputs": {
+    "task": "implicit_persona",
+    "dataset_id": "siyanzhao/prefeval_implicit_persona",
+    "split": "train",
+    "limit": 30,
+    "shuffle_seed": 0,
+    "retrievers": [
+      "bm25"
+    ],
+    "top_k": 50,
+    "gold_policy": "same_preference_text",
+    "hidden_model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3.5-9B-MLX-4bit",
+    "embedding_model_path": "/Users/gordonxiong/Desktop/Repos/memory_state/models/Qwen3-Embedding-8B-4bit-DWQ",
+    "embedding_alpha": 0.75,
+    "synthetic_smoke": false
+  },
+  "task_summary": {
+    "items": 30,
+    "candidate_count": 30,
+    "query_count": 30,
+    "duplicate_preference_strings": 0,
+    "topics": [
+      "education_learning_styles",
+      "education_resources",
+      "entertain_music_book",
+      "entertain_shows",
+      "entertain_sports",
+      "lifestyle_beauty",
+      "lifestyle_dietary",
+      "lifestyle_fit",
+      "lifestyle_health",
+      "pet_ownership",
+      "professional_work_location_style",
+      "shop_home",
+      "shop_motors",
+      "travel_activities",
+      "travel_hotel",
+      "travel_restaurant",
+      "travel_transportation"
+    ],
+    "preference_types": [
+      "implicit_persona"
+    ]
+  },
+  "prompt_notes": {
+    "2-7": "\n用一个词标记上面这段对话的互动模式，这个词是：“",
+    "2-8": "\n用一个词标记回答上面这段对话中的对方时最该采用的策略，这个词是：“",
+    "note": "2-7 and 2-8 use 标记 in this benchmark; Stage 3 historical scripts are unchanged."
+  },
+  "rows": [
+    {
+      "name": "bm25",
+      "description": "BM25 over preference memory strings",
+      "metrics": {
+        "n_total": 30,
+        "n_scored": 30,
+        "ignored_abstention_count": 0,
+        "ignored_abstention_ids": [],
+        "ignored_no_target_count": 0,
+        "ignored_no_target_ids": [],
+        "metrics": {
+          "recall_all@1": {
+            "mean": 0.03333333333333333,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.13333333333333333
+            }
+          },
+          "ndcg_any@1": {
+            "mean": 0.03333333333333333,
+            "ci95": {
+              "low": 0.0,
+              "high": 0.13333333333333333
+            }
+          },
+          "recall_all@3": {
+            "mean": 0.16666666666666666,
+            "ci95": {
+              "low": 0.06583333333333335,
+              "high": 0.3333333333333333
+            }
+          },
+          "ndcg_any@3": {
+            "mean": 0.11309297535714574,
+            "ci95": {
+              "low": 0.03333333333333333,
+              "high": 0.21767551673214683
+            }
+          },
+          "recall_all@5": {
+            "mean": 0.3,
+            "ci95": {
+              "low": 0.13333333333333333,
+              "high": 0.4666666666666667
+            }
+          },
+          "ndcg_any@5": {
+            "mean": 0.16759493304434142,
+            "ci95": {
+              "low": 0.07925813101662199,
+              "high": 0.2842916885614723
+            }
+          },
+          "recall_all@10": {
+            "mean": 0.5,
+            "ci95": {
+              "low": 0.36583333333333334,
+              "high": 0.7
+            }
+          },
+          "ndcg_any@10": {
+            "mean": 0.23099604978015623,
+            "ci95": {
+              "low": 0.15239362783799265,
+              "high": 0.32646105855892305
+            }
+          },
+          "recall_all@20": {
+            "mean": 0.8666666666666667,
+            "ci95": {
+              "low": 0.7333333333333333,
+              "high": 0.9666666666666667
+            }
+          },
+          "ndcg_any@20": {
+            "mean": 0.3212767209003146,
+            "ci95": {
+              "low": 0.2607421080913954,
+              "high": 0.4019811827305407
+            }
+          },
+          "recall_all@50": {
+            "mean": 1.0,
+            "ci95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "ndcg_any@50": {
+            "mean": 0.3496637541259402,
+            "ci95": {
+              "low": 0.2992763058867433,
+              "high": 0.42339410614907985
+            }
+          }
+        }
+      },
+      "summary": {
+        "recall_all@1": 0.03333333333333333,
+        "ndcg_any@1": 0.03333333333333333,
+        "recall_all@3": 0.16666666666666666,
+        "ndcg_any@3": 0.11309297535714574,
+        "recall_all@5": 0.3,
+        "ndcg_any@5": 0.16759493304434142,
+        "recall_all@10": 0.5,
+        "ndcg_any@10": 0.23099604978015623,
+        "recall_all@20": 0.8666666666666667,
+        "ndcg_any@20": 0.3212767209003146,
+        "recall_all@50": 1.0,
+        "ndcg_any@50": 0.3496637541259402,
+        "mrr": 0.1787139193965707
+      }
+    }
+  ],
+  "elapsed_seconds": 2.154288416990312
+}
