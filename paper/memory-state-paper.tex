@@ -250,14 +250,14 @@ series~\cite{zhang2025}. All models are local 4-bit conversions. Embedding score
 never concatenated into the hidden vectors; they appear only as
 baselines or as score-level signals.
 
-We do not report either benchmark's official end-to-end score. For the
-LongMemEval-S-derived task, each question ranks only the user turns from
-its own haystack sessions; candidates from different questions are
-never mixed. We evaluate a 100-instance subset, of which 94 questions
-remain after abstention and missing-user-label filtering. Recall@5 is
-stricter than a first-hit measure: a question scores 1 only if every
-gold user turn appears in the top 5. We do not run the benchmark's final
-answer-generation stage.
+We use LongMemEval's official turn-level retrieval labels and strict
+Recall@5, but not its full question-answering protocol. For each
+question, we rank only user turns from that question's own history and
+count success only when every gold turn appears in the top 5. We use the
+dataset's first 100 entries, not a random sample: 70 are
+single-session-user questions and 30 are multi-session questions. After
+removing six abstention cases, 94 remain. We do not generate or evaluate
+final answers.
 
 We use PrefEval's data, but not its official evaluation protocol.
 PrefEval asks a model to read the full conversation and then generate an
@@ -459,11 +459,15 @@ the three-view hybrid at 8 KB.
 The reported numbers are for retrieval tasks derived from LongMemEval
 and PrefEval data, not their official end-to-end protocols. In
 particular, we do not measure LongMemEval answer accuracy or PrefEval
-generation/classification accuracy. The LongMemEval-derived numbers rest
-on 94 scored questions, where one question moves the metric by about 1.1
-percentage points. Differences of one or two questions between the
-reported systems and the embedding baselines should be read as parity,
-not as ordering.
+generation/classification accuracy. The LongMemEval slice is also
+strongly composition-biased because the source file is ordered by
+question type. It contains every single-session-user item and 30
+multi-session items, but no temporal-reasoning, knowledge-update,
+single-session-assistant, or single-session-preference items. It cannot
+represent LongMemEval as a whole. The 94 scored questions also mean that
+one question moves the metric by about 1.1 percentage points.
+Differences of one or two questions between the reported systems and the
+embedding baselines should be read as parity, not as ordering.
 
 That derived task has imperfect labels. Only the paired preference
 statement and 10 exact duplicates count as correct. In a manual review
