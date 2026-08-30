@@ -10,21 +10,24 @@ Agent memory systems typically pair a reasoning model with a separate, smaller
 embedding model that indexes what the agent should remember. We ask whether the
 reasoning model can supply its own retrieval keys. Memory State prompts a
 generative LLM to compress a memory page into a short key, then stores the
-hidden state at the final key token, taken from a late non-final layer, as the
+hidden state at the final key token, taken from a late-layer band near the output, as the
 retrieval vector. No retriever is trained, distilled, or adapted.
 
 On LongMemEval-S at round granularity, a compact two-view configuration using
 Qwen3.5-9B-MLX-4bit reaches strict Recall@5 of 0.777 using hidden states alone,
 at 8 KB per page, against 0.755 for a Qwen3-Embedding-8B-4bit-DWQ baseline on
-the same 94 scored questions. Confidence intervals overlap, so this is
-parity-level evidence rather than a statistically significant win.
+the same 94 scored questions. The margin is two questions on this subset, so we
+report it as parity-level evidence and make no significance claim.
 
-To test whether the recipe transfers rather than fits one benchmark, we take
-the prompt combination selected on LongMemEval and evaluate it unchanged on
-PrefEval implicit-persona, a preference and persona memory task, over all 1,000
-examples. As pure dense hidden-state retrieval with no lexical or embedding
-signal, it reaches Recall@5 of 0.299 against 0.281 for the same 8B embedding
-baseline. A model-size check under matched conditions gives 0.596 for
+To test whether the recipe transfers rather than fits one benchmark, we carry
+the three prompt identities selected on LongMemEval over to PrefEval
+implicit-persona, a preference and persona memory task, and evaluate them over
+all 1,000 examples. Per-view layer and geometry settings were assigned on the
+PrefEval side, so this is prompt-identity transfer rather than a frozen
+configuration. As pure dense hidden-state retrieval with no lexical or
+embedding signal it reaches Recall@5 of 0.299 against 0.281 for the same 8B
+embedding baseline, while ranking last among the four K3 candidates evaluated
+there. A model-size check under matched conditions gives 0.596 for
 Qwen3.5-2B-MLX-4bit and 0.691 for Qwen3.5-9B-MLX-4bit, so the memory
 representation improves with the reasoning model rather than being capped by a
 smaller retriever.
@@ -47,10 +50,18 @@ memory also produces the vector that finds it later. If that works, the memory
 index shares an inference path, a tokenizer, and a semantic space with
 downstream reasoning, and it needs no separately trained component.
 
+The question came from an anomaly. While sweeping prompt suffixes on PrefEval,
+a generic prompt asking the model for a single emoji reached Recall@5 of about
+0.285, next to 0.281 for an 8B embedding model on the same 1,000 examples. That
+prompt was not the best in the sweep and it is not part of any system reported
+here. We record it as the observation that motivated the work: a reasoning
+model appears to carry a usable memory representation in places we do not
+normally treat as an index.
+
 We report three things. First, hidden-state keys reach embedding-baseline scale
 on evidence retrieval. Second, a prompt combination selected on one memory
-benchmark transfers to a different memory task without retuning. Third, the
-representation improves with model size under matched conditions.
+benchmark carries over to a different memory task. Third, the representation
+improves with model size under matched conditions.
 
 ## 2. Related Work
 
@@ -71,7 +82,8 @@ principal components from a set of embeddings exposes semantic differences that
 a shared dominant direction otherwise masks.
 
 Memory State does not claim the mechanism. Prompted final-token hidden states,
-multiple prompt views, late non-final layers, and dominant-direction removal
+multiple prompt views, layer selection below the output layer, and
+dominant-direction removal
 all come from this line of work. Our contribution is the application: treating
 these representations as persistent retrieval keys for long-term agent memory,
 designing memory-specific prompt suffixes, and evaluating the result on two
@@ -88,7 +100,7 @@ retrieval vector is the hidden state at the final token of that suffix.
 The pattern is:
 
 1. choose prompt views that match the memory domain;
-2. extract the suffix-final hidden state from a late non-final layer;
+2. extract the suffix-final hidden state from a late-layer band near the output;
 3. apply dominant-direction removal to strip shared prompt and corpus geometry;
 4. combine views by concatenation or component-normalized vector averaging;
 5. optionally add a lexical score as a shortlist rerank signal.
@@ -120,8 +132,8 @@ won Recall@5 for 13, query-only removal for 3, and plain centered cosine for 1.
 
 Hidden-state extraction uses `Qwen3.5-9B-MLX-4bit`, with `Qwen3.5-2B-MLX-4bit`
 for the model-size check. Embedding baselines are
-`Qwen3-Embedding-8B-4bit-DWQ` and `Qwen3-Embedding-0.6B`. All models are local
-4-bit conversions except where noted. Embedding scores are never concatenated
+`Qwen3-Embedding-8B-4bit-DWQ` and `Qwen3-Embedding-0.6B-4bit-DWQ`. All models
+are local 4-bit conversions. Embedding scores are never concatenated
 into the hidden vectors; they appear only as baselines or as score-level
 signals.
 
@@ -147,16 +159,18 @@ instructions are documented there.
 
 The compact two-view configuration matches the three-view hybrid on strict
 recall while using no lexical signal and one third of the storage. Its 0.022
-margin over the 8B embedding baseline equals two questions in this sample.
-Confidence intervals overlap. This is parity-level evidence at
+margin over the 8B embedding baseline equals two questions in this sample. At
+that resolution we make no significance claim. This is parity-level evidence at
 embedding-baseline scale without training an embedding model, not a decisive
 held-out win.
 
 ### 5.2 Cross-task transfer to PrefEval
 
-The prompt combination was selected on LongMemEval, not on PrefEval, and then
-evaluated unchanged as pure dense hidden-state retrieval over all 1,000
-PrefEval examples.
+The three prompt identities were selected on LongMemEval. They were then
+evaluated on PrefEval as pure dense hidden-state retrieval over all 1,000
+examples. Per-view layer and dominant-direction settings were assigned when the
+PrefEval K3 candidates were constructed, so what transfers is the prompt
+combination, not a frozen extraction configuration.
 
 | Method | R@1 | R@3 | R@5 | NDCG@5 | MRR |
 |---|---:|---:|---:|---:|---:|
@@ -164,13 +178,18 @@ PrefEval examples.
 | Qwen3-Embedding-8B-4bit-DWQ | 0.093 | 0.216 | 0.281 | 0.191 | 0.200 |
 | Memory State, LongMem prompt transfer, hidden only | 0.093 | 0.212 | 0.299 | 0.197 | 0.188 |
 
-The transferred configuration exceeds the 8B embedding baseline on strict
-Recall@5 with no PrefEval tuning, no lexical signal, and no embedding score. It
-is slightly lower on R@3 and MRR. The transfer preserves the three prompt
-identities from LongMemEval; individual layers and dominant-direction variants
-differ, and the LongMemEval shortlist and fusion weights were not carried over.
-This supports the claim that a prompt combination can cross memory domains, not
-that every low-level parameter is universal.
+The transferred combination exceeds the 8B embedding baseline on strict
+Recall@5 using no lexical signal and no embedding score. It is slightly lower
+on R@3 and MRR. The LongMemEval shortlist and fusion weights were not carried
+over.
+
+Two things make this the most informative PrefEval row we have. It was not
+selected to win here: of the four K3 candidates evaluated on PrefEval it placed
+last, below combinations whose prompts were chosen on PrefEval itself. And its
+prompt identities were fixed by a different benchmark. So it is the weakest
+candidate in its own sweep and still clears the 8B embedding baseline on strict
+recall. This supports the claim that a prompt combination can cross memory
+domains, not that every low-level parameter is universal.
 
 A separate configuration tuned directly on PrefEval, fusing the hidden-state
 score with an embedding score and BM25, reaches Recall@5 of 0.332. Because its
@@ -197,18 +216,20 @@ reported for prompted representations at larger model scale [3].
 
 **There is no universal best layer.** Across the prompt sweep, layers 29, 30,
 and 31 each won for 6, 6, and 5 variants respectively. The useful region is a
-late non-final band whose exact position depends on prompt semantics, not a
-single layer.
+band below the output layer whose exact position depends on prompt semantics,
+not a single layer.
 
 **Prompt wording matters more than expected.** Changing one word in an
 otherwise identical suffix, from a neutral term for the other party to the
 product-native term for the user, moved Recall@5 by 0.043. The model appears
 better aligned to product vocabulary than to neutral phrasing.
 
-**Prompt language is not neutral.** An English variant of one suffix reached
-Recall@5 of 0.713 against 0.755 for the Chinese original, on English memory
-content. Cross-language prompting worked here; we do not claim general
-multilingual behaviour.
+**Prompt language is not neutral.** In the sweep, the best cell for an English
+variant of one suffix reached Recall@5 of 0.713 while the best cell for its
+Chinese original reached 0.755, on English memory content. The two best cells
+do not share a layer and transform, so this is a sweep observation rather than
+a single-variable comparison. Cross-language prompting worked here; we make no
+general multilingual claim.
 
 **Not every retrieval-shaped prompt works.** An answer-strategy prompt
 collapsed to Recall@5 of 0.574, well below the lexical baseline's neighbours in
@@ -260,10 +281,11 @@ reported systems and the embedding baselines overlap.
 
 Prompt and fusion choices were selected on explored benchmark subsets. The
 LongMemEval results are therefore exploratory rather than a clean held-out
-evaluation. The PrefEval transfer result in Section 5.2 is the closest thing to
-an untuned estimate we have, because its prompt combination was selected on a
-different benchmark, but its layer and geometry details were not frozen
-byte-for-byte.
+evaluation. The PrefEval result in Section 5.2 is the closest we come to an
+independent estimate, because its prompt identities were fixed by a different
+benchmark and it was not the configuration selected to perform best there.
+Its per-view layer and geometry settings were still assigned on the PrefEval
+side, so it is not a held-out evaluation either.
 
 The geometry is tied to `Qwen3.5-9B-MLX-4bit` and may change under another
 model, another quantization, another language, or another prompt template. Both
@@ -315,5 +337,6 @@ Word Representations. ICLR 2018. https://openreview.net/pdf?id=HkuGJ3kCb
 [5] Wu et al. LongMemEval: Benchmarking Chat Assistants on Long-Term
 Interactive Memory. https://arxiv.org/abs/2410.10813
 
-[6] Zhao et al. PrefEval: Benchmarking LLMs on Preference Following.
-https://huggingface.co/datasets/siyanzhao/prefeval_implicit_persona
+[6] Zhao, Hong, Liu, Hazarika, and Lin. Do LLMs Recognize Your Preferences?
+Evaluating Personalized Preference Following in LLMs. 2025.
+https://arxiv.org/abs/2502.09597

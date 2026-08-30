@@ -8,8 +8,8 @@ model.
 
 - [docs/memory-state-article.md](docs/memory-state-article.md): short write-up
   for a general reader.
-- [paper/memory-state-paper.md](paper/memory-state-paper.md): the academic
-  write-up, with related work, negative results, and limitations.
+- [paper/memory-state-paper.md](paper/memory-state-paper.md): academic
+  manuscript draft, with related work, negative results, and limitations.
 - [docs/DATA.md](docs/DATA.md): which benchmark data is not redistributed here,
   and how to obtain it.
 
