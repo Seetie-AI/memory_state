@@ -79,7 +79,7 @@ different question: whether those representations are useful as
 persistent retrieval keys for long-term conversational and preference
 memory. Memory State captures a suffix-final hidden state from the
 reasoning model itself, using small memory-specific prompt facets and no
-trained, distilled, or adapted retriever. The contribution is this
+separately trained retriever. The contribution is this
 agent-memory use and evaluation, not the underlying prompting mechanism.
 
 We construct two retrieval tasks from LongMemEval-S and PrefEval rather
@@ -91,9 +91,10 @@ Qwen3-Embedding-8B-4bit-DWQ baseline on the same 94 scored questions. On
 a PrefEval-derived task that retrieves each question's associated
 preference from a global pool of 1,000 preference statements, a
 three-facet hidden-state configuration reaches 0.299 against 0.281 for
-the same embedding baseline. The results are parity-level evidence that
-the reasoning model's own memory state can approach a dedicated
-embedding model on these derived retrieval tasks. A matched 2B-to-9B
+the same embedding baseline. At roughly comparable parameter scale,
+hidden states from a general Qwen3.5-9B model, with no trained retriever,
+reach parity with a dedicated Qwen3-Embedding-8B model on these derived
+retrieval tasks. A matched 2B-to-9B
 comparison further moves Recall@5 from 0.596 to 0.691.
 
 \end{abstract}
@@ -127,9 +128,10 @@ not part of any system reported here. We record it as the observation
 that motivated the work: a reasoning model appears to carry a usable
 memory representation in places we do not normally treat as an index.
 
-We report three things. First, hidden-state keys reach
-embedding-baseline scale on two benchmark-derived memory retrieval
-tasks. Second, three simple memory facets selected on conversational
+We report three things. First, hidden-state keys from a general 9B
+generative model reach comparable-scale parity with a dedicated 8B
+embedding model on two benchmark-derived memory retrieval tasks. Second,
+three simple memory facets selected on conversational
 memory remain useful on preference retrieval. Third, the representation
 improves with model size under matched conditions.
 
@@ -495,6 +497,11 @@ under another model, another quantization, another language, or another
 prompt template. Both models tested come from one family, so we cannot
 say whether the effect holds across model families.
 
+The comparable-scale embedding baseline is not generation-matched.
+Memory State uses the newer Qwen3.5 family, while the dedicated
+embedding baseline is built on Qwen3, which favors our side of the
+comparison.
+
 The work supports feasibility at embedding-baseline scale. It does not
 establish a general win over embedding models.
 
@@ -512,10 +519,11 @@ them under the original terms.
 \section{Conclusion}\label{conclusion}
 
 A generative model, in the course of reading a page, leaves behind a
-representation that can be used to find that page again. On retrieval
-tasks derived from two different memory benchmarks, this representation
-performed at the scale of a dedicated embedding model without training
-a retriever, and it improved with model size under matched conditions.
+representation that can be used to find that page again. At roughly
+comparable parameter scale, this representation reached parity with a
+dedicated embedding model on retrieval tasks derived from two different
+memory benchmarks, without training a retriever. It also improved with
+model size under matched conditions.
 
 The claim is not that hidden states beat embedding models. It is that an
 agent\textquotesingle s memory index may not require a second model at

@@ -8,6 +8,8 @@ We did not expect an LLM with an emoji to come close to an 8B embedding model at
 
 The emoji was not the best prompt. That is not the point. The strange result suggested that a reasoning model may already contain a useful memory representation in places we do not normally treat as an index.
 
+The more important result is broader. At roughly comparable parameter scale, hidden states from a general Qwen3.5-9B model, with no trained retriever, reached overall parity with a dedicated Qwen3-Embedding-8B model on two derived memory-retrieval tasks. This is not an apples-to-apples comparison: the generative model comes from the newer Qwen3.5 family, while the embedding model is built on Qwen3.
+
 ## The memory you do not know to search for
 
 File-based agent memory often starts with plain text and keyword search. It is cheap, transparent, and easy to inspect. It also has a blind spot: you need to know what to search for. A relevant memory may use none of the words in the current query. This is the unknown unknown problem.
