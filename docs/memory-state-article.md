@@ -30,11 +30,7 @@ Following the same basic recipe, the implementation is one sentence: give the me
 
 At retrieval time, Memory State applies the same encoding recipe to the query and looks up the closest stored vectors.
 
-One prompt suffix used in PrefEval was, translated from Chinese:
-
-> Use one emoji to mark the emotion of the conversation above. The emoji is: "
-
-The other two views asked for one keyword the conversation should recall and one token for the association it creates.
+The three views in the configuration reported below ask, translated from Chinese, for one word to represent the user in the conversation, one word to mark the conversation, and one word to represent the association it creates. The trailing quotation mark in each suffix opens the model's answer, so the next decoded token is the key.
 
 ## LongMemEval: finding a workable retrieval recipe
 
