@@ -38,7 +38,9 @@ The other two views asked for one keyword the conversation should recall and one
 
 ## LongMemEval: finding a workable retrieval recipe
 
-We first used [LongMemEval-S](https://arxiv.org/abs/2410.10813) at round granularity. The table covers 94 scored questions after the official abstention filter. Recall@5 is strict: every gold turn must appear in the top 5.
+We did not run the full [LongMemEval-S](https://arxiv.org/abs/2410.10813) question-answering benchmark. For each question, we only ranked user turns from its own history, using the benchmark's labels for where the answer appeared. Recall@5 is strict here: every labeled turn must appear in the top 5.
+
+The sample was also biased. The file is ordered by question type, so its first 100 entries contained 70 single-session user questions and 30 multi-session questions, with four other question types missing. After six abstention cases were removed, 94 remained. These numbers describe this slice, not LongMemEval as a whole.
 
 | Method | R@5 | NDCG@5 | MRR |
 |---|---:|---:|---:|
@@ -69,7 +71,9 @@ The prompt suffixes were Chinese while the memory content was English. This is e
 
 ## PrefEval: the more relevant agent memory test
 
-PrefEval tests implicit preference and persona memory across 1,000 examples. It is closer to the kind of memory an agent needs when the right past interaction may not share obvious words with the present query.
+We used [PrefEval](https://arxiv.org/abs/2502.09597) data, but not its official evaluation. PrefEval normally asks a model to read a full conversation, then generate an answer or choose one of four options. We instead put 1,000 labeled preference statements in one shared pool and asked each final question to retrieve its paired statement. This tests preference-memory retrieval, not whether the model gives the right final answer.
+
+It is still closer to the kind of memory an agent needs, because the right past interaction may share no obvious words with the present query.
 
 | Method | R@1 | R@3 | R@5 | NDCG@5 | MRR |
 |---|---:|---:|---:|---:|---:|
@@ -77,9 +81,9 @@ PrefEval tests implicit preference and persona memory across 1,000 examples. It 
 | Qwen3-Embedding-8B-4bit-DWQ | 0.093 | 0.216 | 0.281 | 0.191 | 0.200 |
 | Qwen3.5-9B-MLX-4bit, LongMem K3 prompt transfer, hidden only | 0.093 | 0.212 | 0.299 | 0.197 | 0.188 |
 
-This is the cleanest PrefEval result from my runs. The prompt combination was selected on LongMemEval rather than PrefEval, then evaluated as pure dense hidden state retrieval over all 1,000 PrefEval examples. It uses no BM25 and no embedding score. Its strict Recall@5 is 0.299 versus 0.281 for the 8B embedding model, a margin of 1.8 percentage points. It is slightly lower on R@3 and MRR.
+On this derived retrieval task, the hidden-state system uses no BM25 and no embedding score. Its Recall@5 is 0.299 versus 0.281 for the 8B embedding model, a margin of 1.8 percentage points. It is slightly lower on R@3 and MRR.
 
-The transfer is real, but it is not byte-for-byte. It preserves the three LongMem prompt identities, while the individual layers and anti-PCA variants differ. LongMem's BM25 top 20 and fusion weights were not transferred. This is evidence that a prompt combination can cross domains, not that every low-level parameter is universal.
+Only three prompt ideas carried over from LongMemEval: user, conversation tag, and association. The exact wording, layers, and vector settings changed on PrefEval. This configuration placed last among four three-view candidates there, but still reached 0.299. The ideas may cross memory domains; the exact recipe does not.
 
 ## Why this matters for agents
 
@@ -97,6 +101,10 @@ Storage is easier to quantify. One 4096-dimensional bf16 view costs 8 KB per pag
 
 ## Limits worth stating plainly
 
-The LongMem numbers rest on 94 questions, where one question moves the metric by about 1.1 percentage points. Prompt and fusion choices were tuned on explored subsets, not a clean held-out evaluation. Results may change with another model, quantization, language, or prompt template. The work supports feasibility, not a decisive universal win over embedding models.
+The LongMem result comes from the biased 94-question slice described above, where one question moves the metric by about 1.1 percentage points. Prompt and fusion choices were explored on the evaluated data, not a clean held-out set.
+
+The PrefEval-derived task also has imperfect labels: only the paired preference and exact duplicates count as correct. In 100 reviewed misses, 58 found plausible same-topic statements, 28 found the topic but the wrong constraint, and 14 were unrelated. The score can miss useful alternatives, but same-topic does not always mean correct.
+
+Results may change with another model, quantization, language, or prompt template. The work supports feasibility, not a decisive universal win over embedding models.
 
 What it suggests is more specific and more useful: the memory an agent needs may already be present in the act of understanding, waiting to be read out rather than rebuilt by another model.
